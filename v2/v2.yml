@@ -21,6 +21,7 @@ jobs:
          - name: image-tmp-name
         run:
           path: sources/v2/00_wget.sh
+
     - task: Upload Image to Glance
       image: openstack-client
       config:
