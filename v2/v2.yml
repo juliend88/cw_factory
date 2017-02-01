@@ -15,8 +15,6 @@ jobs:
         platform: linux
         inputs:
           - name: sources
-        outputs:
-          - name: id_img
         run :
           path: sources/v2/01_glance.sh
       params:
@@ -33,9 +31,6 @@ jobs:
          platform: linux
          inputs:
             - name: sources
-            - name: id_img
-         outputs:
-            - name: id_snap
          run :
             path: sources/v2/02_nova.sh
       params:
