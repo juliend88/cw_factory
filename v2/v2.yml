@@ -39,6 +39,7 @@ jobs:
          run :
             path: sources/v2/02_packer.sh
       params:
+        maxence: toto
         OS_AUTH_URL:    {{OS_AUTH_URL}}
         OS_TENANT_ID:   {{OS_TENANT_ID}}
         OS_TENANT_NAME: {{OS_TENANT_NAME}}
