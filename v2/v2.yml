@@ -1,0 +1,65 @@
+---
+jobs:
+- name: Build Image
+  public: true
+  serial: true
+  plan:
+    - aggregate:
+      - get: wget
+        trigger: true
+      - get: sources
+        trigger: true
+      - get: openstack-client
+        trigger: true
+    - task: Download Img
+      image: wget
+      config:
+        platform: linux
+        inputs:
+         - name: sources
+        outputs:
+         - name: image-tmp-name
+        run:
+          path: sources/images/ubuntu-xenial-xerus/00_wget.sh
+    - task: Upload Image to Glance
+      image: openstack-client
+      config:
+        platform: linux
+        inputs:
+          - name: image-tmp-name
+          - name: sources
+        run :
+         path: sources/images/ubuntu-xenial-xerus/01_glance.sh
+         params:
+                OS_AUTH_URL: {{OS_AUTH_URL}}
+                OS_TENANT_ID: {{OS_TENANT_ID}}
+                OS_TENANT_NAME: {{OS_TENANT_NAME}}
+                OS_USERNAME: {{OS_USERNAME}}
+                OS_PASSWORD: {{OS_PASSWORD}}
+                OS_REGION_NAME: {{OS_REGION_NAME}}
+resources:
+- name: sources
+  type: git
+  source:
+    uri: https://github.com/juliend88/base-image-factory.git
+    branch: master
+- name: wget
+  type: docker-image
+  source:
+     repository: dstritzke/docker-ansible
+- name: openstack-client
+  type: docker-image
+  source:
+     repository: dalidocker/ansible
+
+
+
+
+
+
+
+
+
+
+
+
