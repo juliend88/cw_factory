@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
 
-TMP_IMG_NAME="$BASENAME-tmp-$BUILDMARK"
-IMG=ubuntu-14.04-server-cloudimg-amd64-disk1.img
-
-openstack image create --disk-format qcow2 --container-format bare --file image-tmp-name toto
+wget http://cloud-images.ubuntu.com/releases/14.04/release/ubuntu-14.04-server-cloudimg-amd64-disk1.img
+openstack image create toto --disk-format qcow2 --container-format bare --file ubuntu-14.04-server-cloudimg-amd64-disk1.img
