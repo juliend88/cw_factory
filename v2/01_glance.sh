@@ -7,6 +7,6 @@ OS_USERNAME2=$OS_USERNAME
 OS_PASSWORD2=$OS_PASSWORD
 
 env
-echo $maxence
+echo $1
 echo $OS_USERNAME2
 openstack image create --disk-format qcow2 --container-format bare --file $IMG $TMP_IMG_NAME
