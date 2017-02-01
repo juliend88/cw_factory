@@ -20,7 +20,7 @@ jobs:
         outputs:
          - name: image-tmp-name
         run:
-          path: sources/images/ubuntu-xenial-xerus/00_wget.sh
+          path: sources/v2/00_wget.sh
     - task: Upload Image to Glance
       image: openstack-client
       config:
@@ -29,14 +29,14 @@ jobs:
           - name: image-tmp-name
           - name: sources
         run :
-         path: sources/images/ubuntu-xenial-xerus/01_glance.sh
-         params:
-                OS_AUTH_URL: {{OS_AUTH_URL}}
-                OS_TENANT_ID: {{OS_TENANT_ID}}
-                OS_TENANT_NAME: {{OS_TENANT_NAME}}
-                OS_USERNAME: {{OS_USERNAME}}
-                OS_PASSWORD: {{OS_PASSWORD}}
-                OS_REGION_NAME: {{OS_REGION_NAME}}
+          path: sources/v2/01_glance.sh
+          params:
+            OS_AUTH_URL: {{OS_AUTH_URL}}
+            OS_TENANT_ID: {{OS_TENANT_ID}}
+            OS_TENANT_NAME: {{OS_TENANT_NAME}}
+            OS_USERNAME: {{OS_USERNAME}}
+            OS_PASSWORD: {{OS_PASSWORD}}
+            OS_REGION_NAME: {{OS_REGION_NAME}}
 resources:
 - name: sources
   type: git
