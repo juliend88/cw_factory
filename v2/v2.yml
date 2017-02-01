@@ -31,14 +31,14 @@ jobs:
           - name: sources
         run :
           path: sources/v2/01_glance.sh
-          params:
-            maxence: toto
-            OS_AUTH_URL:    {{OS_AUTH_URL}}
-            OS_TENANT_ID:   {{OS_TENANT_ID}}
-            OS_TENANT_NAME: {{OS_TENANT_NAME}}
-            OS_USERNAME:    {{OS_USERNAME}}
-            OS_PASSWORD:    {{OS_PASSWORD}}
-            OS_REGION_NAME: {{OS_REGION_NAME}}
+      params:
+        maxence: toto
+        OS_AUTH_URL:    {{OS_AUTH_URL}}
+        OS_TENANT_ID:   {{OS_TENANT_ID}}
+        OS_TENANT_NAME: {{OS_TENANT_NAME}}
+        OS_USERNAME:    {{OS_USERNAME}}
+        OS_PASSWORD:    {{OS_PASSWORD}}
+        OS_REGION_NAME: {{OS_REGION_NAME}}
 resources:
 - name: sources
   type: git
