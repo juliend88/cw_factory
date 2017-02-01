@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+echo $IMG_URL
 wget $IMG_URL
 
 FILE=$(echo "${IMG_URL##*/})
