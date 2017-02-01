@@ -41,7 +41,7 @@ resources:
 - name: sources
   type: git
   source:
-    uri: https://github.com/juliend88/base-image-factory.git
+    uri: https://github.com/flemzord/cw_factory.git
     branch: master
 - name: wget
   type: docker-image
