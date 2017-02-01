@@ -3,6 +3,6 @@
 TMP_IMG_NAME="$BASENAME-tmp-$BUILDMARK"
 IMG=ubuntu-14.04-server-cloudimg-amd64-disk1.img
 
-ls
+ls image-tmp-name
 
 openstack image create --disk-format qcow2 --container-format bare --file image-tmp-name toto
