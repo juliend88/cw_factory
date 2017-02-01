@@ -9,7 +9,6 @@ jobs:
         trigger: true
       - get: openstack-client
         trigger: true
-
     - task: Download && Upload Image to Glance
       image: openstack-client
       config:
@@ -17,7 +16,7 @@ jobs:
         inputs:
           - name: sources
         outputs:
-          - name: result
+          - name: id_img
         run :
           path: sources/v2/01_glance.sh
       params:
@@ -27,8 +26,7 @@ jobs:
         OS_USERNAME:    {{OS_USERNAME}}
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
-        IMG_URL: http://cloud-images.ubuntu.com/releases/14.04/release/ubuntu-14.04-server-cloudimg-amd64-disk1.img
-
+        URL_IMG: http://cloud-images.ubuntu.com/releases/14.04/release/ubuntu-14.04-server-cloudimg-amd64-disk1.img
     - task: Create server then create new image for packer
       image: openstack-client
       config:
@@ -39,7 +37,6 @@ jobs:
          run :
             path: sources/v2/02_packer.sh
       params:
-        maxence: toto
         OS_AUTH_URL:    {{OS_AUTH_URL}}
         OS_TENANT_ID:   {{OS_TENANT_ID}}
         OS_TENANT_NAME: {{OS_TENANT_NAME}}
