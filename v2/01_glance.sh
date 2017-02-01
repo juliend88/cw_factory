@@ -4,5 +4,6 @@ TMP_IMG_NAME="$BASENAME-tmp-$BUILDMARK"
 IMG=ubuntu-14.04-server-cloudimg-amd64-disk1.img
 
 env
+echo $maxence
 
 openstack image create --disk-format qcow2 --container-format bare --file $IMG $TMP_IMG_NAME
