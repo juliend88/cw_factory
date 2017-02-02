@@ -16,7 +16,8 @@ jobs:
         inputs:
           - name: sources
         outputs:
-          - name: id_img
+          - name: outputs-glance
+            path: result/
         run :
           path: sources/v2/01_glance.sh
       params:
@@ -33,7 +34,7 @@ jobs:
          platform: linux
          inputs:
             - name: sources
-            - name: result
+            - name: outputs-glance
          run :
             path: sources/v2/02_packer.sh
       params:
