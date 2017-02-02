@@ -22,7 +22,7 @@ jobs:
           - name: output-nova
             path: result/
         run :
-          path: sources/v2/01_glance.sh {{OS_NAME}} {{OS_VERSION}}
+          path: sources/v2/01_glance.sh {{OS_NAME}} {{OS_VERSION}} {{OS_URL}}
       params:
         OS_AUTH_URL:    {{OS_AUTH_URL}}
         OS_TENANT_ID:   {{OS_TENANT_ID}}
@@ -32,6 +32,7 @@ jobs:
         OS_REGION_NAME: {{OS_REGION_NAME}}
         OS_NAME:        {{OS_NAME}}
         OS_VERSION:     {{OS_VERSION}}
+        OS_URL:         {{OS_URL}}
 resources:
 - name: sources
   type: git
