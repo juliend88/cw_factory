@@ -5,24 +5,40 @@ jobs:
   serial: true
   plan:
     - aggregate:
-      - get: wget
-        trigger: true
       - get: sources
         trigger: true
       - get: openstack-client
         trigger: true
 
-    - task: Upload Image to Glance
+    - task: Download && Upload Image to Glance
       image: openstack-client
       config:
         platform: linux
         inputs:
           - name: sources
         outputs:
-          - name: output-nova
-            path: result/
+          - name: outputs-glance
+            path: result/id.txt
         run :
-          path: sources/v2/01_glance.sh {{OS_NAME}} {{OS_VERSION}} {{OS_URL}}
+          path: sources/v2/01_glance.sh
+      params:
+        OS_AUTH_URL:    {{OS_AUTH_URL}}
+        OS_TENANT_ID:   {{OS_TENANT_ID}}
+        OS_TENANT_NAME: {{OS_TENANT_NAME}}
+        OS_USERNAME:    {{OS_USERNAME}}
+        OS_PASSWORD:    {{OS_PASSWORD}}
+        OS_REGION_NAME: {{OS_REGION_NAME}}
+        IMG_URL: http://cloud-images.ubuntu.com/releases/14.04/release/ubuntu-14.04-server-cloudimg-amd64-disk1.img
+
+    - task: Create server then create new image for packer
+      image: openstack-client
+      config:
+         platform: linux
+         inputs:
+            - name: sources
+            - name: outputs-glance
+         run :
+            path: sources/v2/02_packer.sh
       params:
         OS_AUTH_URL:    {{OS_AUTH_URL}}
         OS_TENANT_ID:   {{OS_TENANT_ID}}
@@ -32,17 +48,12 @@ jobs:
         OS_REGION_NAME: {{OS_REGION_NAME}}
         OS_NAME:        {{OS_NAME}}
         OS_VERSION:     {{OS_VERSION}}
-        OS_URL:         {{OS_URL}}
 resources:
 - name: sources
   type: git
   source:
     uri: https://github.com/flemzord/cw_factory.git
-    branch: master
-- name: wget
-  type: docker-image
-  source:
-     repository: dstritzke/docker-ansible
+    branch: dalitunb
 - name: openstack-client
   type: docker-image
   source:
