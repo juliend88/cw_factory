@@ -34,3 +34,6 @@ if [ "$1" == "debian" ] || [ "$1" == "centos" ]
         openstack image create $1-$2-$DATE --disk-format qcow2 --container-format bare --file image.qcow2
         rm -rf image.qcow2
 fi
+
+mkdir -p result
+openstack image list | grep $1-$2-$DATE | awk {'print $2'} >> result/id.txt

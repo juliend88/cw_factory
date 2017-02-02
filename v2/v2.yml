@@ -18,6 +18,9 @@ jobs:
         platform: linux
         inputs:
           - name: sources
+        outputs:
+          - name: output-nova
+            path: result/
         run :
           path: sources/v2/01_glance.sh {{OS_NAME}} {{OS_VERSION}}
       params:
