@@ -1,4 +1,8 @@
-
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
 heat_template_version: 2013-05-23
 
 description: Create Factory Network
@@ -44,6 +48,8 @@ resources:
 
 outputs:
   Network_id:
-    value: { get _ressource: network }
+    description: Network ID
+    value: { get_resource: network }
   Security_group:
-    value: { get_ressource: sercurity_group }
+    description: Security Group ID
+    value: { get_resource: security_group }

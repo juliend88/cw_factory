@@ -3,6 +3,14 @@
 NOVA_ID=$(cat outputs-glance/id.txt)
 echo $NOVA_ID
 
-openstack network create
-packer build -var "source_image=$NOVA_ID" -var 'image_name=test_packer_aaaa' -var 'factory_network=7359a091-59a7-4e29-a068-ed2a64d8c068' -var 'factory_security_group_name=start-sg-start' sources/v2/packer/packer_ubuntu.json
+openstack stack create factory_network -t sources/v2/template.network.yaml
+
+openstack stack show factory_network
+
+NET_ID=$(openstack stack output show -f value  factory_network Network_id | sed -n '3p')
+SG_ID=$(openstack stack output show -f value  factory_network Network_id | sed -n '3p')
+
+
+packer build -var "source_image=$NOVA_ID" -var 'image_name=test_packer_aaaa' -var "factory_network=$NET_ID" -var "factory_security_group_name=$SG_ID" sources/v2/packer/packer_ubuntu.json
+openstack stack delete factory_network
 
