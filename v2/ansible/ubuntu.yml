@@ -1,0 +1,63 @@
+- hosts: local
+  user: cloud
+  sudo: true
+
+  tasks:
+    - name: packages installed
+      apt:
+        pkg: {{ item }}
+        state: present
+      with_items:
+        - haveged
+        - curl
+        - bzip2
+        - unzip
+
+    - name: debian user removed
+      user:
+        name: {{ item }}
+      with_items:
+        - debian
+        - ubuntu
+        state: absent
+        remove: yes
+
+    - name: stopping system logging for cleaning
+      service:
+        name: rsyslog
+        state: stopped
+
+    - name: rm logs
+      file:
+        path: {{ item }}
+        with_items: |
+          - /home/cloud/.ssh/authorized_keys
+          - /var/log/cloud-init
+          - /home/cloud/known_hosts
+          - /var/log/*-????????
+          - /var/log/*.gz
+          - /var/log/dmesg.old
+          - /var/log/anaconda
+          - /tmp/*
+          - /var/tmp/*
+          - ~root/.bash_history
+          - ~root/.ssh/
+          - ~root/anaconda-ks.cfg
+          - ~cloud/.bash_history
+          - ~cloud/.ssh/
+          - ~cloud/anaconda-ks.cfg
+        state: absent
+
+
+    - name: packages installed
+      pip:
+        pkg: {{ item }}
+        state: absent
+      with_items:
+        - ansible
+
+    - name: nettoyage
+      command: |
+        sudo rm -rf /usr/lib64/python2.7/site-packages/pycrypto-2.6* &&\
+        sudo dd if=/dev/zero of=/home/empty.dd bs=1048576" &&\
+        sudo rm -rf /home/empty.dd

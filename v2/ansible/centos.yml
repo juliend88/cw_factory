@@ -9,6 +9,12 @@
         name: epel-release
         state: present
 
+    - name: centos user removed
+       user:
+         name=centos
+         state=absent
+         remove=yes
+
     - name: haveged installed
       yum:
         name=haveged
@@ -56,7 +62,14 @@
         replace='/dev/vda1 '
 
     - name: rm logs
+      file:
+        path: {{ item }}
+        with_items: |
+          -/home/cloud/.ssh/authorized_keys
+          -/var/log/cloud-init*
+          -/home/cloud/known_hosts
 
+        state: absent
 
 
     - name: packages installed

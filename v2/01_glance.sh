@@ -12,3 +12,5 @@ openstack image create $FILE-$DATE --disk-format qcow2 --container-format bare -
 
 mkdir -p result
 openstack image list | grep $FILE-$DATE | awk {'print $2'} >> result/id.txt
+
+ls result/*
