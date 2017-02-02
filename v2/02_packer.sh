@@ -3,7 +3,6 @@
 NOVA_ID=$(cat outputs-glance/id.txt)
 echo $NOVA_ID
 
-pip install -U python-openstackclient
 
 openstack stack create factory_network -t sources/v2/heat/template.network.yaml
 
