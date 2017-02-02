@@ -18,7 +18,7 @@ jobs:
           - name: sources
         outputs:
           - name: outputs-glance
-            path: result/id.txt
+            path: result/
         run :
           path: sources/v2/01_glance.sh
       params:
@@ -53,7 +53,7 @@ resources:
   type: git
   source:
     uri: https://github.com/flemzord/cw_factory.git
-    branch: dalitunb
+    branch: master
 - name: openstack-client
   type: docker-image
   source:

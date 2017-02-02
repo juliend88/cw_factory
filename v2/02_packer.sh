@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NOVA_ID=$(cat outputs-glance/result/id.txt)
+NOVA_ID=$(cat result/id.txt)
 echo $NOVA_ID
 
 
