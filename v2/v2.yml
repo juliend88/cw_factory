@@ -32,7 +32,7 @@ jobs:
          inputs:
             - name: sources
          run :
-            path: sources/v2/02_nova.sh
+            path: sources/v2/02_packer.sh
       params:
         OS_AUTH_URL:    {{OS_AUTH_URL}}
         OS_TENANT_ID:   {{OS_TENANT_ID}}
@@ -40,6 +40,8 @@ jobs:
         OS_USERNAME:    {{OS_USERNAME}}
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
+        OS_NAME:        {{OS_NAME}}
+        OS_VERSION:     {{OS_VERSION}}
 resources:
 - name: sources
   type: git
