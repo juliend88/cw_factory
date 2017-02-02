@@ -5,7 +5,7 @@ echo $NOVA_ID
 
 pip install -U python-openstackclient
 
-openstack stack create factory_network -t sources/v2/template.network.yaml
+openstack stack create factory_network -t sources/v2/heat/template.network.yaml
 
 openstack stack show factory_network
 
