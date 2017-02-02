@@ -11,34 +11,24 @@ jobs:
         trigger: true
       - get: openstack-client
         trigger: true
-    - task: Download Img
-      image: wget
-      config:
-        platform: linux
-        inputs:
-         - name: sources
-        outputs:
-         - name: image-tmp-name
-        run:
-          path: sources/v2/00_wget.sh
 
     - task: Upload Image to Glance
       image: openstack-client
       config:
         platform: linux
         inputs:
-          - name: image-tmp-name
           - name: sources
         run :
-          path: sources/v2/01_glance.sh
+          path: sources/v2/01_glance.sh {{OS_NAME}} {{OS_VERSION}}
       params:
-        maxence: toto
         OS_AUTH_URL:    {{OS_AUTH_URL}}
         OS_TENANT_ID:   {{OS_TENANT_ID}}
         OS_TENANT_NAME: {{OS_TENANT_NAME}}
         OS_USERNAME:    {{OS_USERNAME}}
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
+        OS_NAME:        {{OS_NAME}}
+        OS_VERSION:     {{OS_VERSION}}
 resources:
 - name: sources
   type: git
