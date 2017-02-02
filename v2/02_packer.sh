@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 ls -al *
-ls result/*
+ls outputs-glance/*
 
-NOVA_ID=$(cat result/id.txt)
+NOVA_ID=$(cat outputs-glance/id.txt)
 echo $NOVA_ID
 
 
