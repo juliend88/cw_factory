@@ -5,8 +5,7 @@
     "image_name": "unknown",
     "build_flavor": "16",
     "factory_network": "unknown",
-    "factory_security_group_name": "unknown",
-    "bundle_path": "unknown"
+    "factory_security_group_name": "unknown"
   },
 
 
