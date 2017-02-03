@@ -1,9 +1,6 @@
 - hosts: local
-  remote_user: cloud
-  sudo: true
 
   tasks:
-
     - name: add epel repository
       yum:
         name: epel-release
