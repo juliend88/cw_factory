@@ -39,9 +39,8 @@
       "sudo rm -rf /var/log/cloud-init*",
       "sudo rm -rf /home/cloud/known_hosts/"
 
-    ]
-
-    }
+       ]
+    },
 
     {
       "type": "ansible-local",
