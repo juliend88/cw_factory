@@ -69,7 +69,7 @@ jobs:
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
     - task: Image Test
-      image: openstack-client
+      image: python3
       config:
          platform: linux
          inputs:
@@ -94,7 +94,10 @@ resources:
   type: docker-image
   source:
      repository: dalidocker/openstack-cli
-
+- name: python3
+  type: docker-image
+  source:
+     repository: python:3.4.6-alpine
 
 
 
