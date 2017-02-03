@@ -43,8 +43,17 @@
 
     }
 
+    {
+      "type": "ansible-local",
+      "extra_arguments": ["--sudo-user", "{{ user `user` }}", "-vvv"],
+      "playbook_dir": "{{ user `ansible_dir` }}",
+      "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml",
+      "inventory_file": "{{ user `ansible_dir` }}/ansible_local_inventory"
+    }
 
-                ]
+
+
+  ]
 
 
 

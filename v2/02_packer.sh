@@ -27,13 +27,15 @@ pwd
 ls -la
 
 packer build -var "source_image=${IMG_TMP_ID}" -var "image_name=${IMG_NAME}" -var "factory_network=${NET_ID}" \
-  -var "factory_security_group_name=${SG_ID}" -var 'ansible_dir="sources/v2/ansible"' sources/v2/packer/packer_apt.json
+  -var "factory_security_group_name=${SG_ID}" -var 'ansible_dir=sources/v2/ansible' sources/v2/packer/packer_apt.json
 
-heat stack-delete factory_network -y
+heat stack-delete factory_network
 
 
 glance image-delete ${IMG_TMP_ID}
 
+
+mkdir result
 
 openstack image list | grep ${IMG_NAME} | awk {'print $2'} >> result/id.txt
 
