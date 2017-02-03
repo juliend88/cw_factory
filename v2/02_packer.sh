@@ -7,22 +7,24 @@ heat stack-create -f sources/v2/heat/template-network.yaml factory_network
 
 
 
-STACK_STATUS=""
+TACK_STATUS=$(heat stack-list | grep factory_network  | cut -d "|" -f4)
 
-while [ "${STACK_STATUS}" != "CREATE_COMPLETE" ]
-do
+while true
+  do
+   STACK_STATUS=$(heat stack-list | grep factory_network  | cut -d "|" -f4)
+   if  [ "$STACK_STATUS" == "CREATE_COMPLETE" ]
+      then
+        echo $STACK_STATUS
+        NET_ID=$(heat output-show factory_network Network_id)
+        echo ${NET_ID}
+        SG_ID=$(heat output-show factory_network Security_group)
+        echo ${SG_ID}
+        break
+      else
+        echo "Wait for factory_network stack will be up"
+    fi
+ done
 
-STACK_STATUS=$(heat stack-list | grep factory_network  | cut -d "|" -f4)
-
-NET_ID=$(heat output-show factory_network Network_id)
-
-echo ${NET_ID}
-
-SG_ID=$(heat output-show factory_network Security_group)
-
-echo ${SG_ID}
-
-done
 
 
 
