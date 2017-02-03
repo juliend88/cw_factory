@@ -11,9 +11,9 @@ glance image-update ${IMG_ID} --property  cw_cat=open_source --property cw_origi
 glance image-update ${IMG_ID} --property  schema=/v2/schemas/image --min-disk 20
 
 
-mkdir result
+mkdir -p result
 
-echo ${IMG_ID}>> result/id.txt
+echo ${IMG_ID} > result/id.txt
 
 cat result/id.txt
 

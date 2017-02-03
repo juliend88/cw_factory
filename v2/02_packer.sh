@@ -42,9 +42,9 @@ heat stack-delete factory_network
 glance image-delete ${IMG_TMP_ID}
 
 
-mkdir result
+mkdir -p result
 
-openstack image list | grep ${IMG_NAME} | awk {'print $2'} >> result/id.txt
+openstack image list | grep ${IMG_NAME} | awk {'print $2'} > result/id.txt
 
 cat result/id.txt
 
