@@ -9,6 +9,8 @@ jobs:
         trigger: true
       - get: openstack-client
         trigger: true
+      - get: python
+        trigger: true
     - task: Download && Upload Image to Glance
       image: openstack-client
       config:
@@ -69,7 +71,7 @@ jobs:
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
     - task: Image Test
-      image: python3
+      image: python
       config:
          platform: linux
          inputs:
@@ -94,7 +96,7 @@ resources:
   type: docker-image
   source:
      repository: dalidocker/openstack-cli
-- name: python3
+- name: python
   type: docker-image
   source:
      repository: python:3.4.6-alpine
