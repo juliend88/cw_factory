@@ -6,8 +6,15 @@ IMG_TMP_ID=$(cat outputs-glance/id.txt)
 heat stack-create -f sources/v2/heat/template-network.yaml factory_network
 
 
-NET_ID=$(heat output-show factory_network Network_id)
 
+STACK_STATUS=""
+
+while [ "${STACK_STATUS}" != "CREATE_COMPLETE" ]
+do
+
+STACK_STATUS=$(heat stack-list | grep factory_network  | cut -d "|" -f4)
+
+NET_ID=$(heat output-show factory_network Network_id)
 
 echo ${NET_ID}
 
@@ -15,11 +22,15 @@ SG_ID=$(heat output-show factory_network Security_group)
 
 echo ${SG_ID}
 
+done
+
+
+
 DATE=$(date +%Y-%m-%d:%H:%M:%S)
 
 IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
 
-echo ${IMG_NAME}
+
 
 
 packer build -var "source_image=${IMG_TMP_ID}" -var "image_name=${IMG_NAME}" -var "factory_network=${NET_ID}" \
