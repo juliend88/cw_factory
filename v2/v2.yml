@@ -99,7 +99,8 @@ resources:
 - name: python
   type: docker-image
   source:
-     repository: python:3.4.6-alpine
+     repository: python
+     tag: 3.4.6-alpine
 
 
 
