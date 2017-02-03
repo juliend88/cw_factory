@@ -6,7 +6,8 @@
     "build_flavor": "16",
     "factory_network": "unknown",
     "factory_security_group_name": "unknown",
-    "user":  "{{ env `OS_NAME` }}"
+    "user":  "{{ env `OS_NAME` }}",
+    "ansible_dir": "unknown"
   },
 
 
@@ -41,10 +42,14 @@
     {
       "type": "ansible-local",
       "extra_arguments": ["--sudo-user", "{{ user `user`}}", "-vvv"],
-      "playbook_dir": "../ansible",
-      "playbook_file": "../ansible/{{ user `user`}}.yml",
-      "inventory_file": "../ansible/ansible_local_inventory"
-    }]
+      "playbook_dir": "{{ user `ansible_dir` }}",
+      "playbook_file": "{{ user `ansible_dir` }}/{{ user `user`}}.yml",
+      "inventory_file": "{{ user `ansible_dir` }}/ansible_local_inventory"
+    }
+
+
+
+      ]
 
 
 
