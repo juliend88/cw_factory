@@ -4,8 +4,6 @@
     "source_image": "unknown",
     "image_name": "unknown",
     "build_flavor": "16",
-    "factory_network": "unknown",
-    "factory_security_group_name": "unknown",
     "user":  "unknown",
     "ansible_dir": "unknown"
   },
@@ -16,9 +14,7 @@
     "image_name": "{{ user `image_name` }}",
     "source_image": "{{ user `source_image` }}",
     "flavor": "16",
-    "networks": "{{ user `factory_network` }}",
     "floating_ip_pool": "public",
-    "security_groups": ["{{ user `factory_security_group_name` }}"],
     "ssh_username": "{{ user `user`}}"
   }
   ],

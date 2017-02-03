@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+echo "pass"
 #IMG_ID=$(cat outputs-packer/id.txt)
 
 #PURGE=$(openstack image show -f value -c properties ${IMG_ID} | tr ", " "\n" | grep -v "^$" | cut -d"=" -f1 | grep -v -E "(cw_os|cw_origin|hw_rng_model)" | sed 's/^/--remove-property /g' | tr "\n" " ")
