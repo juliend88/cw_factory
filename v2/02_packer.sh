@@ -21,10 +21,15 @@ IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
 
 echo ${IMG_NAME}
 
+
+pwd
+
+ls -la
+
 packer build -var "source_image=${IMG_TMP_ID}" -var "image_name=${IMG_NAME}" -var "factory_network=${NET_ID}" \
   -var "factory_security_group_name=${SG_ID}" -var 'ansible_dir="sources/v2/ansible"' sources/v2/packer/packer_apt.json
 
-heat stack-delete -y factory_network
+heat stack-delete factory_network -y
 
 
 glance image-delete ${IMG_TMP_ID}
