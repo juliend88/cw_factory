@@ -7,14 +7,13 @@ heat stack-create -f sources/v2/heat/template-network.yaml factory_network
 
 
 
-TACK_STATUS=$(heat stack-list | grep factory_network  | cut -d "|" -f4)
+
 
 while true
   do
-   STACK_STATUS=$(heat stack-list | grep factory_network  | cut -d "|" -f4)
-   if  [ "$STACK_STATUS" == "CREATE_COMPLETE" ]
+   heat stack-list | grep factory_network  | cut -d "|" -f4 | grep "CREATE_COMPLETE"
+   if  [ $? -eq 0 ]
       then
-        echo $STACK_STATUS
         NET_ID=$(heat output-show factory_network Network_id)
         echo ${NET_ID}
         SG_ID=$(heat output-show factory_network Security_group)
@@ -31,7 +30,6 @@ while true
 DATE=$(date +%Y-%m-%d:%H:%M:%S)
 
 IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
-
 
 
 

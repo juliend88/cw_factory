@@ -35,6 +35,9 @@ jobs:
          inputs:
             - name: sources
             - name: outputs-glance
+         outputs:
+            - name: outputs-packer
+              path: result/
          run :
             path: sources/v2/02_packer.sh
       params:
@@ -46,6 +49,41 @@ jobs:
         OS_REGION_NAME: {{OS_REGION_NAME}}
         OS_NAME:        ubuntu
         OS_VERSION:     trusty
+    - task: Add Cloudwatt propriety in image
+      image: openstack-client
+      config:
+         platform: linux
+         inputs:
+            - name: sources
+            - name: outputs-packer
+         outputs:
+            - name: outputs-for-test
+              path: result/
+         run :
+            path: sources/v2/03_update_img_cw.sh
+      params:
+        OS_AUTH_URL:    {{OS_AUTH_URL}}
+        OS_TENANT_ID:   {{OS_TENANT_ID}}
+        OS_TENANT_NAME: {{OS_TENANT_NAME}}
+        OS_USERNAME:    {{OS_USERNAME}}
+        OS_PASSWORD:    {{OS_PASSWORD}}
+        OS_REGION_NAME: {{OS_REGION_NAME}}
+    - task: Image Test
+      image: openstack-client
+      config:
+         platform: linux
+         inputs:
+            - name : sources
+            - name: outputs-for-test
+         run :
+            path: sources/v2/04_test_image.sh
+      params:
+        OS_AUTH_URL:    {{OS_AUTH_URL}}
+        OS_TENANT_ID:   {{OS_TENANT_ID}}
+        OS_TENANT_NAME: {{OS_TENANT_NAME}}
+        OS_USERNAME:    {{OS_USERNAME}}
+        OS_PASSWORD:    {{OS_PASSWORD}}
+        OS_REGION_NAME: {{OS_REGION_NAME}}
 resources:
 - name: sources
   type: git
