@@ -1,0 +1,55 @@
+{
+
+  "variables": {
+    "source_image": "unknown",
+    "image_name": "unknown",
+    "build_flavor": "16",
+    "factory_network": "unknown",
+    "factory_security_group_name": "unknown",
+    "user":  "{{ env `OS_NAME` }}"
+  },
+
+
+  "builders": [{
+    "type": "openstack",
+    "image_name": "{{ user `image_name` }}",
+    "source_image": "{{ user `source_image` }}",
+    "flavor": "16",
+    "networks": "{{ user `factory_network` }}",
+    "floating_ip_pool": "public",
+    "security_groups": ["{{ user `factory_security_group_name` }}"],
+    "ssh_username": "{{ user `user`}}"
+  }
+  ],
+  "provisioners": [
+    {
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo sed -i 's/name: {{ user `user`}}/name: cloud/' /etc/cloud/cloud.cfg",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::=\"--force-confold\" purge python-pip -y",
+      "sudo apt-get update",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::=\"--force-confold\" upgrade -y",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::=\"--force-confold\" install aptitude git gcc python-dev python-setuptools libssl-dev libffi-dev -y",
+      "for i in 1 2 3 4 5; do sudo easy_install pip && break || sleep 2; done",
+      "sudo ln -s /usr/local/bin/pip /usr/bin/pip",
+      "sudo pip install -U pip ansible",
+      "sudo rm -rf /home/cloud/.ssh/authorized_keys",
+      "sudo rm -rf /var/log/cloud-init*",
+      "sudo rm -rf /home/cloud/known_hosts/"
+
+    ]
+    },
+
+    {
+      "type": "ansible-local",
+      "extra_arguments": ["--sudo-user", "{{ user `user`}}", "-vvv"],
+      "playbook_dir": "../ansible",
+      "playbook_file": "../ansible/{{ user `user`}}.yml",
+      "inventory_file": "../ansible/ansible_local_inventory"
+  }
+
+
+
+
+}
