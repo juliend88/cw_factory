@@ -24,6 +24,12 @@ echo ${IMG_NAME}
 packer build -var "source_image=${IMG_TMP_ID}" -var "image_name=${IMG_NAME}" -var "factory_network=${NET_ID}" \
   -var "factory_security_group_name=${SG_ID}" -var 'ansible_dir="sources/v2/ansible"' sources/v2/packer/packer_apt.json
 
-openstack stack delete factory_network
+heat stack-delete -y factory_network
 
-openstack image delete $IMG_TMP_ID
+
+glance image-delete ${IMG_TMP_ID}
+
+
+openstack image list | grep ${IMG_NAME} | awk {'print $2'} >> result/id.txt
+
+ls result/*
