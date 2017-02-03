@@ -6,7 +6,7 @@
     "build_flavor": "16",
     "factory_network": "unknown",
     "factory_security_group_name": "unknown",
-    "user":  "{{ env `OS_NAME` }}",
+    "user":  "unknown",
     "ansible_dir": "unknown"
   },
 
