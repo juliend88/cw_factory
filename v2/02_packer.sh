@@ -3,13 +3,15 @@
 IMG_TMP_ID=$(cat outputs-glance/id.txt)
 
 
-openstack stack create factory_network -t sources/v2/heat/template-network.yaml
+heat stack-create -f sources/v2/heat/template-network.yaml factory_network
 
-openstack stack show factory_network
 
-NET_ID=$(openstack stack output show -f value  factory_network Network_id | sed -n '3p')
-SG_ID=$(openstack stack output show -f value  factory_network Network_id | sed -n '3p')
+NET_ID=$(heat output-show factory_network Network_id)
+
+SG_ID=$(heat output-show factory_network Security_group)
+
 DATE=$(date +%Y-%m-%d:%H:%M:%S)
+
 IMG_NAME=$OS_NAME-$OS_VERSION-$DATE
 
 

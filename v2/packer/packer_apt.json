@@ -47,7 +47,7 @@
       "playbook_dir": "../ansible",
       "playbook_file": "../ansible/{{ user `user`}}.yml",
       "inventory_file": "../ansible/ansible_local_inventory"
-  }
+  }]
 
 
 
