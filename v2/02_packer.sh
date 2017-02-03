@@ -32,7 +32,7 @@ IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
 
 
 packer build -var 'source_image=${IMG_TMP_ID}' -var 'image_name=${IMG_NAME}'  \
-   -var 'ansible_dir=sources/v2/ansible' -var 'user=${OS_NAME}' sources/v2/packer/packer_apt.json
+   -var 'ansible_dir=sources/v2/ansible' sources/v2/packer/packer_apt.json
 
 
 #we delete the factory_network stack juste for testing in the we need it the test step Don't Forget :') !!!!!!!!

@@ -4,7 +4,7 @@
     "source_image": "unknown",
     "image_name": "unknown",
     "build_flavor": "16",
-    "user":  "unknown",
+    "user":  "{{ env `OS_NAME` }}",
     "ansible_dir": "unknown"
   },
 
