@@ -12,9 +12,9 @@ while true
    heat stack-list | grep factory_network  | cut -d "|" -f4 | grep "CREATE_COMPLETE"
    if  [ $? -eq 0 ]
       then
-        NET_ID=$(heat output-show factory_network Network_id)
+        NET_ID=$(heat output-show factory_network Network_id | sed -e 's/^"//' -e 's/"$//')
         echo ${NET_ID}
-        SG_ID=$(heat output-show factory_network Security_group)
+        SG_ID=$(heat output-show factory_network Security_group | sed -e 's/^"//'  -e 's/"$//')
         echo ${SG_ID}
         break
       else
