@@ -55,7 +55,7 @@ resources:
 - name: openstack-client
   type: docker-image
   source:
-     repository: dalidocker/ansible
+     repository: dalidocker/openstack-cli
 
 
 

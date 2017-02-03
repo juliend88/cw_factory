@@ -17,4 +17,4 @@ packer build -var "source_image=$IMG_TMP_ID" -var 'image_name=$IMG_NAME' -var "f
 
 openstack stack delete factory_network
 
-openstack image delete $NOVA_ID
+openstack image delete $IMG_TMP_ID
