@@ -39,6 +39,7 @@ export IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
 
 export ANSIBLE_DIR=sources/v2/ansible
 
+packer validate sources/v2/packer/packer_apt.json
 
 packer build sources/v2/packer/packer_apt.json
 
