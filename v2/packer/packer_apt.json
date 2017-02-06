@@ -26,10 +26,13 @@
       "type": "shell",
       "inline": [
         "sleep 30",
-        "sudo sed -i 's/name: {{ user `user`}}/name: cloud/' /etc/cloud/cloud.cfg",
-        "echo '[local]' >> /tmp/inventory",
-        "curl http://169.254.169.254/latest/meta-data/public-ipv4 >> /tmp/inventory"
+        "sudo sed -i 's/name: {{ user `user`}}/name: cloud/' /etc/cloud/cloud.cfg"
           ]
+    },
+
+    {
+      "type": "shell-local",
+      "command": " echo {{ .floating_ip }} &&  echo {{ .floating_ip_pool }} && nova list | grep {{ user `user`}}-* | cut -d '|' -f7 | cut -d ',' -f2 "
     },
 
     {
