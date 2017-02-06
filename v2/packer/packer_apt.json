@@ -6,6 +6,7 @@
     "user":  "{{ env `OS_NAME` }}",
     "factory_network": "{{ env `NET_ID` }}",
     "factory_security_group_name": "{{env `SG_ID`}}",
+    "floating_ip": "{{ env `FLOATING_IP` }}",
     "ansible_dir": "{{ env `ANSIBLE_DIR` }}"
   },
 
@@ -16,7 +17,7 @@
     "source_image": "{{ user `source_image` }}",
     "flavor": "16",
     "networks": "{{ user `factory_network` }}",
-    "floating_ip_pool": "public",
+    "floating_ip": "{{ user `floating_ip` }}",
     "security_groups": ["{{ user `factory_security_group_name` }}"],
     "ssh_username": "{{ user `user`}}"
   }
@@ -25,29 +26,17 @@
     {
       "type": "shell",
       "inline": [
-        "sudo sed -i 's/name: {{ user `user`}}/name: cloud/' /etc/cloud/cloud.cfg",
-        "sudo DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::=\"--force-confold\" purge python-pip -y",
-        "sudo apt-get update",
-        "sudo DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::=\"--force-confold\" upgrade -y",
-        "sudo DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::=\"--force-confold\" install aptitude git gcc python-dev python-setuptools libssl-dev libffi-dev -y",
-        "for i in 1 2 3 4 5; do sudo easy_install pip && break || sleep 2; done",
-        "sudo ln -s /usr/local/bin/pip /usr/bin/pip",
-        "sudo pip install -U pip ansible",
-        "sudo rm -rf /home/cloud/.ssh/authorized_keys",
-        "sudo rm -rf /var/log/cloud-init*",
-        "sudo rm -rf /home/cloud/known_hosts/"
-          ]
+        "sleep 30",
+        "sudo sed -i 's/name: {{ user `user`}}/name: cloud/' /etc/cloud/cloud.cfg"
+      ]
     },
 
-
     {
-      "type": "ansible-local",
+      "type": "ansible",
       "extra_arguments": ["--sudo-user", "{{ user `user` }}", "-vvv"],
-      "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml",
-      "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml",
-      "inventory_file": "{{ user `ansible_dir` }}/ansible_local_inventory"
+      "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml"
 
     }
-   ]
+  ]
 
 }
