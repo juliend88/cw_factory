@@ -2,15 +2,15 @@
 
 
   tasks:
-    - name: packages installed
-      apt:
-        pkg: {{ item }}
-        state: present
+    - name: base toolkit
+      apt: pkg="{{ item }}" state=present
       with_items:
         - haveged
         - curl
         - bzip2
         - unzip
+
+
 
    # - name: debian user removed
    #   user:
@@ -28,7 +28,7 @@
 
     - name: rm logs
       file:
-        path: {{ item }}
+        path: '{{ item }}'
         with_items: |
           - /home/cloud/.ssh/authorized_keys
           - /var/log/cloud-init
@@ -45,12 +45,11 @@
           - ~cloud/.bash_history
           - ~cloud/.ssh/
           - ~cloud/anaconda-ks.cfg
-        state: absent
-
+      ignore_errors: true
 
     - name: packages installed
       pip:
-        pkg: {{ item }}
+        pkg: '{{ item }}'
         state: absent
       with_items:
         - ansible

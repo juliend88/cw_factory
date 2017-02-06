@@ -7,10 +7,10 @@
         state: present
 
     - name: centos user removed
-       user:
-         name=centos
-         state=absent
-         remove=yes
+      user:
+        name=centos
+        state=absent
+        remove=yes
 
     - name: haveged installed
       yum:
@@ -40,7 +40,7 @@
 
     - name: packages installed
       yum:
-        pkg={{ item }}
+        pkg='{{ item }}'
         state=present
       with_items:
         - parted
@@ -60,13 +60,13 @@
 
     - name: rm logs
       file:
-        path: {{ item }}
-        with_items: |
+        path={{ item }} state=absent
+      with_items: |
           -/home/cloud/.ssh/authorized_keys
           -/var/log/cloud-init*
           -/home/cloud/known_hosts
+      ignore_errors: true
 
-        state: absent
 
 
     - name: packages installed

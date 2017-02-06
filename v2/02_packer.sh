@@ -5,7 +5,6 @@ export IMG_TMP_ID=$(cat outputs-glance/id.txt)
 
 heat stack-create -f sources/v2/heat/template-network.yaml factory_network
 
-
 while true
   do
    heat stack-list | grep factory_network  | cut -d "|" -f4 | grep "CREATE_COMPLETE"
