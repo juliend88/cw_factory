@@ -1,7 +1,8 @@
 {
 
   "variables": {
-    "source_image": "{{ env `IMG_TMP_ID` }}", "image_name": "{{env `IMG_NAME` }}",
+    "source_image": "{{ env `IMG_TMP_ID` }}",
+    "image_name": "{{env `IMG_NAME` }}",
     "build_flavor": "16",
     "user":  "{{ env `OS_NAME` }}",
     "factory_network": "{{ env `NET_ID` }}",
