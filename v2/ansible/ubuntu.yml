@@ -12,14 +12,14 @@
         - bzip2
         - unzip
 
-    - name: debian user removed
-      user:
-        name: {{ item }}
-      with_items:
-        - debian
-        - ubuntu
-        state: absent
-        remove: yes
+   # - name: debian user removed
+   #   user:
+   #     name: {{ item }}
+   #   with_items:
+   #     - debian
+   #     - ubuntu
+   #     state: absent
+   #     remove: yes
 
     - name: stopping system logging for cleaning
       service:
@@ -55,8 +55,15 @@
       with_items:
         - ansible
 
-    - name: nettoyage
-      command: |
-        sudo rm -rf /usr/lib64/python2.7/site-packages/pycrypto-2.6* &&\
-        sudo dd if=/dev/zero of=/home/empty.dd bs=1048576" &&\
-        sudo rm -rf /home/empty.dd
+   # - name: nettoyage
+   #   command: |
+   #     sudo rm -rf /usr/lib64/python2.7/site-packages/pycrypto-2.6* &&\
+   #     sudo dd if=/dev/zero of=/home/empty.dd bs=1048576" &&\
+   #     sudo rm -rf /home/empty.dd
+
+    - user:
+         name=ubuntu
+         state=absent
+         remove=yes
+      become: true
+      become_user: root
