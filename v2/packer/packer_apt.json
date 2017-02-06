@@ -1,8 +1,7 @@
 {
 
   "variables": {
-    "source_image": "{{ env `IMG_TMP_ID` }}",
-    "image_name": "{{env `IMG_NAME` }}",
+    "source_image": "{{ env `IMG_TMP_ID` }}", "image_name": "{{env `IMG_NAME` }}",
     "build_flavor": "16",
     "user":  "{{ env `OS_NAME` }}",
     "factory_network": "{{ env `NET_ID` }}",
@@ -28,14 +27,14 @@
       "inline": [
         "sleep 30",
         "sudo sed -i 's/name: {{ user `user`}}/name: cloud/' /etc/cloud/cloud.cfg",
-        "echo '[local]' >> {{ user `ansible_dir` }}/inventory",
-        "curl http://169.254.169.254/latest/meta-data/public-ipv4 >> {{ user `ansible_dir` }}/inventory"
+        "echo '[local]' >> /tmp/inventory",
+        "curl http://169.254.169.254/latest/meta-data/public-ipv4 >> /tmp/inventory"
           ]
     },
 
     {
       "type": "ansible",
-      "extra_arguments": ["--sudo-user", "{{ user `user` }}", "-vvv","-i","{{ user `ansible_dir` }}/inventory"],
+      "extra_arguments": ["--sudo-user", "{{ user `user` }}", "-vvv","-i","/tmp/inventory"],
       "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml"
 
     }
