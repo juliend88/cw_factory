@@ -30,7 +30,6 @@ export ANSIBLE_DIR=sources/v2/ansible
 packer build sources/v2/packer/packer_apt.json
 
 
-cat /tmp/inventory
 
 #we delete the factory_network stack juste for testing in the we need it the test step Don't Forget :') !!!!!!!!
 heat stack-delete factory_network -y

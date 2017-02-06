@@ -41,7 +41,7 @@
 
 
     {
-      "type": "ansible",
+      "type": "ansible-local",
       "extra_arguments": ["--sudo-user", "{{ user `user` }}", "-vvv"],
       "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml",
       "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml",
