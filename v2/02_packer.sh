@@ -45,6 +45,3 @@ cat result/id.txt
 
 ls result/*
 
-
-[local]
-84.39.41.150  > inventory
