@@ -6,7 +6,7 @@
     "user":  "{{ env `OS_NAME` }}",
     "factory_network": "{{ env `NET_ID` }}",
     "factory_security_group_name": "{{env `SG_ID`}}",
-    "floating_ip": "{{ env `FLOATING_IP` }}",
+    "factory_floating_ip": "{{ env `FLOATING_IP` }}",
     "ansible_dir": "{{ env `ANSIBLE_DIR` }}"
   },
 
@@ -17,7 +17,7 @@
     "source_image": "{{ user `source_image` }}",
     "flavor": "16",
     "networks": "{{ user `factory_network` }}",
-    "floating_ip": "{{ user `floating_ip` }}",
+    "floating_ip": "{{ user `factory_floating_ip` }}",
     "security_groups": ["{{ user `factory_security_group_name` }}"],
     "ssh_username": "{{ user `user`}}"
   }
