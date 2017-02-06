@@ -35,7 +35,7 @@
       "command": "echo '[local]'>/tmp/inventory",
       "command": "IP=(nova list | grep {{ user `image_name`}} | cut -d '|' -f7 | cut -d ',' -f2)",
       "command": "echo $IP >>/tmp/inventory",
-      "command": "cat /tmp/inventory"
+      "command": "echo $IP"
     },
 
     {
