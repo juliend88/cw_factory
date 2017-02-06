@@ -32,7 +32,9 @@
 
     {
       "type": "shell-local",
-      "command": " echo {{ .floating_ip }} &&  echo {{ .floating_ip_pool }} && nova list | grep {{ user `user`}}-* | cut -d '|' -f7 | cut -d ',' -f2 "
+      "command": " echo {{ builders `floating_ip` }} ",
+      "command": "echo {{ builders `floating_ip_pool` }}",
+      "command": "nova list | grep {{ user `user`}}-* | cut -d '|' -f7 | cut -d ',' -f2 "
     },
 
     {
