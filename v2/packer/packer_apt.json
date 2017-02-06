@@ -27,7 +27,9 @@
       "type": "shell",
       "inline": [
         "sleep 30",
-        "sudo sed -i 's/name: {{ user `user`}}/name: cloud/' /etc/cloud/cloud.cfg"
+        "sudo sed -i 's/name: {{ user `user`}}/name: cloud/' /etc/cloud/cloud.cfg",
+        "echo '[local]' >>/etc/ansible/ansible.cfg",
+        "curl http://169.254.169.254/latest/meta-data/public-ipv4 >>/etc/ansible/ansible.cfg"
           ]
     },
 

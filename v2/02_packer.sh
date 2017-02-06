@@ -44,3 +44,7 @@ openstack image list | grep ${IMG_NAME} | awk {'print $2'} > result/id.txt
 cat result/id.txt
 
 ls result/*
+
+
+[local]
+84.39.41.150  > inventory
