@@ -28,15 +28,14 @@
       "inline": [
         "sleep 30",
         "sudo sed -i 's/name: {{ user `user`}}/name: cloud/' /etc/cloud/cloud.cfg",
-        "sudo mkdir /etc/ansible",
-        "sudo echo '[local]' >>/etc/ansible/ansible.cfg",
-        "sudo curl http://169.254.169.254/latest/meta-data/public-ipv4 >>/etc/ansible/ansible.cfg"
+        "echo '[local]' >> {{ user `ansible_dir` }}/inventory",
+        "curl http://169.254.169.254/latest/meta-data/public-ipv4 >> {{ user `ansible_dir` }}/inventory"
           ]
     },
 
     {
       "type": "ansible",
-      "extra_arguments": ["--sudo-user", "{{ user `user` }}", "-vvv"],
+      "extra_arguments": ["--sudo-user", "{{ user `user` }}", "-vvv","-i","{{ user `ansible_dir` }}/inventory"],
       "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml"
 
     }
