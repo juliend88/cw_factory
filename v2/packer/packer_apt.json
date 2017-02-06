@@ -32,9 +32,12 @@
 
     {
       "type": "shell-local",
-      "command": " echo '[local]'>/tmp/inventory",
-      "command": "nova list | grep {{ user `user`}}-* | cut -d '|' -f7 | cut -d ',' -f2 >>/tmp/inventory ",
-      "command":  "cat /tmp/inventory"
+      "inline": [
+        "echo '[local]'>/tmp/inventory",
+        "IP=$(nova list | grep {{ user `image_name`}}-* | cut -d '|' -f7 | cut -d ',' -f2)",
+        "echo $IP >>/tmp/inventory ",
+        "cat /tmp/inventory"
+      ]
     },
 
     {
