@@ -4,11 +4,11 @@
     "source_image": "{{ env `IMG_TMP_ID` }}",
     "image_name": "{{ env `IMG_NAME` }}",
     "build_flavor": "16",
-    "user":  "{{ env `OS_VERSION` }}",
+    "user":  "cloud",
     "factory_network": "{{ env `NET_ID` }}",
     "factory_security_group_name": "{{env `SG_ID`}}",
     "ansible_dir": "{{ env `ANSIBLE_DIR` }}",
-    "data": "sources/v2/packer/cloud-config.yml"
+    "data": "sources/v2/packer/cloud-config.yaml"
   },
 
 
@@ -20,16 +20,14 @@
     "networks": "{{ user `factory_network` }}",
     "floating_ip_pool": "public",
     "security_groups": ["{{ user `factory_security_group_name` }}"],
-    "ssh_username": "{{ user `user`}}"
+    "ssh_username": "{{ user `user`}}",
+    "user_data_file": "{{ user `data` }}"
+
   }
   ],
   "provisioners": [
 
-    {
-      "type": "file",
-      "source": "{{ user `data`}}",
-      "destination": "/etc/cloud/cloud.cfg"
-    },
+
 
     {
       "type": "shell",
