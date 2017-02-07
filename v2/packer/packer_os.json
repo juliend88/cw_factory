@@ -6,7 +6,7 @@
     "factory_network": "{{ env `NET_ID` }}",
     "factory_security_group_name": "{{env `SG_ID`}}",
     "ansible_dir": "{{ env `ANSIBLE_DIR` }}",
-    "data": "sources/v2/packer/cloud-config.yaml"
+    "cloud-config": "{{ env `CLOUD_CONFIG_FILE` }}"
   },
 
 
@@ -19,7 +19,7 @@
     "floating_ip_pool": "public",
     "security_groups": ["{{ user `factory_security_group_name` }}"],
     "ssh_username": "cloud",
-    "user_data_file": "{{ user `data` }}"
+    "user_data_file": "{{ user `cloud-config` }}"
 
   }
   ],
