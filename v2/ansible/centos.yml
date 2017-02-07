@@ -1,4 +1,4 @@
-- hosts: local
+- hosts: packer
 
   tasks:
     - name: add epel repository

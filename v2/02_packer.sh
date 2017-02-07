@@ -19,18 +19,6 @@ while true
  done
 
 
-export FLOATING_IP=$(neutron floatingip-create public | grep floating_ip_address | cut -d '|' -f3)
-
-mkdir -p /etc/ansible
-
-echo "[local]" > /etc/ansible/ansible.cfg
-
-echo $FLOATING_IP >>/etc/ansible/ansible.cfg
-
-
-cat /etc/ansible/ansible.cfg
-
-
 DATE=$(date +%Y-%m-%d:%H:%M:%S)
 
 
@@ -39,7 +27,9 @@ export IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
 
 export ANSIBLE_DIR=sources/v2/ansible
 
+
 packer validate sources/v2/packer/packer_apt.json
+
 
 packer build sources/v2/packer/packer_apt.json
 
@@ -47,8 +37,6 @@ packer build sources/v2/packer/packer_apt.json
 #we delete the factory_network stack juste for testing in the we need it the test step Don't Forget :') !!!!!!!!
 heat stack-delete factory_network -y
 
-
-neutron floatingip-delete $(neutron floatingip-list | grep 84.39.35.179 | cut -d '|' -f2)
 
 glance image-delete ${IMG_TMP_ID}
 
