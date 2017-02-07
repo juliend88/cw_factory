@@ -35,7 +35,7 @@ export ANSIBLE_DIR=${REPO_DIR}/v2/ansible
 export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]').yaml
 
 
-packer build ${REPO_DIR}/v2/packer/packer_apt.json
+packer build ${REPO_DIR}/v2/packer/packer_os.json
 
 
 #we delete the factory_network stack juste for testing in the we need it the test step Don't Forget :') !!!!!!!!
