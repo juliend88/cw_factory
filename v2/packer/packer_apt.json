@@ -36,7 +36,6 @@
       "type": "shell",
       "inline": [
         "sudo mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg",
-        "sudo service rsyslog stop",
         "sudo rm -rf /home/cloud/.ssh/*",
         "sudo rm -rf /var/log/*",
         "sudo rm -rf /home/cloud/known_hosts/",
