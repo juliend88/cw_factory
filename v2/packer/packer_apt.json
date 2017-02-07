@@ -37,7 +37,7 @@
 
     {
       "type": "ansible",
-      "extra_arguments": ["--sudo-user", "{{ user `user` }}","-vvv"],
+      "extra_arguments": ["-vvv"],
       "playbook_file": "{{ user `ansible_dir` }}/ubuntu.yml",
       "host_alias": "packer"
 
