@@ -4,7 +4,7 @@
     "source_image": "{{ env `IMG_TMP_ID` }}",
     "image_name": "{{ env `IMG_NAME` }}",
     "build_flavor": "16",
-    "user":  "cloud",
+    "user": "cloud",
     "factory_network": "{{ env `NET_ID` }}",
     "factory_security_group_name": "{{env `SG_ID`}}",
     "ansible_dir": "{{ env `ANSIBLE_DIR` }}",
@@ -40,7 +40,7 @@
     {
       "type": "ansible",
       "extra_arguments": ["--sudo-user", "{{ user `user` }}","-vvv"],
-      "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml",
+      "playbook_file": "{{ user `ansible_dir` }}/ubuntu.yml",
       "host_alias": "packer"
 
     }
