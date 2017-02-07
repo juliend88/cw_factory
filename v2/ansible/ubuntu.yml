@@ -1,5 +1,6 @@
 - hosts: packer
-  become: true
+  user: cloud
+  become: yes
 
   tasks:
 
