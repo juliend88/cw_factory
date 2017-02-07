@@ -4,7 +4,7 @@
     "source_image": "{{ env `IMG_TMP_ID` }}",
     "image_name": "{{ env `IMG_NAME` }}",
     "build_flavor": "16",
-    "user":  "cloud",
+    "user":  "ubuntu",
     "factory_network": "{{ env `NET_ID` }}",
     "factory_security_group_name": "{{env `SG_ID`}}",
     "ansible_dir": "{{ env `ANSIBLE_DIR` }}",

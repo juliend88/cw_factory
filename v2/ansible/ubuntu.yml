@@ -1,5 +1,5 @@
 - hosts: packer
-  user: cloud
+  user: ubuntu
   become: true
 
   tasks:
