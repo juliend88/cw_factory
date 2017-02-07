@@ -3,12 +3,6 @@
 
   tasks:
 
-    - name: fix bug ubuntu
-      shell: |
-              killall aptitude
-              rm -rf /var/lib/dpkg/lock
-              dpkg --configure -a
-
     - name: apt-get update & upgrade
       apt: upgrade=full update_cache=yes
 
