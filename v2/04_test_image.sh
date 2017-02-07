@@ -9,3 +9,6 @@ IMG_ID=$(cat outputs-for-test/id.txt)
 echo ${IMG_ID}
 
 
+ls -la sources/v2/pytesting_os
+
+
