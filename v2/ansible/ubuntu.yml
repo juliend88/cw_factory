@@ -3,27 +3,21 @@
   become: yes
 
   tasks:
+    - name: change cloud config
+      copy: src=cloud.cfg dest=/etc/cloud/cloud.cfg
 
     - name: apt-get update & upgrade
       apt: upgrade=full update_cache=yes
 
     - name: base toolkit
-      apt: name={{ item }} state=present
+      apt:
+        name: "{{ item }}"
+        state: installed
       with_items:
-        - haveged
-        - curl
-        - bzip2
-        - unzip
-
-
-   # - name: debian user removed
-   #   user:
-   #     name: {{ item }}
-   #   with_items:
-   #     - debian
-   #     - ubuntu
-   #     state: absent
-   #     remove: yes
+         - haveged
+         - curl
+         - bzip2
+         - unzip
 
     - name: stopping system logging for cleaning
       service:
@@ -64,16 +58,6 @@
          name: ubuntu
          state: absent
          remove: yes
-      become: true
-      become_user: root
-
-    - name : doesn't update at startup
-      shell : |
-       sed -i "s/name: ubuntu /name: cloud/" $TMP_DIR/etc/cloud/cloud.cfg
-       cat << EOF >> $TMP_DIR/etc/cloud/cloud.cfg.d/00_datasource.cfg
-       #cloud-config
-       apt_upgrade: true
-       EOF
 
 
 
