@@ -8,7 +8,7 @@
     "factory_network": "{{ env `NET_ID` }}",
     "factory_security_group_name": "{{env `SG_ID`}}",
     "ansible_dir": "{{ env `ANSIBLE_DIR` }}",
-    "data": "cloud-config.yml"
+    "data": "sources/v2/packer/cloud-config.yml"
   },
 
 
