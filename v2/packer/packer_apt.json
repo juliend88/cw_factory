@@ -4,7 +4,7 @@
     "source_image": "{{ env `IMG_TMP_ID` }}",
     "image_name": "{{ env `IMG_NAME` }}",
     "build_flavor": "16",
-    "user":  "ubuntu",
+    "user":  "{{ env `OS_VERSION` }}",
     "factory_network": "{{ env `NET_ID` }}",
     "factory_security_group_name": "{{env `SG_ID`}}",
     "ansible_dir": "{{ env `ANSIBLE_DIR` }}",
@@ -20,11 +20,17 @@
     "networks": "{{ user `factory_network` }}",
     "floating_ip_pool": "public",
     "security_groups": ["{{ user `factory_security_group_name` }}"],
-    "ssh_username": "{{ user `user`}}",
-    "user_data_file": "{{user `data`}}"
+    "ssh_username": "{{ user `user`}}"
   }
   ],
   "provisioners": [
+
+    {
+      "type": "file",
+      "source": "{{ user `data`}}",
+      "destination": "/etc/cloud/cloud.cfg"
+    },
+
     {
       "type": "shell",
       "inline": [
@@ -35,8 +41,8 @@
 
     {
       "type": "ansible",
-      "extra_arguments": ["-vvv"],
-      "playbook_file": "{{ user `ansible_dir` }}/ubuntu.yml",
+      "extra_arguments": ["--sudo-user", "{{ user `user` }}","-vvv"],
+      "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml",
       "host_alias": "packer"
 
     }

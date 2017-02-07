@@ -1,5 +1,4 @@
 - hosts: packer
-  user: ubuntu
   become: true
 
   tasks:
