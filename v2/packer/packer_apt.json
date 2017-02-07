@@ -28,13 +28,6 @@
   "provisioners": [
 
     {
-      "type": "file",
-      "source": "{{ user `data` }}",
-      "destination": "/etc/cloud/cloud.cfg"
-    },
-
-
-    {
       "type": "shell",
       "inline": [
         "sleep 30",
