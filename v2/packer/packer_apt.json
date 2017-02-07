@@ -36,7 +36,7 @@
     {
       "type": "ansible",
       "extra_arguments": ["-vvv"],
-      "playbook_file": "{{ user `ansible_dir` }}/{{ user `user` }}.yml",
+      "playbook_file": "{{ user `ansible_dir` }}/ubuntu.yml",
       "host_alias": "packer"
 
     }
