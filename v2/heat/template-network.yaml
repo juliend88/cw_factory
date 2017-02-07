@@ -21,19 +21,6 @@ resources:
       allocation_pools:
         - { start: 10.0.1.100, end: 10.0.1.254 }
 
-  router:
-    type: OS::Neutron::Router
-    properties:
-      admin_state_up: true
-      external_gateway_info:
-        enable_snat: true
-        network: "public"
-
-  router_interface:
-    type: OS::Neutron::RouterInterface
-    properties:
-      router_id: { get_resource : router }
-      subnet_id: { get_resource : subnet }
 
   security_group:
     type: OS::Neutron::SecurityGroup
