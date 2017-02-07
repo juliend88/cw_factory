@@ -19,7 +19,9 @@
     "floating_ip_pool": "public",
     "security_groups": ["{{ user `factory_security_group_name` }}"],
     "ssh_username": "cloud",
-    "user_data_file": "{{ user `cloud-config` }}"
+    "user_data_file": "{{ user `cloud-config` }}",
+    "ssh_pty": true,
+    "ssh_timeout": "5m"
 
   }
   ],
@@ -28,7 +30,7 @@
 
     {
       "type": "file",
-      "source": "sources/v2/packer/cloud-config.yaml",
+      "source": "{{ user `cloud-config` }}",
       "destination": "/tmp/cloud-config.yaml"
     },
 

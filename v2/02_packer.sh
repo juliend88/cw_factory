@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
+
+REPO_DIR=sources
+
+
 export IMG_TMP_ID=$(cat outputs-glance/id.txt)
 
 
-heat stack-create -f sources/v2/heat/template-network.yaml factory_network
+heat stack-create -f ${REPO_DIR}/v2/heat/template-network.yaml factory_network
 
 while true
   do
@@ -25,13 +29,13 @@ DATE=$(date +%Y-%m-%d:%H:%M:%S)
 export IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
 
 
-export ANSIBLE_DIR=sources/v2/ansible
+export ANSIBLE_DIR=${REPO_DIR}/v2/ansible
 
 
-export CLOUD_CONFIG_FILE=sources/v2/packer/cloud-config/${OS_NAME}.yaml
+export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]').yaml
 
 
-packer build sources/v2/packer/packer_apt.json
+packer build ${REPO_DIR}/v2/packer/packer_apt.json
 
 
 #we delete the factory_network stack juste for testing in the we need it the test step Don't Forget :') !!!!!!!!
