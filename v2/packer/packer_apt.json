@@ -27,11 +27,16 @@
 
 
     {
-      "type": "ansible",
-      "extra_arguments": ["-vvv"],
-      "playbook_file": "{{ user `ansible_dir` }}/ubuntu.yml",
-      "host_alias": "packer"
+      "type": "file",
+      "source": "sources/v2/packer/cloud-config.yaml",
+      "destination": "/tmp/cloud-config.yaml"
+    },
 
+    {
+      "type": "shell",
+      "inline": [
+       "sudo mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg"
+      ]
     }
   ]
 

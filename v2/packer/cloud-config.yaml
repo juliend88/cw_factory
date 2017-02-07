@@ -8,14 +8,6 @@ disable_root: true
 preserve_hostname: false
 manage_etc_hosts: true
 
-# Example datasource config
-# datasource:
-#    Ec2:
-#      metadata_urls: [ 'blah.com' ]
-#      timeout: 5 # (defaults to 50 seconds)
-#      max_wait: 10 # (defaults to 120 seconds)
-
-# The modules that run in the 'init' stage
 cloud_init_modules:
  - migrator
  - seed_random
