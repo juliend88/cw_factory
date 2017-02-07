@@ -1,5 +1,5 @@
 - hosts: packer
-
+  become: true
   tasks:
     - name: add epel repository
       yum:
