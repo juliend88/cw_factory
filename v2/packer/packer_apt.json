@@ -32,6 +32,7 @@
       "destination": "/tmp/cloud-config.yaml"
     },
 
+
     {
       "type": "shell",
       "inline": [
