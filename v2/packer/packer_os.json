@@ -39,18 +39,16 @@
     {
       "type": "file",
       "source": "{{ user `script` }}",
-      "destination": "/tmp/provison.sh"
+      "destination": "/tmp/provision.sh"
     },
 
     {
-      "scripts": [
-        "/tmp/provison.sh"
-      ],
       "type": "shell",
       "environment_vars": [
         "OS_NAME={{ user `os_name`}}",
         "OS_VERSION={{ user `os_version`}}"
-      ]
+      ],
+      "scripts": "/tmp/provision.sh"
     }
 
 
