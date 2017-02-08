@@ -34,6 +34,9 @@ export ANSIBLE_DIR=${REPO_DIR}/v2/ansible
 
 export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]').yaml
 
+echo "cloud config file"
+
+echo ${CLOUD_CONFIG_FILE}
 
 packer build ${REPO_DIR}/v2/packer/packer_os.json
 
