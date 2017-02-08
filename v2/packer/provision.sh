@@ -31,9 +31,17 @@ fi
 
 
 ### Clean
-mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
-#sudo rm -rf /home/cloud/.ssh/*
-#sudo service rsyslog stop
-#sudo rm -rf /var/log/*
-#sudo rm -rf /home/cloud/bash_history
-#sudo rm -rf /var/tmp/*
+
+
+if [ "${TMP}" == "debian" ]
+then
+  mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
+else
+  sudo mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
+fi
+
+sudo rm -rf /home/cloud/.ssh/*
+sudo service rsyslog stop
+sudo rm -rf /var/log/*
+sudo rm -rf /home/cloud/bash_history
+sudo rm -rf /var/tmp/*
