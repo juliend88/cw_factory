@@ -42,7 +42,7 @@ packer build ${REPO_DIR}/v2/packer/packer_os.json
 heat stack-delete factory_network -y
 
 
-glance image-delete ${IMG_TMP_ID}
+#glance image-delete ${IMG_TMP_ID}
 
 
 mkdir -p result
