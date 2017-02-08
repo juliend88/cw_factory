@@ -37,8 +37,14 @@
     },
 
     {
+      "type": "file",
+      "source": "{{user `rep_dir`}}/v2/packer/provison.sh",
+      "destination": "/tmp/provison.sh"
+    },
+
+    {
       "scripts": [
-        "{{user `rep_dir`}}/v2/packer/provison.sh"
+        "/tmp/provison.sh"
       ],
       "type": "shell",
       "environment_vars": [
