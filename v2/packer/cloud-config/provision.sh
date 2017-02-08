@@ -5,9 +5,13 @@ echo ${OS_NAME}
 
 echo ${OS_VERSION}
 
-if [ "${OS_NAME}" ==  "centos" ] || [ "${OS_NAME}" -eq "fedora" ] ;
+
+
+TMP=$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')
+
+if [ "${TMP}" ==  "centos" ] || [ "${TMP}" -eq "fedora" ] ;
 then
-  if [ "${OS_NAME}" ==  "centos" ]
+  if [ "${TMP}" ==  "centos" ]
   then
   sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(bc <<< "scale=0;${OS_VERSION}/1").noarch.rpm
   fi
