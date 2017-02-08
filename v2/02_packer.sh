@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-REPO_DIR=sources
+export REPO_DIR=sources
 
 
 export IMG_TMP_ID=$(cat outputs-glance/id.txt)
