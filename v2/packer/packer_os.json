@@ -8,7 +8,7 @@
     "cloud-config": "{{ env `CLOUD_CONFIG_FILE` }}",
     "os_name": "{{ env `OS_NAME` }}",
     "os_version": "{{ env `OS_VERSION` }}",
-    "rep_dir": "{{env `REPO_DIR`}}"
+    "script": "{{ env `PROVISIONNER_FILE` }}"
   },
 
 
@@ -38,7 +38,7 @@
 
     {
       "type": "file",
-      "source": "{{user `rep_dir`}}/v2/packer/provison.sh",
+      "source": "{{ user `script` }}",
       "destination": "/tmp/provison.sh"
     },
 
