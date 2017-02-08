@@ -29,7 +29,7 @@ jobs:
         OS_USERNAME:    {{OS_USERNAME}}
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
-        IMG_URL: http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2
+        IMG_URL: http://cdimage.debian.org/cdimage/openstack/current/debian-8.7.0-openstack-amd64.qcow2
     - task: Create server then create new image for packer
       image: openstack-client
       config:
@@ -49,8 +49,8 @@ jobs:
         OS_USERNAME:    {{OS_USERNAME}}
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
-        OS_NAME:        centos
-        OS_VERSION:     7
+        OS_NAME:        debian
+        OS_VERSION:     jessy
     - task: Add Cloudwatt propriety in image
       image: openstack-client
       config:
