@@ -7,4 +7,4 @@ echo "${PWD}"
 
 fly -t lite login -c http://84.39.32.178:8080/
 
-fly set-pipeline --target lite --config ${PWD}/${Directory}/v2.yml --pipeline v4 --load-vars-from ~/credentials.yml
+fly set-pipeline --target lite --config ${PWD}/${Directory}/v2.yml --pipeline v9 --load-vars-from ~/credentials.yml
