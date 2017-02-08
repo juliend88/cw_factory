@@ -36,6 +36,7 @@ fi
 if [ "${TMP}" == "debian" ]
 then
   mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
+  cat /etc/cloud/cloud.cfg
 else
   sudo mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
 fi
