@@ -31,7 +31,7 @@ fi
 
 
 ### Clean
-sudo mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
+mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
 #sudo rm -rf /home/cloud/.ssh/*
 #sudo service rsyslog stop
 #sudo rm -rf /var/log/*
