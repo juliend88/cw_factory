@@ -50,7 +50,7 @@ jobs:
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
         OS_NAME:        centos
-        OS_VERSION:     6.6
+        OS_VERSION:     7
     - task: Add Cloudwatt propriety in image
       image: openstack-client
       config:
