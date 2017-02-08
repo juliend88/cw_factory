@@ -35,20 +35,13 @@
       "source": "{{ user `cloud-config` }}",
       "destination": "/tmp/cloud-config.yaml"
     },
-
-    {
-      "type": "file",
-      "source": "{{ user `script` }}",
-      "destination": "/tmp/provision.sh"
-    },
-
     {
       "type": "shell",
       "environment_vars": [
         "OS_NAME={{ user `os_name`}}",
         "OS_VERSION={{ user `os_version`}}"
       ],
-      "scripts": "/tmp/provision.sh"
+      "scripts": "sources/v2/packer/provision.sh"
     }
 
 
