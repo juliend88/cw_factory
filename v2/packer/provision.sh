@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#! /bin/bash -x
 
 
 echo ${OS_NAME}
@@ -9,7 +9,7 @@ echo ${OS_VERSION}
 
 TMP=$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')
 
-if [ "${TMP}" ==  "centos" ] || [ "${TMP}" -eq "fedora" ] ;
+if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
 then
   if [ "${TMP}" ==  "centos" ]
   then
