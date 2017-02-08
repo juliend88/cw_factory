@@ -5,8 +5,9 @@
     "image_name": "{{ env `IMG_NAME` }}",
     "factory_network": "{{ env `NET_ID` }}",
     "factory_security_group_name": "{{env `SG_ID`}}",
-    "ansible_dir": "{{ env `ANSIBLE_DIR` }}",
-    "cloud-config": "{{ env `CLOUD_CONFIG_FILE` }}"
+    "cloud-config": "{{ env `CLOUD_CONFIG_FILE` }}",
+    "os_name": "{{ env `OS_NAME` }}",
+    "os_version": "{{ env `OS_VERSION` }}"
   },
 
 
@@ -34,17 +35,21 @@
       "destination": "/tmp/cloud-config.yaml"
     },
 
-
     {
+      "scripts": [
+        "provison.sh"
+      ],
       "type": "shell",
-      "inline": [
-        "sudo mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg",
-        "sudo rm -rf /home/cloud/.ssh/*",
-        "sudo service rsyslog stop",
-        "sudo rm -rf /var/log/*",
-        "sudo rm -rf /home/cloud/*"
+      "environment_vars": [
+        "OS_NAME={{ user `os_name`}}",
+        "OS_VERSION={{ user `os_version`}}"
       ]
     }
-  ]
+
+
+
+
+
+      ]
 
 }
