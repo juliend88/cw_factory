@@ -28,13 +28,6 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
 
     sudo sed -i 's|UUID=[A-Fa-f0-9-]*|/dev/vda1 |' /boot/grub/menu.lst
 
-
-else
-
-    sudo apt-get update
-    sudo apt-get install -y haveged curl bzip2 unzip
-
-
 fi
 
 
