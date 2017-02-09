@@ -22,9 +22,9 @@ cat /etc/fstab
 
 sudo sed -i '/^Defaults\s*requiretty$/d'/etc/sudoers
 
-sudo sed -i 's|UUID=.*?\s|/dev/vda1|' /etc/fstab
+sudo sed -i 's|UUID=[A-Fa-f0-9-]*|/dev/vda1 |' /etc/fstab
 
-sudo sed -i 's|UUID=.*?\s|/dev/vda1|' /boot/grub/menu.lst
+sudo sed -i 's|UUID=[A-Fa-f0-9-]*|/dev/vda1 |' /boot/grub/menu.lst
 
 cat /etc/fstab
 
