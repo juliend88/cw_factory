@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-python --version
+python3 --version
 
 pip3 --version
 
