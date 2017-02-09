@@ -57,6 +57,13 @@ cloud_final_modules:
  - final-message
  - power-state-change
 
+packages:
+   - haveged
+   - curl
+   - bzip2
+   - unzip
+
+
 # System and/or distro specific settings
 # (not accessible to handlers/transforms)
 system_info:
