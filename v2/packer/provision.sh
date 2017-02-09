@@ -17,7 +17,20 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
 
     sudo sed -i 's|UUID=[A-Fa-f0-9-]*|/dev/vda1 |' /boot/grub/menu.lst
 
-    sudo yum install -y haveged parted
+    sudo yum install -y haveged parted curl unzip wget
+
+    if [ "$(echo ${VER})" == "6" ]
+     then
+        sudo chkconfig haveged on
+     else
+        sudo systemctl enable haveged
+    fi
+
+
+else
+
+    sudo apt-get update
+    sudo apt-get install -y haveged curl bzip2 unzip
 
 
 fi
@@ -30,7 +43,6 @@ fi
 if [ "${TMP}" == "debian" ]
 then
   mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
-  cat /etc/cloud/cloud.cfg
 else
   sudo mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
 fi
@@ -40,3 +52,4 @@ sudo service rsyslog stop
 sudo rm -rf /var/log/*
 sudo rm -rf /home/cloud/bash_history
 sudo rm -rf /var/tmp/*
+sudo rm -rf /tmp/*
