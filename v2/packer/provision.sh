@@ -1,11 +1,5 @@
 #!/bin/bash -x
 
-
-echo ${OS_NAME}
-
-echo ${OS_VERSION}
-
-
 TMP=$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')
 VER=(${OS_VERSION//./ })
 
@@ -25,25 +19,22 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
 
     sudo yum install -y haveged parted
 
-   if [ "$(echo ${VER})" == "6" ]
-     then
-        sudo chkconfig haveged on
-     else
-        sudo systemctl enable haveged
-   fi
-   else
 
-    sudo apt-get update
-    sudo apt-get install -y haveged curl bzip2 unzip
-
-  fi
+fi
 
 
 
 ### Clean
 
 
-sudo mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
+if [ "${TMP}" == "debian" ]
+then
+  mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
+  cat /etc/cloud/cloud.cfg
+else
+  sudo mv /tmp/cloud-config.yaml /etc/cloud/cloud.cfg
+fi
+
 sudo rm -rf /home/cloud/.ssh/*
 sudo service rsyslog stop
 sudo rm -rf /var/log/*
