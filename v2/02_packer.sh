@@ -3,7 +3,6 @@
 
 export REPO_DIR=sources
 
-
 export IMG_TMP_ID=$(cat outputs-glance/id.txt)
 
 
@@ -28,11 +27,18 @@ DATE=$(date +%Y-%m-%d:%H:%M:%S)
 
 export IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
 
+
 export PROVISIONNER_FILE=${REPO_DIR}/v2/packer/provision.sh
 
+if [ "${OS_NAME}" == "centos" ] && [ "$OS_VERSION" == "7" ]
 
+then
+export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')${OS_VERSION}.yaml
+else
 
 export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]').yaml
+
+fi
 
 
 packer build ${REPO_DIR}/v2/packer/packer_os.json
