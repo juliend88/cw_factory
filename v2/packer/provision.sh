@@ -18,11 +18,16 @@ then
   sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(echo ${VER}).noarch.rpm
   fi
 
+cat /etc/fstab
+
 sudo sed -i '/^Defaults\s*requiretty$/d'/etc/sudoers
 
-sudo sed -i 's|^UUID=.*|/dev/vda1|' /etc/fstab
+sudo sed -i 's|UUID=.*?\s|/dev/vda1|' /etc/fstab
 
-sudo sed -i 's|^UUID=.*|/dev/vda1|' /boot/grub/menu.lst
+sudo sed -i 's|UUID=.*?\s|/dev/vda1|' /boot/grub/menu.lst
+
+cat /etc/fstab
+
 
 sudo yum install -y haveged parted
 
