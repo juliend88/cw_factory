@@ -9,6 +9,17 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
     if [ "${TMP}" ==  "centos" ]
       then
        sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(echo ${VER}).noarch.rpm
+       sudo yum install -y haveged parted curl unzip wget
+      else
+       sudo dnf install -y haveged parted curl unzip wget
+    fi
+
+
+    if [ "$(echo ${VER})" == "6" ]
+      then
+        sudo chkconfig haveged on
+      else
+        sudo systemctl enable haveged
     fi
 
     sudo sed -i '/^Defaults\s*requiretty$/d'/etc/sudoers
@@ -16,15 +27,6 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
     sudo sed -i 's|UUID=[A-Fa-f0-9-]*|/dev/vda1 |' /etc/fstab
 
     sudo sed -i 's|UUID=[A-Fa-f0-9-]*|/dev/vda1 |' /boot/grub/menu.lst
-
-    sudo yum install -y haveged parted curl unzip wget
-
-    if [ "$(echo ${VER})" == "6" ]
-     then
-        sudo chkconfig haveged on
-     else
-        sudo systemctl enable haveged
-    fi
 
 
 else
