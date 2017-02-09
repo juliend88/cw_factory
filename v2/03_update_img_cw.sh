@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash -x
 
 
 IMG_ID=$(cat outputs-packer/id.txt)
