@@ -58,6 +58,7 @@ cloud_final_modules:
  - power-state-change
 
 package_update: false
+
 package_upgrade: false
 
 # System and/or distro specific settings
