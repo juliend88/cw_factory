@@ -6,15 +6,16 @@ echo ${OS_NAME}
 echo ${OS_VERSION}
 
 
-
 TMP=$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')
+VER=(${OS_VERSION//./ })
+
 
 if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
 then
 
   if [ "${TMP}" ==  "centos" ]
   then
-  sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(bc <<< "scale=0;${OS_VERSION}/1").noarch.rpm
+  sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(echo ${VER}).noarch.rpm
   fi
 
 sudo sed -i '/^Defaults\s*requiretty$/d'/etc/sudoers
