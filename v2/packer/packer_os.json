@@ -21,7 +21,7 @@
     "floating_ip_pool": "public",
     "security_groups": ["{{ user `factory_security_group_name` }}"],
     "ssh_username": "cloud",
-    "user_data_file": "sources/v2/packe/test.yaml",
+    "user_data_file": "sources/v2/packer/test.yaml",
     "ssh_pty": true,
     "ssh_timeout": "5m"
 
