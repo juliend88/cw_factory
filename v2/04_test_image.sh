@@ -21,7 +21,8 @@ export NOSE_KEYPAIR=alikey
 
 export FACTORY_NETWORK_ID=$(heat output-show factory_network Network_id | sed -e 's/^"//' -e 's/"$//')
 
-sources/v2/pytesting_os/run_test.sh
+cd sources/v2/pytesting_os
+./run_test.sh
 
 
 heat stack-delete factory_network -y
