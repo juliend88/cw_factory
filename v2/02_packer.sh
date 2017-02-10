@@ -30,15 +30,8 @@ export IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
 
 export PROVISIONNER_FILE=${REPO_DIR}/v2/packer/provision.sh
 
-if [ "${OS_NAME}" == "centos" ] && [ "$OS_VERSION" == "7" ]
 
-then
-export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')${OS_VERSION}.yaml
-else
-
-export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]').yaml
-
-fi
+export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')-${OS_VERSION}.yaml
 
 
 packer build ${REPO_DIR}/v2/packer/packer_os.json
@@ -53,9 +46,12 @@ glance image-delete ${IMG_TMP_ID}
 
 mkdir -p result
 
+
 openstack image list | grep ${IMG_NAME} | awk {'print $2'} > result/id.txt
 
+
 cat result/id.txt
+
 
 ls result/*
 
