@@ -1,6 +1,6 @@
 clouds:
   dc1:
-    auth_url: https://identity.fr1.cloudwatt.com/v2.0
+    auth_url: *****
     username: ****
     password: ****
     project_name: ****

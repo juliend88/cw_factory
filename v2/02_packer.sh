@@ -38,7 +38,7 @@ packer build ${REPO_DIR}/v2/packer/packer_os.json
 
 
 #we delete the factory_network stack juste for testing in the we need it the test step Don't Forget :') !!!!!!!!
-heat stack-delete factory_network -y
+#heat stack-delete factory_network -y
 
 
 glance image-delete ${IMG_TMP_ID}
