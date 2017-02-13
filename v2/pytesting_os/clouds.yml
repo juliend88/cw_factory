@@ -5,7 +5,7 @@ clouds:
     password: ****
     project_name: ****
     region_name: fr1
-    volume_api_version: 1
+    volume_api_version: 2
   dc2:
     auth_url: ****
     username: ***
