@@ -18,7 +18,7 @@ def setup():
 
     userdata_path = os.path.dirname(os.path.realpath(__file__)) + '/userdata.yml'
 
-    server = cwlib.boot_vm_with_userdata_and_port(security_group, port, userdata_path)
+    server = cwlib.boot_vm_with_userdata_and_port(security_group,keypair , port, userdata_path)
     test_resources['my_keypair'] = keypair
     test_resources['my_sg'] = security_group
     test_resources['my_floating'] = floating_ip

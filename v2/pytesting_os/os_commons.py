@@ -205,3 +205,4 @@ def delete_keypair(keypair):
     #spice_console_url = get_cloud().nova_client.servers.get("7b1ee4b2-b9b2-4dbb-9ff8-ace6788ee335").get_spice_console('spice-html5')
     #Test= spice_console_url['console']['url'].startswith('https://')
     #print Test
+    #boot_vm_with_userdata_and_port(security_group,keypair , port, userdata_path)
