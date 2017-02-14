@@ -6,6 +6,8 @@ export REPO_DIR=sources
 export IMG_TMP_ID=$(cat outputs-glance/id.txt)
 
 
+
+#check factory_network
 heat stack-create -f ${REPO_DIR}/v2/heat/template-network.yaml factory_network
 
 while true

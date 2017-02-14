@@ -1,8 +1,8 @@
 # Dockerfile for building a development environment to work with the
 # OpenStack Python SDK Shade to create cloud native apps.
 
-FROM ubuntu:16.04
-MAINTAINER Marcela Bonell <marcelabonell@gmail.com>
+FROM ubuntu:xenial
+MAINTAINER CWT
 
 # Update the repository sources list and install dependencies
 RUN apt-get update && apt-get install -y \
@@ -18,11 +18,9 @@ RUN apt-get update && apt-get install -y \
   wget
 
 # Install Shade
-RUN pip install shade
+ADD requirements.txt /
+RUN pip install -r /requirements.txt
 
 WORKDIR /root
 
-# Create the config file to work with the clouds
-RUN wget https://raw.githubusercontent.com/MBonell/openstack-sdks-challenges/master/shade/clouds.yml && \
-  mkdir -p .config/openstack && \
-  mv clouds.yml .config/openstack
+
