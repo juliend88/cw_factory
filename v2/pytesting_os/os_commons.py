@@ -210,11 +210,11 @@ if __name__ == "__main__":
     #get_cloud().nova_client.servers.get("e81825e0-a211-4a9f-9c1a-e4335409ca88").add_floating_ip(test.ip)
     security_group=create_security_group()
     print security_group.id
-    floating_ip = create_floating_ip()
+    #floating_ip = create_floating_ip()
     port = create_port_with_sg(security_group)
-    print port.id
-    associate_floating_ip_to_port(floating_ip, port)
-    #print port.__dict__
+    #print port.
+    #associate_floating_ip_to_port(floating_ip, port)
+    print port.__dict__
     #associate_floating_ip_to_port(floating_ip, port)
     #network_id = env['NOSE_NET_ID']
     #body_value = {'port': {
