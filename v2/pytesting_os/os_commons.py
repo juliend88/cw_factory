@@ -161,14 +161,17 @@ def soft_reboot(server):
 
 def create_keypair():
     keypair = get_cloud().nova_client.keypairs.create("testkeypair"+current_time_ms())
-    file = open(env['HOME']+"/private_key.pem","w")
-    os.chmod(env['HOME']+'/private_key.pem', 0600)
-    file.write(keypair.private_key)
+    fp = os.open(env['HOME']+"/private_key.pem", os.O_WRONLY | os.O_CREAT, 0o600)
+    with os.fdopen(fp, 'w') as f:
+     f.write(keypair.private_key)
     return keypair
 
 
+def delete_keypair(keypair):
+    get_cloud().nova_client.keypairs.delete(keypair.id)
 
-if __name__ == "__main__":
+
+#if __name__ == "__main__":
     #for i in  get_cloud().nova_client.servers.list():
     #    print i
     #security_group={}
