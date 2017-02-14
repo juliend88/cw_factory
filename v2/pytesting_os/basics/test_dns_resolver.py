@@ -4,7 +4,7 @@ from basics import test_resources
 def test_dns_resolver():
     global test_resources
 
-    hostname = test_resources['my_server']['name']
+    hostname = test_resources['my_server'].name
 
     ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command(
         'time host -t A ' + hostname + ' 2>&1')

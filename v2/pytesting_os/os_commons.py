@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from openstackutils import OpenStackUtils
-import time, re, paramiko
+import time, re, paramiko, os
 from os import environ as env
 
 
@@ -9,18 +9,18 @@ def get_cloud():
     return OpenStackUtils()
 
 
-def boot_vm_with_userdata_and_port(security_group, port, userdata_path):
+def boot_vm_with_userdata_and_port(security_group,keypair, port,userdata_path):
     nics = [{'port-id': port.id}]
-    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[security_group['name']],
-                                                    flavor=env['NOSE_FLAVOR'], key_name=env['NOSE_KEYPAIR'], userdata=file(userdata_path), nics=nics)
+    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[security_group.name],
+                                                    flavor=env['NOSE_FLAVOR'], key_name=keypair.id, userdata=file(userdata_path), nics=nics)
 
     return server
 
-def boot_vm(security_group, image_id=env['NOSE_IMAGE_ID'], flavor=env['NOSE_FLAVOR']):
+
+def boot_vm(security_group,keypair,image_id=env['NOSE_IMAGE_ID'],flavor=env['NOSE_FLAVOR']):
     nics = [{'net-id': env['NOSE_NET_ID']}]
-    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=image_id,security_groups=[security_group['name']],
-                                                    flavor=flavor, key_name=env['NOSE_KEYPAIR'], nics=nics)
-    print(server)
+    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=image_id,security_groups=[security_group.name],
+                                                    flavor=flavor, key_name=keypair.id, nics=nics)
 
     return server
 
@@ -41,7 +41,7 @@ def create_port_with_sg(security_group):
     network_id = env['NOSE_NET_ID']
     body_value = {'port': {
         'admin_state_up': True,
-        'security_groups': [security_group['id']],
+        'security_groups': [security_group.id],
         'name': 'port-test'+current_time_ms(),
         'network_id': network_id,
     }}
@@ -79,9 +79,9 @@ def initiate_ssh(floating_ip):
             ssh_connection = paramiko.SSHClient()
             ssh_connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             ssh_connection.connect(
-                floating_ip['floating_ip_address'],
+                floating_ip.floating_ip_address,
                 username='cloud',
-                key_filename=env['HOME'] + '/.ssh/' + env['NOSE_KEYPAIR'] + '.pem',
+                key_filename=env['HOME']+'/private_key.pem',
                 timeout=180
             )
             return ssh_connection
@@ -98,11 +98,11 @@ def create_floating_ip():
 
 
 def associate_floating_ip_to_port(floating_ip, port):
-    get_cloud().neutron_client.update_floatingip(floating_ip['id'],{'floatingip': {'port_id': port['id']}} )
+    get_cloud().neutron_client.update_floatingip(floating_ip.id,{'floatingip': {'port_id': port.id }} )
 
 
 def associate_floating_ip_to_server(floating_ip, server):
-    get_cloud().nova_client.servers.get(server['id']).add_floating_ip(floating_ip['floating_ip_address'])
+    get_cloud().nova_client.servers.get(server.id).add_floating_ip(floating_ip.floating_ip_address)
 
 
 def create_security_group():
@@ -126,7 +126,7 @@ def add_ssh_ingress_rule(security_group_id):
                                                         from_port=22, to_port=22)
 
 def create_volume():
-    return get_cloud().cinder_client.volumes.create(5, name="test-volume")
+    return get_cloud().cinder_client.volumes.create(5, name="test-volume"+current_time_ms())
 
 
 
@@ -144,7 +144,8 @@ def detach_volume_from_server(server, volume):
 
 
 def get_flavor_disk_size(flavor_id):
-    return get_cloud().nova_client.flavors.get_flavor(flavor_id)
+    return get_cloud().nova_client.flavors.get(flavor_id).disk
+
 
 
 def hard_reboot(server):
@@ -158,7 +159,16 @@ def soft_reboot(server):
     time.sleep(60)
 
 
-#if __name__ == "__main__":
+def create_keypair():
+    keypair = get_cloud().nova_client.keypairs.create("testkeypair"+current_time_ms())
+    file = open(env['HOME']+"/private_key.pem","w")
+    os.chmod(env['HOME']+'/private_key.pem', 0600)
+    file.write(keypair.private_key)
+    return keypair
+
+
+
+if __name__ == "__main__":
     #for i in  get_cloud().nova_client.servers.list():
     #    print i
     #security_group={}
@@ -184,5 +194,11 @@ def soft_reboot(server):
     #print test
     #create_port_with_sg(security_group)
     #get_cloud().neutron_client.delete_port("605b7e4f-abde-4df0-9b58-abe532908a46")
-    #keypair = get_cloud().nova_client.keypairs.create("testvm",public_key=file(test))
-    #print(keypair)
+    #k=create_keypair()
+    #print k.name
+    #print k.id
+    #test= get_cloud().nova_client.flavors.get(env['NOSE_FLAVOR'])
+    #print (test.disk)
+    #spice_console_url = get_cloud().nova_client.servers.get("7b1ee4b2-b9b2-4dbb-9ff8-ace6788ee335").get_spice_console('spice-html5')
+    #Test= spice_console_url['console']['url'].startswith('https://')
+    #print Test

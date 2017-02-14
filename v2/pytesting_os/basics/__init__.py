@@ -1,6 +1,6 @@
 import paramiko, time
 import os_commons as cwlib
-from os import environ as env
+
 
 test_resources = {}
 
@@ -9,13 +9,15 @@ def setup():
     global test_resources
     start_chrono = int(round(time.time() * 1000))
 
+    keypair = cwlib.create_keypair()
     security_group = cwlib.create_security_group()
     floating_ip = cwlib.create_floating_ip()
 
-    server = cwlib.boot_vm(security_group)
+    server = cwlib.boot_vm(security_group,keypair)
 
     cwlib.associate_floating_ip_to_server(floating_ip, server)
 
+    test_resources['my_keypair'] = keypair
     test_resources['my_server'] = server
     test_resources['my_sg'] = security_group
     test_resources['my_floating'] = floating_ip
