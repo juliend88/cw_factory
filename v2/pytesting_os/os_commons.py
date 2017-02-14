@@ -11,14 +11,14 @@ def get_cloud():
 
 def boot_vm_with_userdata_and_port(security_group, port, userdata_path):
     nics = [{'port-id': port.id}]
-    server = get_cloud().nova_client.servers.create(name="vm2", image=env['NOSE_IMAGE_ID'],security_groups=[security_group['name']],
+    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[security_group['name']],
                                                     flavor=env['NOSE_FLAVOR'], key_name=env['NOSE_KEYPAIR'], userdata=file(userdata_path), nics=nics)
 
     return server
 
 def boot_vm(security_group, image_id=env['NOSE_IMAGE_ID'], flavor=env['NOSE_FLAVOR']):
-    nics = [{'net-id': env['FACTORY_NETWORK_ID']}]
-    server = get_cloud().nova_client.servers.create(name="vm2", image=image_id,security_groups=[security_group['name']],
+    nics = [{'net-id': env['NOSE_NET_ID']}]
+    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=image_id,security_groups=[security_group['name']],
                                                     flavor=flavor, key_name=env['NOSE_KEYPAIR'], nics=nics)
     print(server)
 
@@ -38,7 +38,7 @@ def current_time_ms():
 
 
 def create_port_with_sg(security_group):
-    network_id = env['FACTORY_NETWORK_ID']
+    network_id = env['NOSE_NET_ID']
     body_value = {'port': {
         'admin_state_up': True,
         'security_groups': [security_group['id']],
@@ -153,17 +153,17 @@ def hard_reboot(server):
 
 
 
-def soft_reboot(shade_server):
+def soft_reboot(server):
     get_cloud().nova_client.servers.get(server.id).reboot(reboot_type='SOFT')
     time.sleep(60)
 
 
-if __name__ == "__main__":
-    for i in  get_cloud().nova_client.servers.list():
-        print i
-    security_group={}
-    security_group['name']="start-sg-start"
-    security_group['id']='e273c427-71e0-4e96-af1c-cc0ae88aee1d'
+#if __name__ == "__main__":
+    #for i in  get_cloud().nova_client.servers.list():
+    #    print i
+    #security_group={}
+    #security_group['name']="start-sg-start"
+    #security_group['id']='e273c427-71e0-4e96-af1c-cc0ae88aee1d'
     #boot_vm(security_group)
     #test=get_image(env['NOSE_IMAGE_ID'])
     #print test.id
