@@ -98,11 +98,11 @@ def create_floating_ip():
 
 
 def associate_floating_ip_to_port(floating_ip, port):
-    get_cloud().neutron_client.update_floatingip(floating_ip.id,{'floatingip': {'port_id': port.id }} )
+    get_cloud().neutron_client.update_floatingip(floating_ip.id,{'floatingip': {'port_id': port.id }})
 
 
 def associate_floating_ip_to_server(floating_ip, server):
-    get_cloud().nova_client.servers.get(server.id).add_floating_ip(floating_ip.floating_ip_address)
+    get_cloud().nova_client.servers.get(server.id).add_floating_ip(floating_ip.ip)
 
 
 def create_security_group():
@@ -135,7 +135,6 @@ def rescue(server):
 
 
 def attach_volume_to_server(server,volume):
-
     return get_cloud().nova_client.volumes.create_server_volume(server.id, volume.id)
 
 
@@ -171,7 +170,7 @@ def delete_keypair(keypair):
     get_cloud().nova_client.keypairs.delete(keypair.id)
 
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
     #for i in  get_cloud().nova_client.servers.list():
     #    print i
     #security_group={}
@@ -206,3 +205,22 @@ def delete_keypair(keypair):
     #Test= spice_console_url['console']['url'].startswith('https://')
     #print Test
     #boot_vm_with_userdata_and_port(security_group,keypair , port, userdata_path)
+    #test=create_floating_ip()
+    #print(test.__dict__)
+    #get_cloud().nova_client.servers.get("e81825e0-a211-4a9f-9c1a-e4335409ca88").add_floating_ip(test.ip)
+    security_group=create_security_group()
+    print security_group.id
+    floating_ip = create_floating_ip()
+    port = create_port_with_sg(security_group)
+    print port.id
+    associate_floating_ip_to_port(floating_ip, port)
+    #print port.__dict__
+    #associate_floating_ip_to_port(floating_ip, port)
+    #network_id = env['NOSE_NET_ID']
+    #body_value = {'port': {
+    #    'admin_state_up': True,
+    #    'security_groups': ["e273c427-71e0-4e96-af1c-cc0ae88aee1d"],
+    #    'name': 'port-testnpppppppppppppp',
+    #    'network_id': network_id,
+    #}}
+    #get_cloud().neutron_client.create_port(body=body_value)
