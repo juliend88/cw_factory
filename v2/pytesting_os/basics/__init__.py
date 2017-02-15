@@ -8,7 +8,6 @@ test_resources = {}
 def setup():
     global test_resources
     start_chrono = int(round(time.time() * 1000))
-
     keypair = cwlib.create_keypair()
     security_group = cwlib.create_security_group()
     floating_ip = cwlib.create_floating_ip()
