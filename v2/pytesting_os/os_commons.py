@@ -11,7 +11,7 @@ def get_cloud():
 
 def boot_vm_with_userdata_and_port(keypair,userdata_path):
     nics = [{'port-id': env['NOSE_PORT_ID']}]
-    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=env['NOSE_ SG_ID'],
+    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=env['NOSE_SG_ID'],
                                                     flavor=env['NOSE_FLAVOR'], key_name=keypair.id, userdata=file(userdata_path), nics=nics)
 
     time.sleep(80)
@@ -21,7 +21,7 @@ def boot_vm_with_userdata_and_port(keypair,userdata_path):
 
 def boot_vm(keypair,image_id=env['NOSE_IMAGE_ID'],flavor=env['NOSE_FLAVOR']):
     nics = [{'net-id': env['NOSE_NET_ID']}]
-    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=image_id,security_groups=[env['NOSE_ SG_ID']],
+    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=image_id,security_groups=[env['NOSE_SG_ID']],
                                                     flavor=flavor, key_name=keypair.id, nics=nics)
 
     time.sleep(80)
