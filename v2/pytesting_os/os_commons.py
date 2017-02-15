@@ -11,7 +11,7 @@ def get_cloud():
 
 def boot_vm_with_userdata_and_port(keypair,userdata_path):
     nics = [{'port-id': env['NOSE_PORT_ID']}]
-    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=env['NOSE_SG_ID'],
+    server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[env['NOSE_SG_ID']],
                                                     flavor=env['NOSE_FLAVOR'], key_name=keypair.id, userdata=file(userdata_path), nics=nics)
 
     time.sleep(80)
@@ -68,6 +68,7 @@ def initiate_ssh(floating_ip):
         try:
             ssh_connection = paramiko.SSHClient()
             ssh_connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            print floating_ip.ip
             ssh_connection.connect(
                 floating_ip.ip,
                 username='cloud',
@@ -130,6 +131,7 @@ def soft_reboot(server):
 
 
 def create_keypair():
+    print '__________________________key_paiiiiiiiiiiiiiiiiiiiiiiiiiiiiir______________________________'
     keypair = get_cloud().nova_client.keypairs.create("testkeypair"+current_time_ms())
     fp = os.open(env['HOME']+"/private_key.pem", os.O_WRONLY | os.O_CREAT, 0o600)
     with os.fdopen(fp, 'w') as f:
