@@ -75,7 +75,7 @@ def initiate_ssh(floating_ip):
                 timeout=180
             )
 
-            chan_in, chan_out, chan_err = ssh_connex.exec_command("cat /etc/passwd")
+            chan_in, chan_out, chan_err = ssh_connection.exec_command("cat /etc/passwd")
             data = chan_out.read()
             print data
             return ssh_connection
