@@ -1,4 +1,4 @@
-- hosts: packer
+- hosts: local
   become: true
 
   tasks:
