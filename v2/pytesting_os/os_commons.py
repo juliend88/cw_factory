@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#-*- coding: utf-8 -*-
 from openstackutils import OpenStackUtils
 import time, re, paramiko, os
 from os import environ as env
@@ -10,7 +11,7 @@ def get_cloud():
 
 
 def boot_vm_with_userdata_and_port(security_group,keypair, port,userdata_path):
-    nics = [{'port-id': port.id}]
+    nics = [{'port-id': port['port']['id']}]
     server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[security_group.name],
                                                     flavor=env['NOSE_FLAVOR'], key_name=keypair.id, userdata=file(userdata_path), nics=nics)
 
@@ -38,15 +39,20 @@ def current_time_ms():
 
 
 def create_port_with_sg(security_group):
-    network_id = env['NOSE_NET_ID']
-    body_value = {'port': {
-        'admin_state_up': True,
-        'security_groups': [security_group.id],
-        'name': 'port-test'+current_time_ms(),
-        'network_id': network_id,
-    }}
-    return get_cloud().neutron_client.create_port(body=body_value)
+    try:
+       network_id = env['NOSE_NET_ID']
+       body_value = {'port': {
+         'admin_state_up': True,
+         'security_groups': [security_group.id],
+         'name': 'port-test'+current_time_ms(),
+         'network_id': network_id,
+                              }}
+       response = get_cloud().neutron_client.create_port(body=body_value)
+       print(response)
+    finally:
+        print("Execution cmpleted")
 
+    return response
 
 
 def get_console_log(server):
@@ -106,7 +112,9 @@ def associate_floating_ip_to_server(floating_ip, server):
 
 
 def create_security_group():
-    return get_cloud().nova_client.security_groups.create(name="test"+current_time_ms(), description="Test image")
+    security_group=get_cloud().nova_client.security_groups.create(name="test"+current_time_ms(), description="Test image")
+    add_ssh_ingress_rule(security_group.id)
+    return security_group
 
 
 def delete_security_group(security_group):
@@ -208,13 +216,12 @@ if __name__ == "__main__":
     #test=create_floating_ip()
     #print(test.__dict__)
     #get_cloud().nova_client.servers.get("e81825e0-a211-4a9f-9c1a-e4335409ca88").add_floating_ip(test.ip)
-    security_group=create_security_group()
-    print security_group.id
+    #security_group=create_security_group()
+    #print security_group.id
     #floating_ip = create_floating_ip()
-    port = create_port_with_sg(security_group)
-    #print port.
+    #port = create_port_with_sg(security_group)
+    #print port['port']['id']
     #associate_floating_ip_to_port(floating_ip, port)
-    print port.__dict__
     #associate_floating_ip_to_port(floating_ip, port)
     #network_id = env['NOSE_NET_ID']
     #body_value = {'port': {
