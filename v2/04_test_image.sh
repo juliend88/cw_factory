@@ -9,7 +9,7 @@ export NOSE_NET_ID=$(heat output-show factory_network Network_id | sed -e 's/^"/
 
 export NOSE_PORT_ID=$(heat output-show factory_network Port | sed -e 's/^"//' -e 's/"$//')
 
-export NOSE_ SG_ID=$(heat output-show factory_network Security_group | sed -e 's/^"//'  -e 's/"$//')
+export NOSE_SG_ID=$(heat output-show factory_network Security_group | sed -e 's/^"//'  -e 's/"$//')
 
 export NOSE_VOLUME_ID=$(heat output-show factory_network Volume | sed -e 's/^"//'  -e 's/"$//')
 
