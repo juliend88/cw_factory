@@ -1,3 +1,4 @@
+'''
 import os_commons as cwlib
 import os, paramiko, time, paramiko.ssh_exception
 from os import environ as env
@@ -20,6 +21,8 @@ def setup():
     test_resources['my_sg'] = security_group
     test_resources['my_floating'] = floating_ip
     test_resources['my_port'] = port
+    print 'port id:'
+    print test_resources['my_port']['port']['id']
     test_resources['ssh_connection'] = cwlib.initiate_ssh(floating_ip)
     test_resources['my_server'] = server
 
@@ -36,3 +39,4 @@ def teardown():
     cwlib.delete_security_group(test_resources['my_sg'])
     cwlib.delete_floating_ip(test_resources['my_floating'])
     cwlib.delete_keypair(test_resources['my_keypair'])
+'''

@@ -238,10 +238,13 @@ def delete_keypair(keypair):
     #    'network_id': network_id,
     #}}
     #get_cloud().neutron_client.create_port(body=body_value)
-    #keypair = create_keypair()
-    #security_group = create_security_group()
-    #floating_ip = create_floating_ip()
-    #server = boot_vm(security_group,keypair)
-    #associate_floating_ip_to_server(floating_ip, server)
+    # keypair = create_keypair()
+    # security_group = create_security_group()
+    # floating_ip = create_floating_ip()
+    #  port=create_port_with_sg(security_group)
+    # userdata_path = os.path.dirname(os.path.realpath(__file__)) + '/userdata.yml'
+    # print userdata_path
+    # server = boot_vm_with_userdata_and_port(security_group,keypair,port,userdata_path)
+    # associate_floating_ip_to_server(floating_ip, server)
     #T=initiate_ssh(floating_ip)
     #print T
