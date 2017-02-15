@@ -5,7 +5,7 @@
 #
 heat_template_version: 2015-04-30
 
-description: Create Factory Network
+description: Create Factory Resources
 
 resources:
   network:
