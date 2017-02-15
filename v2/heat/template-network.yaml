@@ -35,7 +35,7 @@ resources:
   port:
     type: OS::Neutron::Port
     properties:
-      network: { get_param: network }
+      network: { get_resource: network }
       security_groups:
         - { get_resource: security_group }
 
