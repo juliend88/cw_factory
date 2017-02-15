@@ -12,6 +12,6 @@ export NOSE_NET_ID=$(heat output-show factory_network Network_id | sed -e 's/^"/
 
 cd sources/v2/pytesting_os
 
-./run_test.sh
+nosetests -sv
 
 heat stack-delete factory_network -y
