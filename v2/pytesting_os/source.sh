@@ -1,0 +1,7 @@
+export NOSE_IMAGE_ID=6622878a-c762-4a88-b594-c30f255dcc06
+
+export NOSE_FLAVOR=16
+
+export NOSE_KEYPAIR=alikey
+
+export NOSE_NET_ID=256c30b3-fe5d-47e2-af33-9f82efa2c985

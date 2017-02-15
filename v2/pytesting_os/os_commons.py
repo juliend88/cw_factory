@@ -108,7 +108,7 @@ def rescue(server):
 
 
 def attach_volume_to_server(server):
-    return get_cloud().nova_client.volumes.create_server_volume(server.id, env['NOSE_VOLUME_ID'])
+    get_cloud().nova_client.volumes.create_server_volume(server.id, env['NOSE_VOLUME_ID'])
 
 
 def detach_volume_from_server(server):
