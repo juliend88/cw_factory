@@ -178,7 +178,7 @@ def delete_keypair(keypair):
     get_cloud().nova_client.keypairs.delete(keypair.id)
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     #for i in  get_cloud().nova_client.servers.list():
     #    print i
     #security_group={}
