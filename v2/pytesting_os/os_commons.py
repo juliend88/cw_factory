@@ -15,6 +15,8 @@ def boot_vm_with_userdata_and_port(security_group,keypair, port,userdata_path):
     server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[security_group.name],
                                                     flavor=env['NOSE_FLAVOR'], key_name=keypair.id, userdata=file(userdata_path), nics=nics)
 
+    wait_for_cloud_init(server)
+
     return server
 
 
@@ -23,7 +25,22 @@ def boot_vm(security_group,keypair,image_id=env['NOSE_IMAGE_ID'],flavor=env['NOS
     server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=image_id,security_groups=[security_group.name],
                                                     flavor=flavor, key_name=keypair.id, nics=nics)
 
+    wait_for_cloud_init(server)
+
     return server
+
+
+def wait_for_cloud_init(server):
+    counter = 0
+    while counter < 100:
+        console_log = get_console_log(server)
+        if re.search('^.*Cloud-init .* finished.*$', console_log, flags=re.MULTILINE):
+            print("Cloudinit finished in " + str(counter * 6))
+            return
+        time.sleep(6)
+        counter += 1
+    print("Cloudinit end not detected in " + str(counter * 6))
+
 
 
 def get_server(server_id):
@@ -104,7 +121,7 @@ def create_floating_ip():
 
 
 def associate_floating_ip_to_port(floating_ip, port):
-    get_cloud().neutron_client.update_floatingip(floating_ip.id,{'floatingip': {'port_id': port.id }})
+    get_cloud().neutron_client.update_floatingip(floating_ip.id,{'floatingip': {'port_id': port['port']['id'] }})
 
 
 def associate_floating_ip_to_server(floating_ip, server):
@@ -126,7 +143,7 @@ def delete_floating_ip(floating_ip):
 
 
 def delete_port(port):
-    get_cloud().neutron_client.delete_port(port.id)
+    get_cloud().neutron_client.delete_port(port['port']['id'])
 
 
 def add_ssh_ingress_rule(security_group_id):

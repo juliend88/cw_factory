@@ -35,7 +35,7 @@ def teardown():
     global test_resources
 
     cwlib.destroy_server(test_resources['my_server'])
+    cwlib.delete_port(test_resources['my_port'])
     cwlib.delete_security_group(test_resources['my_sg'])
     cwlib.delete_floating_ip(test_resources['my_floating'])
-    cwlib.delete_port(test_resources['my_port'])
     cwlib.delete_keypair(test_resources['my_keypair'])
