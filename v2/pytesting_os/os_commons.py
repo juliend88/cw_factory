@@ -10,7 +10,7 @@ def get_cloud():
     return OpenStackUtils()
 
 
-def boot_vm_with_userdata_and_port(security_group,keypair, port,userdata_path):
+def boot_vm_with_userdata_and_port(security_group,keypair,port,userdata_path):
     nics = [{'port-id': port['port']['id']}]
     server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[security_group.name],
                                                     flavor=env['NOSE_FLAVOR'], key_name=keypair.id, userdata=file(userdata_path), nics=nics)
