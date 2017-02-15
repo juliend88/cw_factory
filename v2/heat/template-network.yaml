@@ -32,6 +32,18 @@ resources:
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
 
+  port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_param: network }
+      security_groups:
+        - { get_resource: security_group }
+
+  volume:
+     type: OS::Cinder::Volume
+     properties:
+        size: 5
+
 
 outputs:
   Network_id:
@@ -40,3 +52,9 @@ outputs:
   Security_group:
     description: Security Group ID
     value: { get_resource: security_group }
+  Port:
+    description: Port ID
+    value: { get_resource: port }
+  Volume:
+    description: Volume ID
+    value: { get_resource: volume }
