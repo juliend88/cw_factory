@@ -61,7 +61,7 @@ def destroy_image(image_id):
     get_cloud().glance_client.images.delete(image_id)
 
 
-def initiate_ssh(floating_ip):
+def initiate_ssh(floating_ip,keypair):
     counter = 0
     while counter < 30:
         counter += 1
@@ -69,10 +69,14 @@ def initiate_ssh(floating_ip):
             ssh_connection = paramiko.SSHClient()
             ssh_connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             print floating_ip.ip
+            tmp=current_time_ms()
+            fp = os.open(env['HOME']+'/private_key-'+tmp+'.pem', os.O_WRONLY | os.O_CREAT, 0o600)
+            with os.fdopen(fp, 'w') as f:
+            f.write(keypair.private_key)
             ssh_connection.connect(
                 floating_ip.ip,
                 username='cloud',
-                key_filename=env['HOME']+'/private_key.pem',
+                key_filename=env['HOME']+'/private_key-'+tmp+'.pem',
                 timeout=180
             )
 
@@ -131,12 +135,8 @@ def soft_reboot(server):
 
 
 def create_keypair():
-    print '__________________________key_paiiiiiiiiiiiiiiiiiiiiiiiiiiiiir______________________________'
-    keypair = get_cloud().nova_client.keypairs.create("testkeypair"+current_time_ms())
-    fp = os.open(env['HOME']+"/private_key.pem", os.O_WRONLY | os.O_CREAT, 0o600)
-    with os.fdopen(fp, 'w') as f:
-     f.write(keypair.private_key)
-    return keypair
+    return get_cloud().nova_client.keypairs.create("testkeypair-"+current_time_ms())
+
 
 
 def delete_keypair(keypair):

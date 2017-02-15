@@ -18,7 +18,7 @@ def setup():
     server = cwlib.boot_vm_with_userdata_and_port(keypair,userdata_path)
     test_resources['my_keypair'] = keypair
     test_resources['my_floating'] = floating_ip
-    test_resources['ssh_connection'] = cwlib.initiate_ssh(floating_ip)
+    test_resources['ssh_connection'] = cwlib.initiate_ssh(floating_ip,keypair)
     test_resources['my_server'] = server
 
     stop_chrono = int(round(time.time() * 1000))
