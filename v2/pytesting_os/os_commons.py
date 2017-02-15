@@ -41,7 +41,6 @@ def current_time_ms():
     return str(int(round(time.time() * 1000)))
 
 
-
 def get_console_log(server):
     return get_cloud().nova_client.servers.get(server.id).get_console_output(length=200)
 
@@ -52,7 +51,6 @@ def get_spice_console(server):
 
 def create_server_snapshot(server):
     return get_cloud().nova_client.servers.create_image(server,server.name+current_time_ms())
-
 
 
 def get_image(image_id):
@@ -93,13 +91,12 @@ def create_floating_ip():
     return floating_ip
 
 
-def associate_floating_ip_to_port(floating_ip, port):
+def associate_floating_ip_to_port(floating_ip):
     get_cloud().neutron_client.update_floatingip(floating_ip.id,{'floatingip': {'port_id': env['NOSE_PORT_ID'] }})
 
 
 def associate_floating_ip_to_server(floating_ip, server):
     get_cloud().nova_client.servers.get(server.id).add_floating_ip(floating_ip.ip)
-
 
 
 def delete_floating_ip(floating_ip):
@@ -110,12 +107,12 @@ def rescue(server):
     get_cloud().nova_client.servers.get(server.id).rescue()
 
 
-def attach_volume_to_server(server,volume):
-    return get_cloud().nova_client.volumes.create_server_volume(server.id, volume.id)
+def attach_volume_to_server(server):
+    return get_cloud().nova_client.volumes.create_server_volume(server.id, env['NOSE_VOLUME_ID'])
 
 
-def detach_volume_from_server(server, volume):
-    get_cloud().nova_client.delete_server_volume(server.id,volume.id)
+def detach_volume_from_server(server):
+    get_cloud().nova_client.delete_server_volume(server.id,env['NOSE_VOLUME_ID'])
 
 
 def get_flavor_disk_size(flavor_id):
