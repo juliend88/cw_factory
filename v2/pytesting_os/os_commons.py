@@ -185,7 +185,7 @@ def delete_keypair(keypair):
     get_cloud().nova_client.keypairs.delete(keypair.id)
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     #for i in  get_cloud().nova_client.servers.list():
     #    print i
     #security_group={}
@@ -238,10 +238,10 @@ if __name__ == "__main__":
     #    'network_id': network_id,
     #}}
     #get_cloud().neutron_client.create_port(body=body_value)
-    keypair = create_keypair()
-    security_group = create_security_group()
-    floating_ip = create_floating_ip()
-    server = boot_vm(security_group,keypair)
-    associate_floating_ip_to_server(floating_ip, server)
-    T=initiate_ssh(floating_ip)
-    print T
+    #keypair = create_keypair()
+    #security_group = create_security_group()
+    #floating_ip = create_floating_ip()
+    #server = boot_vm(security_group,keypair)
+    #associate_floating_ip_to_server(floating_ip, server)
+    #T=initiate_ssh(floating_ip)
+    #print T
