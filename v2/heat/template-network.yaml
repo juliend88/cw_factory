@@ -36,6 +36,10 @@ resources:
     type: OS::Neutron::Port
     properties:
       network: { get_resource: network }
+      fixed_ips:
+          - ip_address: 10.0.1.253
+            subnet_id: { get_resource: subnet }
+
       security_groups:
         - { get_resource: security_group }
 

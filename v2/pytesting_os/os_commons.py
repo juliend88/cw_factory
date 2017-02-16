@@ -21,6 +21,9 @@ def boot_vm_with_userdata_and_port(keypair,userdata_path):
 
 def boot_vm(keypair,image_id=env['NOSE_IMAGE_ID'],flavor=env['NOSE_FLAVOR']):
     nics = [{'net-id': env['NOSE_NET_ID']}]
+    print "image in boot"
+    print image_id
+    time.sleep(50)
     server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=image_id,security_groups=[env['NOSE_SG_ID']],
                                                     flavor=flavor, key_name=keypair.id, nics=nics)
 
@@ -76,7 +79,7 @@ def initiate_ssh(floating_ip,keypair):
                 floating_ip.ip,
                 username='cloud',
                 key_filename=env['HOME']+'/private_key-'+tmp+'.pem',
-                timeout=300)
+                timeout=800)
             return ssh_connection
         except paramiko.ssh_exception.NoValidConnectionsError:
             time.sleep(6)
@@ -137,6 +140,7 @@ def delete_keypair(keypair):
 
 
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
           #get_cloud().nova_client.volumes.create_server_volume(server_id="cedf00b0-0b44-41a7-a02f-9f43467c26bb",volume_id=env['NOSE_VOLUME_ID'])
-          #get_cloud().nova_client.servers.get("cedf00b0-0b44-41a7-a02f-9f43467c26bb").reboot(reboot_type='HARD')
+           tet= get_cloud().nova_client.servers.get("cedf00b0-0b44-41a7-a02f-9f43467c26bb").get_console_output(length=200)
+           print re.search(r'^.*Cloud-init .* finished.*$',tet, flags=re.MULTILINE)
