@@ -7,4 +7,4 @@ def test_console_log():
 
     console_log = cwlib.get_console_log(test_resources['my_server'])
 
-    assert re.search('^.*Cloud-init .* finished.*$', console_log, flags=re.MULTILINE)
+    assert re.search(r'^.*Cloud-init .* finished.*$',console_log, flags=re.MULTILINE)

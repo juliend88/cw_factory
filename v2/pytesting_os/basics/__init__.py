@@ -18,6 +18,9 @@ def setup():
 
     test_resources['my_keypair'] = keypair
     test_resources['my_server'] = server
+    print "id server________________________________________________________________________________"
+    print test_resources['my_server'].id
+
     test_resources['my_floating'] = floating_ip
     test_resources['ssh_connection'] = cwlib.initiate_ssh(floating_ip,keypair)
 

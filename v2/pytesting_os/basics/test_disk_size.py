@@ -2,8 +2,10 @@ import os_commons as cwlib
 from os import environ as env
 from basics import test_resources
 
+global test_resources
 
 def test_disk_size():
+
     expected_disk_size = str(cwlib.get_flavor_disk_size(env['NOSE_FLAVOR'])).strip()
 
     ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command(

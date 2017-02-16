@@ -1,4 +1,4 @@
-'''
+
 import os_commons as cwlib
 import os, paramiko, time, paramiko.ssh_exception
 from os import environ as env
@@ -32,4 +32,3 @@ def teardown():
     cwlib.destroy_server(test_resources['my_server'])
     cwlib.delete_floating_ip(test_resources['my_floating'])
     cwlib.delete_keypair(test_resources['my_keypair'])
-'''
