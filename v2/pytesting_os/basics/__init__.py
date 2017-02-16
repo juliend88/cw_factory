@@ -14,7 +14,7 @@ def setup():
 
     server = cwlib.boot_vm(keypair)
 
-    cwlib.associate_floating_ip_to_server(floating_ip, server)
+    cwlib.associate_floating_ip_to_server(floating_ip,server)
 
     test_resources['my_keypair'] = keypair
     test_resources['my_server'] = server
@@ -28,7 +28,6 @@ def setup():
 
 def teardown():
     global test_resources
-
     cwlib.destroy_server(test_resources['my_server'])
     time.sleep(60)
     cwlib.delete_floating_ip(test_resources['my_floating'])

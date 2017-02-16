@@ -1,3 +1,4 @@
+'''
 from cloudinit import test_resources
 
 
@@ -22,3 +23,4 @@ def test_cloudinit_package():
     print("Expecting to find 'GNU Emacs' in:\n" + cmd_stdout)
 
     assert package_installed_by_userdata_is_present
+'''

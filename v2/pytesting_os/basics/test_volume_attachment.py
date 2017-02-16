@@ -13,4 +13,4 @@ def test_volume_attachment():
 
     assert device_file_listing.find('/dev/vdb') != -1
 
-    cwlib.detach_volume_from_server(test_resources['my_server'], new_volume)
+    cwlib.detach_volume_from_server(test_resources['my_server'])

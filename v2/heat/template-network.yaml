@@ -26,7 +26,6 @@ resources:
     type: OS::Neutron::SecurityGroup
     properties:
       rules:
-         rules:
             - { direction: ingress, protocol: TCP }
             - { direction: ingress, protocol: UDP }
             - { direction: ingress, protocol: ICMP }

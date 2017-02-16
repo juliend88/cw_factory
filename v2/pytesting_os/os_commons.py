@@ -50,8 +50,9 @@ def get_spice_console(server):
 
 
 def create_server_snapshot(server):
-    return get_cloud().nova_client.servers.create_image(server,server.name+current_time_ms())
-
+     k=get_cloud().nova_client.servers.create_image(server,server.name+current_time_ms())
+     print k
+     return k
 
 def get_image(image_id):
     return get_cloud().glance_client.images.get(image_id)
@@ -70,9 +71,10 @@ def initiate_ssh(floating_ip,keypair):
             ssh_connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             print floating_ip.ip
             tmp=current_time_ms()
+            print keypair.private_key
             fp = os.open(env['HOME']+'/private_key-'+tmp+'.pem', os.O_WRONLY | os.O_CREAT, 0o600)
             with os.fdopen(fp, 'w') as f:
-            f.write(keypair.private_key)
+                f.write(keypair.private_key)
             ssh_connection.connect(
                 floating_ip.ip,
                 username='cloud',
@@ -117,7 +119,7 @@ def attach_volume_to_server(server):
 
 
 def detach_volume_from_server(server):
-    get_cloud().nova_client.delete_server_volume(server.id,env['NOSE_VOLUME_ID'])
+    get_cloud().nova_client.volumes.delete_server_volume(server.id,env['NOSE_VOLUME_ID'])
 
 
 def get_flavor_disk_size(flavor_id):
@@ -135,10 +137,12 @@ def soft_reboot(server):
 
 
 def create_keypair():
-    return get_cloud().nova_client.keypairs.create("testkeypair-"+current_time_ms())
-
+    keypair= get_cloud().nova_client.keypairs.create("testkeypair-"+current_time_ms())
+    print keypair.private_key
+    return keypair
 
 
 def delete_keypair(keypair):
     get_cloud().nova_client.keypairs.delete(keypair.id)
+
 
