@@ -8,6 +8,7 @@ def test_console_log():
     print test_resources['my_server'].id
 
     console_log = cwlib.get_console_log(test_resources['my_server'])
+
     time.sleep(20)
 
     #console_log_result= re.search(r'^.*Cloud-init .* finished.*$',console_log, flags=re.MULTILINE) !=-1
