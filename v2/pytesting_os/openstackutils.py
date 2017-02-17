@@ -40,6 +40,7 @@ class OpenStackUtils():
 
     def boot_vm_with_userdata_and_port(self,userdata_path):
         nics = [{'port-id': env['NOSE_PORT_ID']}]
+
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[env['NOSE_SG_ID']],
                                                  flavor=env['NOSE_FLAVOR'], key_name=env['NOSE_KEYPAIR'], userdata=file(userdata_path), nics=nics)
 
@@ -51,12 +52,10 @@ class OpenStackUtils():
         nics = [{'net-id': env['NOSE_NET_ID']}]
         print "image in boot"
         print image_id
-        time.sleep(50)
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=image_id,security_groups=[env['NOSE_SG_ID']],
 
                                                  flavor=flavor, key_name=env['NOSE_KEYPAIR'], nics=nics)
         self.wait_server_is_up(server)
-        return server
 
 
         return server
@@ -84,14 +83,12 @@ class OpenStackUtils():
 
     def create_server_snapshot(self,server):
         snapshot = self.nova_client.servers.create_image(server,server.name+self.current_time_ms())
-        self.wait_server_is_up(server)
+        self.wait_server_available(server)
         return snapshot
 
     def get_image(self,image_id):
-        image= self.glance_client.images.get(image_id)
-        print "display image status"
-        print image.status
-        return image
+        return self.glance_client.images.get(image_id)
+
 
 
     def destroy_image(self,image_id):
@@ -109,7 +106,7 @@ class OpenStackUtils():
                     floating_ip.ip,
                     username='cloud',
                     key_filename=env['HOME']+'/key.pem',
-                    timeout=800)
+                    timeout=900)
                 return ssh_connection
             except paramiko.ssh_exception.NoValidConnectionsError:
                 time.sleep(6)
@@ -136,20 +133,21 @@ class OpenStackUtils():
 
 
     def rescue(self,server):
-        self.nova_client.servers.get(server.id).rescue()
-        time.sleep(6)
-        return server.status
+        self.wait_server_available(server)
+        return self.nova_client.servers.get(server.id).rescue()
+
 
     def unrescue(self,server):
-        self.nova_client.servers.get(server.id).unrescue()
-        time.sleep(6)
-        return server.status
+        self.wait_server_available(server)
+        return self.nova_client.servers.get(server.id).unrescue()
+
+
 
     def attach_volume_to_server(self,server):
         return self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=env['NOSE_VOLUME_ID'])
 
-
     def detach_volume_from_server(self,server):
+        self.wait_server_is_up(server)
         self.nova_client.volumes.delete_server_volume(server.id,env['NOSE_VOLUME_ID'])
 
 
@@ -159,23 +157,27 @@ class OpenStackUtils():
 
     def hard_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='HARD')
-        self.wait_server_is_up(server)
-
+        time.sleep(60)
 
 
     def soft_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='SOFT')
-        self.wait_server_is_up(server)
-
+        time.sleep(60)
 
     def wait_server_is_up(self,server):
         status =server.status
         while status != 'ACTIVE':
-            time.sleep(10)
+            time.sleep(5)
             print "wait for  server"
             print "the status of server is :" + self.get_server(server.id).status
             status = self.get_server(server.id).status
         print "server is up"
 
 
+    def wait_server_available(self,server):
+        task_state = getattr(server,'OS-EXT-STS:task_state')
+        while task_state is not None:
+              time.sleep(10)
+              print "the server is busy"
+              task_state = getattr(self.get_server(server.id),'OS-EXT-STS:task_state')
 

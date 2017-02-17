@@ -36,4 +36,4 @@ nosetests -sv
 
 rm -rf ${HOME}/key.pem
 
-#heat stack-delete factory_network -y
+heat stack-delete factory -y

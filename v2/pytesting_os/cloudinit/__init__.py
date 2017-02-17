@@ -1,6 +1,6 @@
 import os, paramiko, time, paramiko.ssh_exception
-from os import environ as env
 import openstackutils
+
 
 
 cwlib = openstackutils.OpenStackUtils()
@@ -25,8 +25,8 @@ def setup():
     print("Setup 'cloudinit' testsuite in " + str(stop_chrono - start_chrono) + " ms")
 
 
-def teardown():
-    global test_resources
-    cwlib.destroy_server(test_resources['my_server'])
-    cwlib.delete_floating_ip(test_resources['my_floating'])
+#def teardown():
+#    global test_resources
+#    cwlib.destroy_server(test_resources['my_server'])
+#    cwlib.delete_floating_ip(test_resources['my_floating'])
 

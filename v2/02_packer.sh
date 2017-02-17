@@ -28,9 +28,7 @@ export IMG_TMP_ID=$(cat outputs-glance/id.txt)
 
 export IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
 
-
 export PROVISIONNER_FILE=${REPO_DIR}/v2/packer/provision.sh
-
 
 export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')-${OS_VERSION}.yaml
 

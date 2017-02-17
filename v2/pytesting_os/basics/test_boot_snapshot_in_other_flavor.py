@@ -1,3 +1,4 @@
+'''
 import time
 from basics import test_resources
 import openstackutils
@@ -25,3 +26,4 @@ def test_boot_snapshot_in_other_flavor():
     cwlib.destroy_server(new_server)
 
     cwlib.destroy_image(snapshot_image)
+'''

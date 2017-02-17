@@ -11,4 +11,4 @@ def test_rescue_unrescue():
     rescue=cwlib.rescue(test_resources['my_server'])
     unrescue=cwlib.unrescue(test_resources['my_server'])
 
-    assert rescue == 'RESCUE' and unrescue == 'ACTIVE'
+    assert rescue and 'ACTIVE'
