@@ -12,10 +12,11 @@ def test_volume_attachment():
     print att
     time.sleep(60)
     ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command('ls /dev/vdb')
-    device_file_listing = str(ssh_stdout.read())
+    device_file_listing = ssh_stdout.read()
 
     print device_file_listing
 
     assert device_file_listing is not None
 
-    cwlib.detach_volume_from_server(test_resources['my_server'])
+
+#    cwlib.detach_volume_from_server(test_resources['my_server'])

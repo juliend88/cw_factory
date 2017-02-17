@@ -106,7 +106,7 @@ class OpenStackUtils():
                     floating_ip.ip,
                     username='cloud',
                     key_filename=env['HOME']+'/key.pem',
-                    timeout=900)
+                    timeout=1000)
                 return ssh_connection
             except paramiko.ssh_exception.NoValidConnectionsError:
                 time.sleep(6)
@@ -156,13 +156,19 @@ class OpenStackUtils():
 
 
     def hard_reboot(self,server):
-        self.nova_client.servers.get(server.id).reboot(reboot_type='HARD')
-        time.sleep(60)
+        self.nova_client.servers.get(server.id).reboot(reboot_type='REBOOT_HARD')
+        time.sleep(20)
+        print self.get_server(server.id).status
+
+
 
 
     def soft_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='SOFT')
-        time.sleep(60)
+        time.sleep(20)
+        print self.get_server(server.id).status
+
+
 
     def wait_server_is_up(self,server):
         status =server.status

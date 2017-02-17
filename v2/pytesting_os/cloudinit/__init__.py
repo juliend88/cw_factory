@@ -1,3 +1,4 @@
+'''
 import os, paramiko, time, paramiko.ssh_exception
 import openstackutils
 
@@ -30,3 +31,4 @@ def setup():
 #    cwlib.destroy_server(test_resources['my_server'])
 #    cwlib.delete_floating_ip(test_resources['my_floating'])
 
+'''
