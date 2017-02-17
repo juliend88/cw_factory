@@ -1,7 +1,9 @@
 import time
-import os_commons as cwlib
 from basics import test_resources
+import openstackutils
 
+
+cwlib = openstackutils.OpenStackUtils()
 
 
 def test_volume_attachment():

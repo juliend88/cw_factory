@@ -1,0 +1,74 @@
+---
+jobs:
+- name: Build Image
+  public: true
+  serial: true
+  plan:
+    - aggregate:
+      - get: sources
+        trigger: true
+      - get: openstack-client
+        trigger: true
+      - get: python
+        trigger: true
+    - task: Create server then create new image for packer
+      image: openstack-client
+      config:
+         platform: linux
+         inputs:
+            - name: sources
+            - name: outputs-glance
+         outputs:
+            - name: outputs-packer
+              path: result/
+         run :
+            path: sources/v2/02_packer.sh
+      params:
+        OS_AUTH_URL:    {{OS_AUTH_URL}}
+        OS_TENANT_ID:   {{OS_TENANT_ID}}
+        OS_TENANT_NAME: {{OS_TENANT_NAME}}
+        OS_USERNAME:    {{OS_USERNAME}}
+        OS_PASSWORD:    {{OS_PASSWORD}}
+        OS_REGION_NAME: {{OS_REGION_NAME}}
+        BASE_IMAGE_ID: 615d6726-4ca7-44ee-b65c-93c9d8967d22
+        BUNDLE_NMAE: bundle-xenial-lamp
+    - task: Add Cloudwatt propriety in image
+      image: openstack-client
+      config:
+         platform: linux
+         inputs:
+            - name: sources
+            - name: outputs-packer
+         outputs:
+            - name: outputs-for-test
+              path: result/
+         run :
+            path: sources/v2/03_update_img_cw.sh
+      params:
+        OS_AUTH_URL:    {{OS_AUTH_URL}}
+        OS_TENANT_ID:   {{OS_TENANT_ID}}
+        OS_TENANT_NAME: {{OS_TENANT_NAME}}
+        OS_USERNAME:    {{OS_USERNAME}}
+        OS_PASSWORD:    {{OS_PASSWORD}}
+        OS_REGION_NAME: {{OS_REGION_NAME}}
+
+resources:
+- name: sources
+  type: git
+  source:
+    uri: https://github.com/flemzord/cw_factory.git
+    branch: master
+- name: openstack-client
+  type: docker-image
+  source:
+     repository: dalidocker/openstack-cli
+- name: python
+  type: docker-image
+  source:
+     repository: dalidocker/python
+
+
+
+
+
+

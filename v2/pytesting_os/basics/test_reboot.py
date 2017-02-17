@@ -1,18 +1,18 @@
-import os_commons as cwlib
 from basics import test_resources
 from dateutil.parser import parse as parse_date
 import time
+import openstackutils
 
+
+cwlib = openstackutils.OpenStackUtils()
 
 
 def test_hard_reboot():
     global test_resources
     last_boot_before_reboot = get_last_boot_date()
-    print "hard reboot_____________________________________________________________"
-    print test_resources['my_server'].id
     cwlib.hard_reboot(test_resources['my_server'])
     time.sleep(60)
-    test_resources['ssh_connection'] = cwlib.initiate_ssh(test_resources['my_floating'],test_resources['my_keypair'])
+    test_resources['ssh_connection'] = cwlib.initiate_ssh(test_resources['my_floating'])
 
     last_boot_after_reboot = get_last_boot_date()
 
@@ -26,7 +26,7 @@ def test_soft_reboot():
     cwlib.soft_reboot(test_resources['my_server'])
     time.sleep(60)
 
-    test_resources['ssh_connection'] = cwlib.initiate_ssh(test_resources['my_floating'],test_resources['my_keypair'])
+    test_resources['ssh_connection'] = cwlib.initiate_ssh(test_resources['my_floating'])
 
     last_boot_after_reboot = get_last_boot_date()
 

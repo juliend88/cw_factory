@@ -1,6 +1,9 @@
-import os_commons as cwlib
 from os import environ as env
 from basics import test_resources
+import openstackutils
+
+
+cwlib = openstackutils.OpenStackUtils()
 
 global test_resources
 

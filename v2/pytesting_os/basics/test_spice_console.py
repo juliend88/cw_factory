@@ -1,6 +1,8 @@
-import os_commons as cwlib
 from basics import test_resources
+import openstackutils
 
+
+cwlib = openstackutils.OpenStackUtils()
 
 def test_spice_console():
     spice_console_url = cwlib.get_spice_console(test_resources['my_server'])

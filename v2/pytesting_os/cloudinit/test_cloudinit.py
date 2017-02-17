@@ -1,4 +1,3 @@
-
 from cloudinit import test_resources
 
 

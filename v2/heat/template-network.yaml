@@ -8,6 +8,14 @@ heat_template_version: 2015-04-30
 description: Create Factory Resources
 
 resources:
+
+
+  keypair:
+    type: OS::Nova::KeyPair
+    properties:
+      name: factory_keypair
+      save_private_key: true
+
   network:
     type: OS::Neutron::Net
 
@@ -62,3 +70,6 @@ outputs:
   Volume:
     description: Volume ID
     value: { get_resource: volume }
+  private_key:
+    description: The private key of the keypair.
+    value: { get_attr: [keypair, private_key] }
