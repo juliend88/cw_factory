@@ -9,7 +9,9 @@ def test_boot_snapshot_in_other_flavor():
     global test_resources
 
     snapshot_image = cwlib.create_server_snapshot(test_resources['my_server'])
-    time.sleep(60)
+
+    print "the id of snapshot is:"+snapshot_image
+
     new_server = cwlib.boot_vm(image_id=snapshot_image, flavor=21)
 
     floating = cwlib.create_floating_ip()

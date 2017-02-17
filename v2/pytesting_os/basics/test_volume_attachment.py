@@ -11,10 +11,8 @@ def test_volume_attachment():
     att=cwlib.attach_volume_to_server(test_resources['my_server'])
     print att
     time.sleep(60)
-    ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command('ls /dev/')
-    device_file_listing = ssh_stdout.read()
-
-    print device_file_listing
+    ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command('ls /dev/vdb')
+    device_file_listing = str(ssh_stdout.read())
 
     assert device_file_listing.find('/dev/vdb') != -1
 

@@ -11,7 +11,6 @@ def test_hard_reboot():
     global test_resources
     last_boot_before_reboot = get_last_boot_date()
     cwlib.hard_reboot(test_resources['my_server'])
-    time.sleep(60)
     test_resources['ssh_connection'] = cwlib.initiate_ssh(test_resources['my_floating'])
 
     last_boot_after_reboot = get_last_boot_date()
@@ -22,10 +21,7 @@ def test_hard_reboot():
 def test_soft_reboot():
     global test_resources
     last_boot_before_reboot = get_last_boot_date()
-
     cwlib.soft_reboot(test_resources['my_server'])
-    time.sleep(60)
-
     test_resources['ssh_connection'] = cwlib.initiate_ssh(test_resources['my_floating'])
 
     last_boot_after_reboot = get_last_boot_date()

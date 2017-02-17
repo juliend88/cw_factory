@@ -36,8 +36,6 @@ class OpenStackUtils():
         self.neutron_client = neutron.Client(region_name=env['OS_REGION_NAME'], session=sess)
         self.heat_client = heat.Client('1', region_name=env['OS_REGION_NAME'], endpoint=heat_url, session=sess)
 
-        #!/usr/bin/env python
-
 
 
     def boot_vm_with_userdata_and_port(self,userdata_path):
@@ -45,8 +43,7 @@ class OpenStackUtils():
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[env['NOSE_SG_ID']],
                                                  flavor=env['NOSE_FLAVOR'], key_name=env['NOSE_KEYPAIR'], userdata=file(userdata_path), nics=nics)
 
-        time.sleep(80)
-
+        self.wait_server_is_up(server)
         return server
 
 
@@ -56,10 +53,11 @@ class OpenStackUtils():
         print image_id
         time.sleep(50)
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=image_id,security_groups=[env['NOSE_SG_ID']],
+
                                                  flavor=flavor, key_name=env['NOSE_KEYPAIR'], nics=nics)
-        print 'server status____________________________________________________'
-        print server.status
-        time.sleep(80)
+        self.wait_server_is_up(server)
+        return server
+
 
         return server
 
@@ -85,11 +83,15 @@ class OpenStackUtils():
 
 
     def create_server_snapshot(self,server):
-        return self.nova_client.servers.create_image(server,server.name+current_time_ms())
-
+        snapshot = self.nova_client.servers.create_image(server,server.name+self.current_time_ms())
+        self.wait_server_is_up(server)
+        return snapshot
 
     def get_image(self,image_id):
-        return self.glance_client.images.get(image_id)
+        image= self.glance_client.images.get(image_id)
+        print "display image status"
+        print image.status
+        return image
 
 
     def destroy_image(self,image_id):
@@ -135,7 +137,13 @@ class OpenStackUtils():
 
     def rescue(self,server):
         self.nova_client.servers.get(server.id).rescue()
+        time.sleep(6)
+        return server.status
 
+    def unrescue(self,server):
+        self.nova_client.servers.get(server.id).unrescue()
+        time.sleep(6)
+        return server.status
 
     def attach_volume_to_server(self,server):
         return self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=env['NOSE_VOLUME_ID'])
@@ -151,16 +159,23 @@ class OpenStackUtils():
 
     def hard_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='HARD')
-        time.sleep(60)
-        print "status server hard reboot"
-        print server.status
+        self.wait_server_is_up(server)
+
 
 
     def soft_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='SOFT')
-        time.sleep(60)
-        print "status server hard reboot"
-        print server.status
+        self.wait_server_is_up(server)
+
+
+    def wait_server_is_up(self,server):
+        status =server.status
+        while status != 'ACTIVE':
+            time.sleep(10)
+            print "wait for  server"
+            print "the status of server is :" + self.get_server(server.id).status
+            status = self.get_server(server.id).status
+        print "server is up"
 
 
 
