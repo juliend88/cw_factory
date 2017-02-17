@@ -27,6 +27,8 @@ def boot_vm(keypair,image_id=env['NOSE_IMAGE_ID'],flavor=env['NOSE_FLAVOR']):
     server = get_cloud().nova_client.servers.create(name="test-server-" + current_time_ms(), image=image_id,security_groups=[env['NOSE_SG_ID']],
                                                     flavor=flavor, key_name=keypair.id, nics=nics)
 
+    print 'server status____________________________________________________'
+    print server.status
     time.sleep(80)
 
     return server
@@ -124,11 +126,15 @@ def get_flavor_disk_size(flavor_id):
 def hard_reboot(server):
     get_cloud().nova_client.servers.get(server.id).reboot(reboot_type='HARD')
     time.sleep(60)
+    print "status server hard reboot"
+    print server.status
 
 
 def soft_reboot(server):
     get_cloud().nova_client.servers.get(server.id).reboot(reboot_type='SOFT')
     time.sleep(60)
+    print "status server hard reboot"
+    print server.status
 
 
 def create_keypair():
