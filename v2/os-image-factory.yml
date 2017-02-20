@@ -17,7 +17,6 @@ jobs:
          platform: linux
          inputs:
             - name: sources
-            - name: outputs-glance
          outputs:
             - name: outputs-packer
               path: result/
