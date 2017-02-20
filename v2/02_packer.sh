@@ -7,7 +7,7 @@ heat stack-create -f ${REPO_DIR}/v2/heat/template-network.yaml factory
 
 while true
   do
-   heat stack-list | grep factory_network  | cut -d "|" -f4 | grep "CREATE_COMPLETE"
+   heat stack-list | grep factory | cut -d "|" -f4 | grep "CREATE_COMPLETE"
    if  [ $? -eq 0 ]
       then
         export NET_ID=$(heat output-show factory Network_id | sed -e 's/^"//' -e 's/"$//')

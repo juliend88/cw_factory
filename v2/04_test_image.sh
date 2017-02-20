@@ -1,6 +1,7 @@
 #!/bin/sh -x
 
-#export NOSE_IMAGE_ID=$(cat outputs-for-test/id.txt)
+
+# export NOSE_IMAGE_ID=$(cat outputs-for-test/id.txt)
 
 export NOSE_IMAGE_ID=6622878a-c762-4a88-b594-c30f255dcc06
 
