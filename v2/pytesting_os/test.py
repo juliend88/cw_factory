@@ -14,7 +14,7 @@ def initiate_ssh(floating_ip):
             ssh_connection.connect(
                 floating_ip,
                 username='cloud',
-                key_filename= env['HOME']+'/.ssh/alikey.pem',
+                key_filename= env['HOME']+'/.ssh/key.pem',
                 timeout=1000)
             return ssh_connection
             print 'connexion ssh'
@@ -26,11 +26,20 @@ def initiate_ssh(floating_ip):
 
 
 
-if __name__ == "__main__":
 
-   test =initiate_ssh('84.39.37.80')
-   print test
-   ssh_stdin, ssh_stdout, ssh_stderr = test.exec_command('df -h')
-   ssh_hostname = ssh_stdout.read()
-   ss = ssh_hostname.find('/hujmkj')
-   print ss
+if __name__ == "__main__":
+   test =initiate_ssh('84.39.48.71')
+   ssh_stdin, ssh_stdout, ssh_stderr = test.exec_command('sudo ls /root')
+   cmd_stdout= ssh_stdout.read()
+
+   file_created_by_userdata_is_present = (cmd_stdout.find('cloud-init.txt') !=-1)
+   print file_created_by_userdata_is_present
+   assert file_created_by_userdata_is_present
+
+
+
+
+   #file_created_by_userdata_is_present = (cmd_stdout.read().find("cloud-init.txt") != -1)
+   #print file_created_by_userdata_is_present
+
+   #assert file_created_by_userdata_is_present

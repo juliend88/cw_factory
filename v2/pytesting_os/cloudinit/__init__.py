@@ -15,12 +15,12 @@ def setup():
 
     floating_ip = cwlib.create_floating_ip()
 
-    cwlib.associate_floating_ip_to_port(floating_ip)
+    #cwlib.associate_floating_ip_to_port(floating_ip)
 
     userdata_path = os.path.dirname(os.path.realpath(__file__)) + '/userdata.yml'
-
     server = cwlib.boot_vm_with_userdata_and_port(userdata_path,keypair)
-
+    cwlib.associate_floating_ip_to_server(floating_ip, server)
+    cwlib.wait_for_cloud_init(server)
     test_resources['my_keypair'] = keypair
     test_resources['my_floating'] = floating_ip
     test_resources['my_server'] = server

@@ -8,14 +8,6 @@ heat_template_version: 2015-04-30
 description: Create Factory Resources
 
 resources:
-
-
-  keypair:
-    type: OS::Nova::KeyPair
-    properties:
-      name: factory_keypair
-      save_private_key: true
-
   network:
     type: OS::Neutron::Net
 
@@ -29,6 +21,19 @@ resources:
       allocation_pools:
         - { start: 10.0.1.100, end: 10.0.1.254 }
 
+  router:
+      type: OS::Neutron::Router
+      properties:
+        admin_state_up: true
+        external_gateway_info:
+          enable_snat: true
+          network: "public"
+
+  router_interface:
+      type: OS::Neutron::RouterInterface
+      properties:
+        router_id: { get_resource : router }
+        subnet_id: { get_resource : subnet }
 
   security_group:
     type: OS::Neutron::SecurityGroup
@@ -47,7 +52,6 @@ resources:
       fixed_ips:
           - ip_address: 10.0.1.253
             subnet_id: { get_resource: subnet }
-
       security_groups:
         - { get_resource: security_group }
 
@@ -70,6 +74,4 @@ outputs:
   Volume:
     description: Volume ID
     value: { get_resource: volume }
-  private_key:
-    description: The private key of the keypair.
-    value: { get_attr: [keypair, private_key] }
+

@@ -31,7 +31,7 @@ jobs:
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
         BASE_IMAGE_ID: 615d6726-4ca7-44ee-b65c-93c9d8967d22
-        BUNDLE_NMAE: bundle-xenial-lamp
+        BUNDLE_NAME: bundle-xenial-lamp
     - task: Add Cloudwatt propriety in image
       image: openstack-client
       config:

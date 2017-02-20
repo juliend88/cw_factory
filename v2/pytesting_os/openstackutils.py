@@ -8,7 +8,7 @@ import cinderclient.client as cinder
 from glanceclient.v1 import client as glance
 import neutronclient.v2_0.client as neutron
 import heatclient.client as heat
-import time, paramiko,os
+import time, paramiko,os,re
 from os import environ as env
 
 
@@ -41,8 +41,8 @@ class OpenStackUtils():
     def boot_vm_with_userdata_and_port(self,userdata_path,keypair):
         nics = [{'port-id': env['NOSE_PORT_ID']}]
 
-        server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[env['NOSE_SG_ID']],
-                                                 flavor=env['NOSE_FLAVOR'], key_name=keypair.name, userdata=file(userdata_path), nics=nics)
+        server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=env['NOSE_IMAGE_ID'],
+                                                 flavor=env['NOSE_FLAVOR'],userdata=file(userdata_path),key_name=keypair.name, nics=nics)
 
         self.wait_server_is_up(server)
         return server
@@ -50,14 +50,10 @@ class OpenStackUtils():
 
     def boot_vm(self,image_id=env['NOSE_IMAGE_ID'],flavor=env['NOSE_FLAVOR'],keypair='default'):
         nics = [{'net-id': env['NOSE_NET_ID']}]
-        print "image in boot"
-        print image_id
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=image_id,security_groups=[env['NOSE_SG_ID']],
 
                                                  flavor=flavor, key_name=keypair.name, nics=nics)
         self.wait_server_is_up(server)
-
-
         return server
 
 
@@ -74,7 +70,7 @@ class OpenStackUtils():
 
 
     def get_console_log(self,server):
-        return self.nova_client.servers.get(server.id).get_console_output(length=200)
+        return self.nova_client.servers.get(server.id).get_console_output(length=600)
 
 
     def get_spice_console(self,server):
@@ -177,6 +173,18 @@ class OpenStackUtils():
         print "server is up"
 
 
+
+    def wait_for_cloud_init(self,server):
+         while True:
+           console_log = self.get_console_log(server)
+           if re.search('^.*Cloud-init .* finished.*$', console_log, flags=re.MULTILINE):
+             print("Cloudinit finished__________________________________________________________________")
+             break
+             time.sleep(6)
+           else:
+             print("Cloudinit end not detected**********************************************************")
+
+
     def wait_server_available(self,server):
         task_state = getattr(server,'OS-EXT-STS:task_state')
         while task_state is not None:
@@ -192,6 +200,7 @@ class OpenStackUtils():
         with os.fdopen(fp, 'w') as f:
                f.write(keypair.private_key)
         return keypair
+
 
     def delete_keypair(self,keypair):
         self.nova_client.keypairs.delete(keypair.id)

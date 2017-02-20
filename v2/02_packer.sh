@@ -2,8 +2,6 @@
 
 export REPO_DIR=sources
 
-
-
 #check factory_network
 heat stack-create -f ${REPO_DIR}/v2/heat/template-network.yaml factory
 
@@ -24,19 +22,23 @@ while true
 DATE=$(date +%Y-%m-%d:%H:%M:%S)
 
 
-export IMG_TMP_ID=$(cat outputs-glance/id.txt)
+if [ ! -z ${OS_NAME} ] && [ ! -z ${OS_VERSION} ]
+  then
+  export IMG_TMP_ID=$(cat outputs-glance/id.txt)
+  export IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
+  export PROVISIONNER_FILE=${REPO_DIR}/v2/packer/provision.sh
+  export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')-${OS_VERSION}.yaml
+  packer build ${REPO_DIR}/v2/packer/packer_os.json
+  glance image-delete ${IMG_TMP_ID}
+elif [ ! -z ${BASE_IMAGE_ID} ] && [ ! -z ${BUNDLE_NAME} ]
+   then
+  export IMG_NAME=${BUNDLE_NAME}-${DATE}
+  packer build ${REPO_DIR}/v2/packer/packer_bundle.json
+else
 
-export IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
-
-export PROVISIONNER_FILE=${REPO_DIR}/v2/packer/provision.sh
-
-export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')-${OS_VERSION}.yaml
-
-
-packer build ${REPO_DIR}/v2/packer/packer_os.json
-
-
-glance image-delete ${IMG_TMP_ID}
+    echo "what do you do ? I think you don't specify the parameters!!!!"
+    exit 1
+fi
 
 
 mkdir -p result

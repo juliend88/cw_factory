@@ -2,6 +2,7 @@ import time
 import openstackutils
 
 
+
 cwlib = openstackutils.OpenStackUtils()
 test_resources = {}
 
@@ -17,6 +18,8 @@ def setup():
     server = cwlib.boot_vm(keypair=keypair)
 
     cwlib.associate_floating_ip_to_server(floating_ip,server)
+
+    cwlib.wait_for_cloud_init(server)
 
     test_resources['my_keypair'] = keypair
     test_resources['my_server'] = server
