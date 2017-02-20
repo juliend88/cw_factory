@@ -10,6 +10,4 @@ def test_console_log():
 
     console_log = cwlib.get_console_log(test_resources['my_server'])
 
-    print console_log
-
     assert console_log is not None

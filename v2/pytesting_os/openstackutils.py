@@ -8,7 +8,7 @@ import cinderclient.client as cinder
 from glanceclient.v1 import client as glance
 import neutronclient.v2_0.client as neutron
 import heatclient.client as heat
-import time, paramiko
+import time, paramiko,os
 from os import environ as env
 
 
@@ -38,23 +38,23 @@ class OpenStackUtils():
 
 
 
-    def boot_vm_with_userdata_and_port(self,userdata_path):
+    def boot_vm_with_userdata_and_port(self,userdata_path,keypair):
         nics = [{'port-id': env['NOSE_PORT_ID']}]
 
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=env['NOSE_IMAGE_ID'],security_groups=[env['NOSE_SG_ID']],
-                                                 flavor=env['NOSE_FLAVOR'], key_name=env['NOSE_KEYPAIR'], userdata=file(userdata_path), nics=nics)
+                                                 flavor=env['NOSE_FLAVOR'], key_name=keypair.name, userdata=file(userdata_path), nics=nics)
 
         self.wait_server_is_up(server)
         return server
 
 
-    def boot_vm(self,image_id=env['NOSE_IMAGE_ID'],flavor=env['NOSE_FLAVOR']):
+    def boot_vm(self,image_id=env['NOSE_IMAGE_ID'],flavor=env['NOSE_FLAVOR'],keypair='default'):
         nics = [{'net-id': env['NOSE_NET_ID']}]
         print "image in boot"
         print image_id
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=image_id,security_groups=[env['NOSE_SG_ID']],
 
-                                                 flavor=flavor, key_name=env['NOSE_KEYPAIR'], nics=nics)
+                                                 flavor=flavor, key_name=keypair.name, nics=nics)
         self.wait_server_is_up(server)
 
 
@@ -83,7 +83,6 @@ class OpenStackUtils():
 
     def create_server_snapshot(self,server):
         snapshot = self.nova_client.servers.create_image(server,server.name+self.current_time_ms())
-        self.wait_server_available(server)
         return snapshot
 
     def get_image(self,image_id):
@@ -97,7 +96,7 @@ class OpenStackUtils():
 
     def initiate_ssh(self,floating_ip):
         counter = 0
-        while counter < 30:
+        while counter < 50:
             counter += 1
             try:
                 ssh_connection = paramiko.SSHClient()
@@ -105,9 +104,10 @@ class OpenStackUtils():
                 ssh_connection.connect(
                     floating_ip.ip,
                     username='cloud',
-                    key_filename=env['HOME']+'/key.pem',
-                    timeout=1000)
+                    key_filename= env['HOME']+'/.ssh/key.pem',
+                    timeout=200)
                 return ssh_connection
+                print "SSH connection established to %s" % floating_ip.ip
             except paramiko.ssh_exception.NoValidConnectionsError:
                 time.sleep(6)
                 pass
@@ -144,7 +144,7 @@ class OpenStackUtils():
 
 
     def attach_volume_to_server(self,server):
-        return self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=env['NOSE_VOLUME_ID'])
+        self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=env['NOSE_VOLUME_ID'])
 
     def detach_volume_from_server(self,server):
         self.wait_server_is_up(server)
@@ -156,24 +156,21 @@ class OpenStackUtils():
 
 
     def hard_reboot(self,server):
-        self.nova_client.servers.get(server.id).reboot(reboot_type='REBOOT_HARD')
-        time.sleep(20)
+        self.nova_client.servers.get(server.id).reboot(reboot_type='HARD')
         print self.get_server(server.id).status
-
-
+        time.sleep(20)
 
 
     def soft_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='SOFT')
-        time.sleep(20)
         print self.get_server(server.id).status
-
+        time.sleep(20)
 
 
     def wait_server_is_up(self,server):
         status =server.status
         while status != 'ACTIVE':
-            time.sleep(5)
+            time.sleep(20)
             print "wait for  server"
             print "the status of server is :" + self.get_server(server.id).status
             status = self.get_server(server.id).status
@@ -183,7 +180,23 @@ class OpenStackUtils():
     def wait_server_available(self,server):
         task_state = getattr(server,'OS-EXT-STS:task_state')
         while task_state is not None:
-              time.sleep(10)
+              time.sleep(20)
               print "the server is busy"
               task_state = getattr(self.get_server(server.id),'OS-EXT-STS:task_state')
+        print "the server is available"
+
+    def create_keypair(self):
+        keypair= self.nova_client.keypairs.create(name="nose_keypair"+self.current_time_ms())
+        private_key_filename = env['HOME']+'/.ssh/key.pem'
+        fp = os.open(private_key_filename, os.O_WRONLY | os.O_CREAT, 0o600)
+        with os.fdopen(fp, 'w') as f:
+               f.write(keypair.private_key)
+        return keypair
+
+    def delete_keypair(self,keypair):
+        self.nova_client.keypairs.delete(keypair.id)
+        os.remove(env['HOME']+'/.ssh/key.pem')
+
+
+
 

@@ -1,40 +1,36 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -
+import time, paramiko,os
+from os import environ as env
 
-from threading import Timer
-import time
-import openstackutils
 
-'''
-def timeout():
-    print("Game over")
+def initiate_ssh(floating_ip):
+    counter = 0
+    while counter < 50:
+        counter += 1
+        try:
+            ssh_connection = paramiko.SSHClient()
+            ssh_connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh_connection.connect(
+                floating_ip,
+                username='cloud',
+                key_filename= env['HOME']+'/.ssh/alikey.pem',
+                timeout=1000)
+            return ssh_connection
+            print 'connexion ssh'
+        except paramiko.ssh_exception.NoValidConnectionsError:
+            time.sleep(6)
+            pass
 
-t = Timer(20, timeout)
-t.start()
+    return None
 
-# do something else, such as
-time.sleep(15)
-'''
 
 
 if __name__ == "__main__":
 
-    c= openstackutils.OpenStackUtils()
-    server=c.get_server("cedf00b0-0b44-41a7-a02f-9f43467c26bb")
-    #print c.get_console_log(server)
-    c.soft_reboot(server)
-    #time.sleep(10)
-    #print server.status
-    #img=c.create_server_snapshot(server)
-    #print img
-    #image=c.get_image(img)
-    #print image.status
-
-
-    #while ser != 'ACTIVE':
-    #    time.sleep(10)
-    #    print "wait for server"
-    #print "server is up"
-
-
-
+   test =initiate_ssh('84.39.37.80')
+   print test
+   ssh_stdin, ssh_stdout, ssh_stderr = test.exec_command('df -h')
+   ssh_hostname = ssh_stdout.read()
+   ss = ssh_hostname.find('/hujmkj')
+   print ss

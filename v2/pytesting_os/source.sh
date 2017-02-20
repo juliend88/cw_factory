@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
-export NOSE_IMAGE_ID=6622878a-c762-4a88-b594-c30f255dcc06
+export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
 
-export NOSE_FLAVOR=16
+# With the addition of Keystone we have standardized on the term **tenant**
+# as the entity that owns the resources.
+export OS_TENANT_ID=467b00f998064f1688feeca95bdc7a88
+export OS_TENANT_NAME="0750180084_@_1455009201"
+export OS_PROJECT_NAME="0750180084_@_1455009201"
 
-export NOSE_NET_ID=953525fd-4327-4645-b64c-25dd19e84954
+# In addition to the owning entity (tenant), OpenStack stores the entity
+# performing the action as the **user**.
+export OS_USERNAME="mohamed.lachhab-ext+compute@cloudwatt.com"
+export OS_PASSWORD="mohamedalilachhab123"
 
-export NOSE_PORT_ID=2fccbb4d-244d-480a-95d4-dd0c88b61a55
-
-export NOSE_SG_ID=05938b8c-51fe-4908-97e3-f7854a424c16
-
-export NOSE_VOLUME_ID=7a7b47ee-a51a-4bbf-93ba-b764665cc911
+# If your configuration has multiple regions, we set that information here.
+# OS_REGION_NAME is optional and only valid in certain environments.
+export OS_REGION_NAME="fr1"

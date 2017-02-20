@@ -1,3 +1,4 @@
+'''
 import time
 from basics import test_resources
 import openstackutils
@@ -12,3 +13,4 @@ def test_rescue_unrescue():
     unrescue=cwlib.unrescue(test_resources['my_server'])
 
     assert rescue and 'ACTIVE'
+'''
