@@ -6,7 +6,7 @@
 #
 - hosts: local
   user: cloud
-  sudo: true
+  become: true
 
   tasks:
     - name: apt-get update & upgrade
