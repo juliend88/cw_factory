@@ -20,7 +20,6 @@ export NOSE_VOLUME_ID=$(heat output-show factory Volume | sed -e 's/^"//'  -e 's
 #cd sources/v2/pytesting_os
 
 cd pytesting_os/basics
-
 nosetests -sv test_reboot.py test_volume_attachment.py
 
-heat stack-delete factory -y
+#heat stack-delete factory -y
