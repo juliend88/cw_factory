@@ -1,10 +1,10 @@
 {
 
   "variables": {
-    "source_image": "{{ env `BASE_IMG_ID` }}",
+    "source_image": "{{ env `BASE_IMAGE_ID` }}",
     "image_name": "{{ env `IMG_NAME` }}",
     "factory_network": "{{ env `NET_ID` }}",
-    "factory_security_group_name": "{{env `SG_ID`}}",
+    "factory_security_group_name": "{{ env `SG_ID` }}",
     "bundle_name": "{{ env `BUNDLE_NAME` }}"
 
   },

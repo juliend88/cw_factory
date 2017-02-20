@@ -24,7 +24,7 @@ def setup():
     test_resources['my_keypair'] = keypair
     test_resources['my_floating'] = floating_ip
     test_resources['my_server'] = server
-    #test_resources['ssh_connection'] = cwlib.initiate_ssh(floating_ip)
+    test_resources['ssh_connection'] = cwlib.initiate_ssh(floating_ip)
 
     stop_chrono = int(round(time.time() * 1000))
 

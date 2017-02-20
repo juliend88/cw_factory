@@ -8,9 +8,7 @@ def test_volume_attachment():
 
     cwlib.attach_volume_to_server(test_resources['my_server'])
 
-    ssh_connetion=cwlib.initiate_ssh(test_resources['my_floating'])
-
-    ssh_stdin, ssh_stdout, ssh_stderr = ssh_connetion.exec_command('ls /dev/vdb')
+    ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command('ls /dev/vdb')
 
     device_file_listing = ssh_stdout.read()
 

@@ -34,6 +34,7 @@ elif [ ! -z ${BASE_IMAGE_ID} ] && [ ! -z ${BUNDLE_NAME} ]
    then
   export IMG_NAME=${BUNDLE_NAME}-${DATE}
   packer build ${REPO_DIR}/v2/packer/packer_bundle.json
+
 else
 
     echo "what do you do ? I think you don't specify the parameters!!!!"
