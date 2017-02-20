@@ -30,7 +30,7 @@ def test_soft_reboot():
 
 def get_last_boot_date():
     global test_resources
-    time.sleep(20)
+    cwlib.wait_server_is_up(test_resources['my_server'])
     ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command(
         'who -b | tr -s " " | cut -d" " -f4,5')
     return parse_date(ssh_stdout.read())

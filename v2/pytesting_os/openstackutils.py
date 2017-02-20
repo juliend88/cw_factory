@@ -92,7 +92,7 @@ class OpenStackUtils():
 
     def initiate_ssh(self,floating_ip):
         counter = 0
-        while counter < 50:
+        while counter < 100:
             counter += 1
             try:
                 ssh_connection = paramiko.SSHClient()
@@ -101,7 +101,7 @@ class OpenStackUtils():
                     floating_ip.ip,
                     username='cloud',
                     key_filename= env['HOME']+'/.ssh/key.pem',
-                    timeout=200)
+                    timeout=900)
                 return ssh_connection
                 print "SSH connection established to %s" % floating_ip.ip
             except paramiko.ssh_exception.NoValidConnectionsError:
@@ -154,19 +154,18 @@ class OpenStackUtils():
     def hard_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='HARD')
         print self.get_server(server.id).status
-        time.sleep(20)
+        time.sleep(40)
 
 
     def soft_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='SOFT')
         print self.get_server(server.id).status
-        time.sleep(20)
+        time.sleep(40)
 
 
     def wait_server_is_up(self,server):
         status =server.status
         while status != 'ACTIVE':
-            time.sleep(20)
             print "wait for  server"
             print "the status of server is :" + self.get_server(server.id).status
             status = self.get_server(server.id).status
@@ -178,17 +177,15 @@ class OpenStackUtils():
          while True:
            console_log = self.get_console_log(server)
            if re.search('^.*Cloud-init .* finished.*$', console_log, flags=re.MULTILINE):
-             print("Cloudinit finished__________________________________________________________________")
+             print("Cloudinit finished")
              break
-             time.sleep(6)
            else:
-             print("Cloudinit end not detected**********************************************************")
+             print("Cloudinit end not detected")
 
 
     def wait_server_available(self,server):
         task_state = getattr(server,'OS-EXT-STS:task_state')
         while task_state is not None:
-              time.sleep(20)
               print "the server is busy"
               task_state = getattr(self.get_server(server.id),'OS-EXT-STS:task_state')
         print "the server is available"

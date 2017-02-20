@@ -10,7 +10,7 @@ def test_boot_snapshot_in_other_flavor():
 
     snapshot_image = cwlib.create_server_snapshot(test_resources['my_server'])
 
-    print "the id of snapshot is:"+snapshot_image
+    print "The id of snapshot is:"+snapshot_image
 
     cwlib.wait_server_available(test_resources['my_server'])
 
@@ -22,9 +22,7 @@ def test_boot_snapshot_in_other_flavor():
     ssh_connection = cwlib.initiate_ssh(floating)
     ssh_stdin, ssh_stdout, ssh_stderr = ssh_connection.exec_command('sudo ls /home')
     ssh_test = ssh_stdout.read()
-    print ssh_test
-
-    test_boot_snapshot=ssh_test.find('cloud') != -1
+    test_boot_snapshot=(ssh_test.find('cloud') != -1)
 
     assert test_boot_snapshot
 
