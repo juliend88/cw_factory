@@ -19,8 +19,6 @@ def setup():
 
     cwlib.associate_floating_ip_to_server(floating_ip,server)
 
-    cwlib.wait_for_cloud_init(server)
-
     test_resources['my_keypair'] = keypair
     test_resources['my_server'] = server
     test_resources['my_floating'] = floating_ip

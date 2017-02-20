@@ -25,11 +25,18 @@ DATE=$(date +%Y-%m-%d:%H:%M:%S)
 if [ ! -z ${OS_NAME} ] && [ ! -z ${OS_VERSION} ]
   then
   export IMG_TMP_ID=$(cat outputs-glance/id.txt)
+  if [ -z $IMG_TMP_ID ]
+    then
+       echo "You tmp image is not existed in glance"
+       exit 1
+  else
+
   export IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
   export PROVISIONNER_FILE=${REPO_DIR}/v2/packer/provision.sh
   export CLOUD_CONFIG_FILE=${REPO_DIR}/v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')-${OS_VERSION}.yaml
   packer build ${REPO_DIR}/v2/packer/packer_os.json
   glance image-delete ${IMG_TMP_ID}
+  fi
 elif [ ! -z ${BASE_IMAGE_ID} ] && [ ! -z ${BUNDLE_NAME} ]
    then
   export IMG_NAME=${BUNDLE_NAME}-${DATE}
