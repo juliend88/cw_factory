@@ -67,7 +67,7 @@ PURGE=$(openstack image show -f value -c properties ${IMG_ID} | tr ", " "\n" | g
 
 glance image-update ${PURGE} ${IMG_ID}
 
-glance image-update ${IMG_ID} --property  cw_cat=open_source --property cw_origin=Cloudwatt --property cw_os=${OS_NAME}-${OS_VERSION}
+glance image-update ${IMG_ID} --property  cw_cat=open_source --property hw_mg_model=virtio --property cw_origin=Cloudwatt --property cw_os=${OS_NAME}-${OS_VERSION}
 
 glance image-update ${IMG_ID} --property  schema=/v2/schemas/image --min-disk 20
 
