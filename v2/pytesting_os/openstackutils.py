@@ -8,8 +8,7 @@ import cinderclient.client as cinder
 from glanceclient.v1 import client as glance
 import neutronclient.v2_0.client as neutron
 import heatclient.client as heat
-import time, paramiko,os,re
-import errno
+import time, paramiko,os,re,errno
 from socket import error as socket_error
 from os import environ as env
 
@@ -40,9 +39,9 @@ class OpenStackUtils():
 
 
 
-    def boot_vm_with_userdata_and_port(self,userdata_path,keypair):
-        nics = [{'port-id': env['NOSE_PORT_ID']}]
-
+    def boot_vm_with_userdata_and_port(self,userdata_path,keypair,port):
+        #nics = [{'port-id': env['NOSE_PORT_ID']}]
+        nics = [{'port-id': port.id }]
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=env['NOSE_IMAGE_ID'],
                                                  flavor=env['NOSE_FLAVOR'],userdata=file(userdata_path),key_name=keypair.name, nics=nics)
 
@@ -118,8 +117,8 @@ class OpenStackUtils():
         return floating_ip
 
 
-    def associate_floating_ip_to_port(self,floating_ip):
-        self.neutron_client.update_floatingip(floating_ip.id,{'floatingip': {'port_id': env['NOSE_PORT_ID'] }})
+    #def associate_floating_ip_to_port(self,floating_ip):
+     #   self.neutron_client.update_floatingip(floating_ip.id,{'floatingip': {'port_id': env['NOSE_PORT_ID'] }})
 
 
     def associate_floating_ip_to_server(self,floating_ip, server):
@@ -140,11 +139,13 @@ class OpenStackUtils():
         return self.nova_client.servers.get(server.id).unrescue()
 
 
-    def attach_volume_to_server(self,server):
-        self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=env['NOSE_VOLUME_ID'])
+    def attach_volume_to_server(self,server,volume):
+        #self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=env['NOSE_VOLUME_ID'])
+        self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=volume.id)
 
-    def detach_volume_from_server(self,server):
-        self.nova_client.volumes.delete_server_volume(server.id,env['NOSE_VOLUME_ID'])
+    def detach_volume_from_server(self,server,volume):
+        #self.nova_client.volumes.delete_server_volume(server.id,env['NOSE_VOLUME_ID'])
+        self.nova_client.volumes.delete_server_volume(server.id,volume.id)
 
     def get_flavor_disk_size(self,flavor_id):
         return self.nova_client.flavors.get(flavor_id).disk
@@ -199,6 +200,24 @@ class OpenStackUtils():
         self.nova_client.keypairs.delete(keypair.id)
         os.remove(env['HOME']+'/.ssh/key.pem')
 
+    def create_port_with_sg(self):
+        body_value = {'port': {
+                      'admin_state_up': True,
+                      'security_groups': [env['NOSE_SG_ID']],
+                      'name': 'port-test'+current_time_ms(),
+                      'network_id': env['NOSE_NET_ID'],
+                    }}
+        return self.neutron_client.create_port(body=body_value)
+
+  def delete_port(self,port):
+      self.neutron_client.delete_port(port.id)
 
 
+  def create_volume(self):
+      volume=self.cinder_client.volumes.create(5, name="test-volume")
+      time.sleep(20)
+      return volume
 
+
+  def delete_volume(self,volume):
+      self.cinder_client.volumes.delete(volume.id)

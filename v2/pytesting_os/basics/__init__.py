@@ -10,6 +10,7 @@ test_resources = {}
 def setup():
     global test_resources
     start_chrono = int(round(time.time() * 1500))
+    volume=cwlib.create_volume()
 
     keypair=cwlib.create_keypair()
 
@@ -18,7 +19,7 @@ def setup():
     server = cwlib.boot_vm(keypair=keypair)
 
     cwlib.associate_floating_ip_to_server(floating_ip,server)
-
+    test_resources['my_volume'] = volume
     test_resources['my_keypair'] = keypair
     test_resources['my_server'] = server
     test_resources['my_floating'] = floating_ip
@@ -35,3 +36,4 @@ def teardown():
     time.sleep(60)
     cwlib.delete_floating_ip(test_resources['my_floating'])
     cwlib.delete_keypair(test_resources['my_keypair'])
+    cwlib.delete_volume(test_resources['my_volume'])

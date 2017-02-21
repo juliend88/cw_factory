@@ -6,7 +6,7 @@ cwlib = openstackutils.OpenStackUtils()
 def test_volume_attachment():
     global test_resources
 
-    cwlib.attach_volume_to_server(test_resources['my_server'])
+    cwlib.attach_volume_to_server(test_resources['my_server'],test_resources['my_volume'])
 
     ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command('ls /dev/vdb')
 
@@ -16,4 +16,4 @@ def test_volume_attachment():
 
     assert device_file_listing.find('/dev/vdb') != -1
 
-    cwlib.detach_volume_from_server(test_resources['my_server'])
+    cwlib.detach_volume_from_server(test_resources['my_server'],test_resources['my_volume'])
