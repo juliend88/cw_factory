@@ -61,13 +61,24 @@ else
 fi
 
 
+if [ ! -z ${OS_NAME} ] && [ ! -z ${OS_VERSION} ]
+ then
+  NEW_NAME=${OS_NAME}-${OS_VERSION}
+ elif [ ! -z ${BASE_IMAGE_ID} ] && [ ! -z ${BUNDLE_NAME} ]
+   then
+  NEW_NAME=${BUNDLE_NAME}
+ else
+  echo "error"
+  exit 1
+ fi
+
 IMG_ID=$(openstack image list | grep ${IMG_NAME} | awk {'print $2'})
 
 PURGE=$(openstack image show -f value -c properties ${IMG_ID} | tr ", " "\n" | grep -v "^$" | cut -d"=" -f1 | grep -v -E "(cw_os|cw_origin|hw_rng_model)" | sed 's/^/--remove-property /g' | tr "\n" " ")
 
 glance image-update ${PURGE} ${IMG_ID}
 
-glance image-update ${IMG_ID} --property  cw_cat=open_source --property hw_mg_model=virtio --property cw_origin=Cloudwatt --property cw_os=${OS_NAME}-${OS_VERSION}
+glance image-update ${IMG_ID} --property  cw_cat=open_source --property hw_mg_model=virtio --property cw_origin=Cloudwatt --property cw_os=${NEW_NAME}
 
 glance image-update ${IMG_ID} --property  schema=/v2/schemas/image --min-disk 20
 
