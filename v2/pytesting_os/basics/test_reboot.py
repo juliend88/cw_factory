@@ -1,7 +1,9 @@
-import os_commons as cwlib
+import openstackutils
 from basics import test_resources
 from dateutil.parser import parse as parse_date
 
+
+cwlib = openstackutils.OpenStackUtils()
 
 def test_hard_reboot():
     last_boot_before_reboot = get_last_boot_date()

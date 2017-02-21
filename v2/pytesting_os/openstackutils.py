@@ -9,6 +9,7 @@ from glanceclient.v1 import client as glance
 import neutronclient.v2_0.client as neutron
 import heatclient.client as heat
 import time, paramiko,os,re
+import errno
 from socket import error as socket_error
 from os import environ as env
 
@@ -47,13 +48,8 @@ class OpenStackUtils():
 
         print 'Building, please wait...'
         # wait for server create to be complete
-        while server.status == 'BUILD':
-            time.sleep(5)
-            server = self.get_server(server.id)  # refresh server
-            # check for errors
-            if server.status != 'ACTIVE':
-                raise RuntimeError('Server did not boot, status=' + server.status)
 
+        self.wait_server_is_up(server)
         self.wait_for_cloud_init(server)
         return server
 
@@ -63,15 +59,8 @@ class OpenStackUtils():
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=image_id,security_groups=[env['NOSE_SG_ID']],
 
                                                  flavor=flavor, key_name=keypair.name, nics=nics)
-        print 'Building, please wait...'
-        # wait for server create to be complete
-        while server.status == 'BUILD':
-            time.sleep(5)
-            server = self.get_server(server.id)  # refresh server
-            # check for errors
-            if server.status != 'ACTIVE':
-                raise RuntimeError('Server did not boot, status=' + server.status)
-
+        self.wait_server_is_up(server)
+        self.wait_for_cloud_init(server)
         return server
 
 
@@ -156,7 +145,6 @@ class OpenStackUtils():
         self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=env['NOSE_VOLUME_ID'])
 
     def detach_volume_from_server(self,server):
-        self.wait_server_is_up(server)
         self.nova_client.volumes.delete_server_volume(server.id,env['NOSE_VOLUME_ID'])
 
 
@@ -166,14 +154,15 @@ class OpenStackUtils():
 
     def hard_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='HARD')
-        print self.get_server(server.id).status
         time.sleep(40)
+        print self.get_server(server.id).status
+
 
 
     def soft_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='SOFT')
-        print self.get_server(server.id).status
         time.sleep(40)
+        print self.get_server(server.id).status
 
 
     def wait_server_is_up(self,server):
@@ -183,7 +172,6 @@ class OpenStackUtils():
             print "the status of server is :" + self.get_server(server.id).status
             status = self.get_server(server.id).status
         print "server is up"
-
 
 
     def wait_for_cloud_init(self,server):

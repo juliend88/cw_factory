@@ -9,7 +9,7 @@ test_resources = {}
 
 def setup():
     global test_resources
-    start_chrono = int(round(time.time() * 1000))
+    start_chrono = int(round(time.time() * 1500))
 
     keypair=cwlib.create_keypair()
 
@@ -24,7 +24,7 @@ def setup():
     test_resources['my_floating'] = floating_ip
     test_resources['ssh_connection'] = cwlib.initiate_ssh(floating_ip)
 
-    stop_chrono = int(round(time.time() * 1000))
+    stop_chrono = int(round(time.time() * 1500))
 
     print("Setup 'cloudinit' testsuite in " + str(stop_chrono - start_chrono) + " ms")
 
