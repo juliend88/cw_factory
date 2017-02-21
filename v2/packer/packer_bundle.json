@@ -30,7 +30,7 @@
     {
       "type": "ansible",
       "playbook_file": "sources/v2/bundles/{{ user `bundle_name` }}/ansible/bootstrap.yml",
-      "host_alias":"bundle"
+      "host_alias": "testing"
 
     }
 

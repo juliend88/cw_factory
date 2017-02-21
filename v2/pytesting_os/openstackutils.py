@@ -9,6 +9,7 @@ from glanceclient.v1 import client as glance
 import neutronclient.v2_0.client as neutron
 import heatclient.client as heat
 import time, paramiko,os,re
+from socket import error as socket_error
 from os import environ as env
 
 
@@ -44,7 +45,16 @@ class OpenStackUtils():
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=env['NOSE_IMAGE_ID'],
                                                  flavor=env['NOSE_FLAVOR'],userdata=file(userdata_path),key_name=keypair.name, nics=nics)
 
-        self.wait_server_is_up(server)
+        print 'Building, please wait...'
+        # wait for server create to be complete
+        while server.status == 'BUILD':
+            time.sleep(5)
+            server = self.get_server(server.id)  # refresh server
+            # check for errors
+            if server.status != 'ACTIVE':
+                raise RuntimeError('Server did not boot, status=' + server.status)
+
+        self.wait_for_cloud_init(server)
         return server
 
 
@@ -53,7 +63,15 @@ class OpenStackUtils():
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=image_id,security_groups=[env['NOSE_SG_ID']],
 
                                                  flavor=flavor, key_name=keypair.name, nics=nics)
-        self.wait_server_is_up(server)
+        print 'Building, please wait...'
+        # wait for server create to be complete
+        while server.status == 'BUILD':
+            time.sleep(5)
+            server = self.get_server(server.id)  # refresh server
+            # check for errors
+            if server.status != 'ACTIVE':
+                raise RuntimeError('Server did not boot, status=' + server.status)
+
         return server
 
 
@@ -91,24 +109,19 @@ class OpenStackUtils():
 
 
     def initiate_ssh(self,floating_ip):
-        counter = 0
-        while counter < 100:
-            counter += 1
-            try:
-                ssh_connection = paramiko.SSHClient()
-                ssh_connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-                ssh_connection.connect(
-                    floating_ip.ip,
-                    username='cloud',
-                    key_filename= env['HOME']+'/.ssh/key.pem',
-                    timeout=900)
-                return ssh_connection
-                print "SSH connection established to %s" % floating_ip.ip
-            except paramiko.ssh_exception.NoValidConnectionsError:
-                time.sleep(6)
-                pass
-
-        return None
+        ssh_connection = paramiko.SSHClient()
+        ssh_connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        retries_left = 3
+        while True:
+             try:
+                ssh_connection.connect(floating_ip.ip,username='cloud',key_filename= env['HOME']+'/.ssh/key.pem',timeout=180)
+                break
+             except socket_error as e:
+                    if e.errno != errno.ECONNREFUSED or retries_left <= 1:
+                       raise e
+             time.sleep(10)  # wait 10 seconds and retry
+             retries_left -= 1
+        return ssh_connection
 
 
     def create_floating_ip(self):
