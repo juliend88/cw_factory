@@ -209,15 +209,15 @@ class OpenStackUtils():
                     }}
         return self.neutron_client.create_port(body=body_value)
 
-  def delete_port(self,port):
-      self.neutron_client.delete_port(port.id)
+    def delete_port(self,port):
+        self.neutron_client.delete_port(port.id)
 
 
-  def create_volume(self):
-      volume=self.cinder_client.volumes.create(5, name="test-volume")
-      time.sleep(20)
-      return volume
+    def create_volume(self):
+        volume=self.cinder_client.volumes.create(5, name="test-volume")
+        time.sleep(20)
+        return volume
 
 
-  def delete_volume(self,volume):
-      self.cinder_client.volumes.delete(volume.id)
+    def delete_volume(self,volume):
+        self.cinder_client.volumes.delete(volume.id)
