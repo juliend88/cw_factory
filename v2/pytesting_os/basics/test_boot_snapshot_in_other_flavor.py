@@ -15,7 +15,7 @@ def test_boot_snapshot_in_other_flavor():
 
     cwlib.wait_server_available(test_resources['my_server'])
 
-    new_server = cwlib.boot_vm(image_id=snapshot_image, flavor=21,keypair=test_resources['my_keypair'])
+    new_server = cwlib.boot_vm(image_id=snapshot_image, flavor=17,keypair=test_resources['my_keypair'])
 
     floating = cwlib.create_floating_ip()
     cwlib.associate_floating_ip_to_server(floating, new_server)
