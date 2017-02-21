@@ -4,7 +4,7 @@
 ### Written by the CAT (Cloudwatt Automation Team)
 ##
 #
-- hosts: local
+- hosts: bundle
   user: cloud
   become: true
 
