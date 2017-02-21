@@ -2,7 +2,11 @@
 
 #OS base Inputs : IMG_URL , OS_NAME , OS_VERSION
 #Bundle Inputs : BUNDLE_NAME,BASE_IMAGE_ID
+export BASE_IMAGE_ID=615d6726-4ca7-44ee-b65c-93c9d8967d22
+export BUNDLE_NAME=bundle-xenial-lamp
 
+if [ ! -z ${IMG_URL} ]
+ then
 wget ${IMG_URL}
 
 FILE=$(echo "${IMG_URL##*/}")
@@ -11,12 +15,12 @@ DATE=$(date +%Y-%m-%d:%H:%M:%S)
 
 glance image-create --name ${FILE}-${DATE} --disk-format qcow2 --container-format bare --file ${FILE}
 
-
 export IMG_TMP_ID=$(openstack image list | grep ${FILE}-${DATE} | awk {'print $2'})
 
+  fi
 
 #check factory_network
-heat stack-create -f ./v2/heat/template-network.yaml factory
+heat stack-create -f ./heat/template-network.yaml factory
 
 while true
   do
@@ -25,6 +29,7 @@ while true
       then
         export NET_ID=$(heat output-show factory Network_id | sed -e 's/^"//' -e 's/"$//')
         export SG_ID=$(heat output-show factory Security_group | sed -e 's/^"//'  -e 's/"$//')
+        sleep 10
         break
       else
         echo "Wait for factory_network stack will be up"
@@ -44,15 +49,18 @@ if [ ! -z ${OS_NAME} ] && [ ! -z ${OS_VERSION} ]
   else
 
   export IMG_NAME=${OS_NAME}-${OS_VERSION}-${DATE}
-  export PROVISIONNER_FILE=./v2/packer/provision.sh
-  export CLOUD_CONFIG_FILE=./v2/packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')-${OS_VERSION}.yaml
-  packer build ./v2/packer/packer_os.json
+  export PROVISIONNER_FILE=./packer/provision.sh
+  export CLOUD_CONFIG_FILE=./packer/cloud-config/$(echo ${OS_NAME}|tr '[A-Z]' '[a-z]')-${OS_VERSION}.yaml
+  packer build ./packer/packer_os.json
   glance image-delete ${IMG_TMP_ID}
   fi
 elif [ ! -z ${BASE_IMAGE_ID} ] && [ ! -z ${BUNDLE_NAME} ]
    then
   export IMG_NAME=${BUNDLE_NAME}-${DATE}
-  packer build ./v2/packer/packer_bundle.json
+  echo ${BASE_IMAGE_ID}
+  echo ${BUNDLE_NAME}
+  pwd
+  packer build ./packer/packer_bundle.json
 
 else
 
@@ -72,6 +80,8 @@ if [ ! -z ${OS_NAME} ] && [ ! -z ${OS_VERSION} ]
   exit 1
  fi
 
+##### update images
+
 IMG_ID=$(openstack image list | grep ${IMG_NAME} | awk {'print $2'})
 
 PURGE=$(openstack image show -f value -c properties ${IMG_ID} | tr ", " "\n" | grep -v "^$" | cut -d"=" -f1 | grep -v -E "(cw_os|cw_origin|hw_rng_model)" | sed 's/^/--remove-property /g' | tr "\n" " ")
@@ -82,7 +92,7 @@ glance image-update ${IMG_ID} --property  cw_cat=open_source --property hw_mg_mo
 
 glance image-update ${IMG_ID} --property  schema=/v2/schemas/image --min-disk 20
 
-
+#######test
 export NOSE_IMAGE_ID=${IMG_ID}
 
 export NOSE_FLAVOR=16
@@ -95,8 +105,8 @@ export NOSE_SG_ID=$(heat output-show factory Security_group | sed -e 's/^"//'  -
 
 export NOSE_VOLUME_ID=$(heat output-show factory Volume | sed -e 's/^"//'  -e 's/"$//')
 
-cd sources/v2/pytesting_os
+cd ./pytesting_os
 
 nosetests -sv
 
-heat stack-delete factory
+heat stack-delete factory -y
