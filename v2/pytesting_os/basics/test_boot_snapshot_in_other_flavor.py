@@ -25,6 +25,8 @@ def test_boot_snapshot_in_other_flavor():
     ssh_test = ssh_stdout.read()
     test_boot_snapshot=(ssh_test.find('cloud') != -1)
 
+    print test_boot_snapshot
+
     assert test_boot_snapshot
 
     cwlib.destroy_server(new_server)

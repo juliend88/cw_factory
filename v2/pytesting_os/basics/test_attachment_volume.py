@@ -12,6 +12,8 @@ def test_volume_attachment():
 
     device_file_listing = ssh_stdout.read()
 
+    print device_file_listing
+
     assert device_file_listing.find('/dev/vdb') != -1
 
     cwlib.detach_volume_from_server(test_resources['my_server'])

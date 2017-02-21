@@ -93,6 +93,10 @@ glance image-update ${IMG_ID} --property  cw_cat=open_source --property hw_mg_mo
 glance image-update ${IMG_ID} --property  schema=/v2/schemas/image --min-disk 20
 
 #######test
+
+if [ ! -z ${IMG_ID} ] && [ ! -z {OS_NAME} ]
+then
+
 export NOSE_IMAGE_ID=${IMG_ID}
 
 export NOSE_FLAVOR=16
@@ -108,5 +112,7 @@ export NOSE_VOLUME_ID=$(heat output-show factory Volume | sed -e 's/^"//'  -e 's
 cd ./pytesting_os
 
 nosetests -sv
+
+fi
 
 heat stack-delete factory -y

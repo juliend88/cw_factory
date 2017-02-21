@@ -57,8 +57,8 @@ class OpenStackUtils():
     def boot_vm(self,image_id=env['NOSE_IMAGE_ID'],flavor=env['NOSE_FLAVOR'],keypair='default'):
         nics = [{'net-id': env['NOSE_NET_ID']}]
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=image_id,security_groups=[env['NOSE_SG_ID']],
-
                                                  flavor=flavor, key_name=keypair.name, nics=nics)
+        print 'Building, please wait...'
         self.wait_server_is_up(server)
         self.wait_for_cloud_init(server)
         return server
@@ -140,17 +140,14 @@ class OpenStackUtils():
         return self.nova_client.servers.get(server.id).unrescue()
 
 
-
     def attach_volume_to_server(self,server):
         self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=env['NOSE_VOLUME_ID'])
 
     def detach_volume_from_server(self,server):
         self.nova_client.volumes.delete_server_volume(server.id,env['NOSE_VOLUME_ID'])
 
-
     def get_flavor_disk_size(self,flavor_id):
         return self.nova_client.flavors.get(flavor_id).disk
-
 
     def hard_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='HARD')
@@ -158,12 +155,10 @@ class OpenStackUtils():
         print self.get_server(server.id).status
 
 
-
     def soft_reboot(self,server):
         self.nova_client.servers.get(server.id).reboot(reboot_type='SOFT')
         time.sleep(40)
         print self.get_server(server.id).status
-
 
     def wait_server_is_up(self,server):
         status =server.status
