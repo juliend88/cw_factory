@@ -204,7 +204,7 @@ class OpenStackUtils():
         body_value = {'port': {
                       'admin_state_up': True,
                       'security_groups': [env['NOSE_SG_ID']],
-                      'name': 'port-test'+current_time_ms(),
+                      'name': 'port-test',
                       'network_id': env['NOSE_NET_ID'],
                     }}
         return self.neutron_client.create_port(body=body_value)
