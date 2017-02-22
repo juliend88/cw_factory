@@ -162,7 +162,7 @@ class OpenStackUtils():
         print self.get_server(server.id).status
 
     def wait_server_is_up(self,server):
-        status =server.status
+        status = server.status
         while status != 'ACTIVE':
             print "wait for  server"
             print "the status of server is :" + self.get_server(server.id).status
