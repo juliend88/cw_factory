@@ -10,4 +10,8 @@ cwlib =c.OpenStackUtils()
 
 if __name__ == '__main__':
 
-    print cwlib.create_port_with_sg()
+    port= cwlib.create_port_with_sg()
+
+    print port['port']['id']
+
+    cwlib.delete_port(port)

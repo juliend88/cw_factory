@@ -204,7 +204,7 @@ class OpenStackUtils():
         body_value = {'port': {
                       'admin_state_up': True,
                       'security_groups': [env['NOSE_SG_ID']],
-                      'name': 'port-test',
+                      'name': 'port-test'+self.current_time_ms(),
                       'network_id': env['NOSE_NET_ID'],
                     }}
         port=self.neutron_client.create_port(body=body_value)
@@ -217,7 +217,7 @@ class OpenStackUtils():
 
 
     def create_volume(self):
-        volume=self.cinder_client.volumes.create(5, name="test-volume")
+        volume=self.cinder_client.volumes.create(5, name="test-volume"+self.current_time_ms())
         time.sleep(20)
         return volume
 
