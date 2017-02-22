@@ -102,7 +102,7 @@ class OpenStackUtils():
         retries_left = 3
         while True:
              try:
-                ssh_connection.connect(floating_ip.ip,username='cloud',key_filename= env['HOME']+'/.ssh/key.pem',timeout=180)
+                ssh_connection.connect(floating_ip.ip,username='cloud',key_filename= env['HOME']+'/key.pem',timeout=180)
                 break
              except socket_error as e:
                     if e.errno != errno.ECONNREFUSED or retries_left <= 1:
@@ -189,7 +189,7 @@ class OpenStackUtils():
 
     def create_keypair(self):
         keypair= self.nova_client.keypairs.create(name="nose_keypair"+self.current_time_ms())
-        private_key_filename = env['HOME']+'/.ssh/key.pem'
+        private_key_filename = env['HOME']+'/key.pem'
         fp = os.open(private_key_filename, os.O_WRONLY | os.O_CREAT, 0o600)
         with os.fdopen(fp, 'w') as f:
                f.write(keypair.private_key)
@@ -198,7 +198,7 @@ class OpenStackUtils():
 
     def delete_keypair(self,keypair):
         self.nova_client.keypairs.delete(keypair.id)
-        os.remove(env['HOME']+'/.ssh/key.pem')
+        os.remove(env['HOME']+'/key.pem')
 
     def create_port_with_sg(self):
         body_value = {'port': {
