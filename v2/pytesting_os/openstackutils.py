@@ -41,7 +41,7 @@ class OpenStackUtils():
 
     def boot_vm_with_userdata_and_port(self,userdata_path,keypair,port):
         #nics = [{'port-id': env['NOSE_PORT_ID']}]
-        nics = [{'port-id': port['id'] }]
+        nics = [{'port-id': port['port']['id'] }]
         server = self.nova_client.servers.create(name="test-server-" + self.current_time_ms(), image=env['NOSE_IMAGE_ID'],
                                                  flavor=env['NOSE_FLAVOR'],userdata=file(userdata_path),key_name=keypair.name, nics=nics)
 
@@ -213,7 +213,7 @@ class OpenStackUtils():
         return port
 
     def delete_port(self,port):
-        self.neutron_client.delete_port(port['id'])
+        self.neutron_client.delete_port(port['port']['id'])
 
 
     def create_volume(self):
