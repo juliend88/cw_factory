@@ -207,7 +207,9 @@ class OpenStackUtils():
                       'name': 'port-test',
                       'network_id': env['NOSE_NET_ID'],
                     }}
-        return self.neutron_client.create_port(body=body_value)
+        port=self.neutron_client.create_port(body=body_value)
+        time.sleep(20)
+        return port
 
     def delete_port(self,port):
         self.neutron_client.delete_port(port['id'])
