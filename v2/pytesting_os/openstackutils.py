@@ -208,6 +208,7 @@ class OpenStackUtils():
                       'network_id': env['NOSE_NET_ID'],
                     }}
         port=self.neutron_client.create_port(body=body_value)
+        print port
         time.sleep(20)
         return port
 

@@ -10,6 +10,4 @@ cwlib =c.OpenStackUtils()
 
 if __name__ == '__main__':
 
-
-    server=cwlib.get_server()
-    server
+    print cwlib.create_port_with_sg()
