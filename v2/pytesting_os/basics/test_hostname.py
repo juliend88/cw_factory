@@ -13,6 +13,6 @@ def test_hostname():
     ssh_hostname = ssh_stdout.read()
     print("Expected hostname="+hostname)
     print("Found hostname="+ssh_hostname)
-    hostname_result_compare = ssh_hostname.find(hostname) != -1
+    hostname_result_compare = (ssh_hostname.find(hostname) != -1)
 
     assert hostname_result_compare

@@ -69,11 +69,10 @@ class OpenStackUtils():
 
     def destroy_server(self,server):
         self.nova_client.servers.delete(server)
-
+        time.sleep(30)
 
     def current_time_ms(self):
         return str(int(round(time.time() * 1000)))
-
 
     def get_console_log(self,server):
         return self.nova_client.servers.get(server.id).get_console_output(length=600)
@@ -84,25 +83,24 @@ class OpenStackUtils():
 
 
     def create_server_snapshot(self,server):
-        snapshot = self.nova_client.servers.create_image(server,server.name+self.current_time_ms())
-        return snapshot
+        return self.nova_client.servers.create_image(server,server.name+self.current_time_ms())
+
 
     def get_image(self,image_id):
         return self.glance_client.images.get(image_id)
-
 
 
     def destroy_image(self,image_id):
         self.glance_client.images.delete(image_id)
 
 
-    def initiate_ssh(self,floating_ip):
+    def initiate_ssh(self,floating_ip,private_key_filename):
         ssh_connection = paramiko.SSHClient()
         ssh_connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        retries_left = 3
+        retries_left = 5
         while True:
              try:
-                ssh_connection.connect(floating_ip.ip,username='cloud',key_filename= env['HOME']+'/key.pem',timeout=180)
+                ssh_connection.connect(floating_ip.ip,username='cloud',key_filename=private_key_filename,timeout=180)
                 break
              except socket_error as e:
                     if e.errno != errno.ECONNREFUSED or retries_left <= 1:
@@ -113,8 +111,7 @@ class OpenStackUtils():
 
 
     def create_floating_ip(self):
-        floating_ip = self.nova_client.floating_ips.create('public')
-        return floating_ip
+        return self.nova_client.floating_ips.create('public')
 
 
     #def associate_floating_ip_to_port(self,floating_ip):
@@ -123,6 +120,7 @@ class OpenStackUtils():
 
     def associate_floating_ip_to_server(self,floating_ip, server):
         self.nova_client.servers.get(server.id).add_floating_ip(floating_ip.ip)
+        time.sleep(10)
 
 
     def delete_floating_ip(self,floating_ip):
@@ -133,7 +131,6 @@ class OpenStackUtils():
         self.wait_server_available(server)
         return self.nova_client.servers.get(server.id).rescue()
 
-
     def unrescue(self,server):
         self.wait_server_available(server)
         return self.nova_client.servers.get(server.id).unrescue()
@@ -142,6 +139,12 @@ class OpenStackUtils():
     def attach_volume_to_server(self,server,volume):
         #self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=env['NOSE_VOLUME_ID'])
         self.nova_client.volumes.create_server_volume(server_id=server.id,volume_id=volume.id)
+        status =volume.status
+        while status != 'in-use':
+             status = self.cinder_client.volumes.get(volume.id).status
+             print status
+        print "volume is in use Now : "+ status
+
 
     def detach_volume_from_server(self,server,volume):
         #self.nova_client.volumes.delete_server_volume(server.id,env['NOSE_VOLUME_ID'])
@@ -150,25 +153,15 @@ class OpenStackUtils():
     def get_flavor_disk_size(self,flavor_id):
         return self.nova_client.flavors.get(flavor_id).disk
 
-    def hard_reboot(self,server):
-        self.nova_client.servers.get(server.id).reboot(reboot_type='HARD')
-        time.sleep(40)
-        print self.get_server(server.id).status
-
-
-    def soft_reboot(self,server):
-        self.nova_client.servers.get(server.id).reboot(reboot_type='SOFT')
-        time.sleep(40)
-        print self.get_server(server.id).status
+    def server_reboot(self,server,type):
+        serv=self.get_server(server.id)
+        serv.reboot(reboot_type=type)
 
     def wait_server_is_up(self,server):
         status = server.status
         while status != 'ACTIVE':
-            print "wait for  server"
-            print "the status of server is :" + self.get_server(server.id).status
-            status = self.get_server(server.id).status
+              status = self.get_server(server.id).status
         print "server is up"
-
 
     def wait_for_cloud_init(self,server):
          while True:
@@ -177,28 +170,27 @@ class OpenStackUtils():
              print("Cloudinit finished")
              break
            else:
-             print("Cloudinit end not detected")
+             time.sleep(10)
 
 
     def wait_server_available(self,server):
         task_state = getattr(server,'OS-EXT-STS:task_state')
         while task_state is not None:
-              print "the server is busy"
               task_state = getattr(self.get_server(server.id),'OS-EXT-STS:task_state')
         print "the server is available"
 
     def create_keypair(self):
-        keypair= self.nova_client.keypairs.create(name="nose_keypair"+self.current_time_ms())
-        private_key_filename = env['HOME']+'/key.pem'
+        suffix =self.current_time_ms()
+        keypair= self.nova_client.keypairs.create(name="nose_keypair"+suffix)
+        private_key_filename = env['HOME']+'/key-'+suffix+'.pem'
         fp = os.open(private_key_filename, os.O_WRONLY | os.O_CREAT, 0o600)
         with os.fdopen(fp, 'w') as f:
                f.write(keypair.private_key)
-        return keypair
+        return keypair , private_key_filename
 
-
-    def delete_keypair(self,keypair):
+    def delete_keypair(self,keypair,private_key_filename):
         self.nova_client.keypairs.delete(keypair.id)
-        os.remove(env['HOME']+'/key.pem')
+        os.remove(private_key_filename)
 
     def create_port_with_sg(self):
         body_value = {'port': {
@@ -208,7 +200,6 @@ class OpenStackUtils():
                       'network_id': env['NOSE_NET_ID'],
                     }}
         port=self.neutron_client.create_port(body=body_value)
-        print port
         time.sleep(20)
         return port
 
@@ -218,9 +209,13 @@ class OpenStackUtils():
 
     def create_volume(self):
         volume=self.cinder_client.volumes.create(5, name="test-volume"+self.current_time_ms())
-        time.sleep(20)
+        print "the status of volume is:"+ volume.status
+        status = volume.status
+        while status != 'available':
+            status = self.cinder_client.volumes.get(volume.id).status
+        print "volume is created : "+ status
         return volume
-
 
     def delete_volume(self,volume):
         self.cinder_client.volumes.delete(volume.id)
+

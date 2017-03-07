@@ -8,6 +8,6 @@ def test_default_user_login():
     ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command('pwd')
     ssh_user = ssh_stdout.read()
     print ssh_user
-    search_user=ssh_user.find('/home/cloud') != -1
+    search_user=(ssh_user.find('/home/cloud') != -1)
 
     assert search_user

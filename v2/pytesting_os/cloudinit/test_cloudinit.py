@@ -6,8 +6,8 @@ cwlib = openstackutils.OpenStackUtils()
 
 global test_resources
 
-
 def test_cloudinit_package():
+
     time.sleep(20)
     print test_resources['my_floating']
     ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command('emacs --version')
