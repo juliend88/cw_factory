@@ -16,9 +16,9 @@ export NOSE_SG_ID=$(heat output-show factory Security_group | sed -e 's/^"//'  -
 
 export NOSE_VOLUME_ID=$(heat output-show factory Volume | sed -e 's/^"//'  -e 's/"$//')
 
-#cd sources/v2/pytesting_os
+cd sources/v2/pytesting_os
 
-cd pytesting_os
+#cd pytesting_os
 
 nosetests -sv basics/test_boot_snapshot_in_other_flavor.py  
 
