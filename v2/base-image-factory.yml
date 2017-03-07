@@ -86,6 +86,7 @@ jobs:
         OS_USERNAME:    {{OS_USERNAME}}
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
+
 resources:
 - name: sources
   type: git

@@ -20,6 +20,8 @@ cd sources/v2/pytesting_os
 
 #cd pytesting_os
 
-nosetests -sv basics/test_boot_snapshot_in_other_flavor.py  
+#nosetests -sv basics/test_boot_snapshot_in_other_flavor.py
+
+nosetests --nologcapture
 
 #heat stack-delete factory -y

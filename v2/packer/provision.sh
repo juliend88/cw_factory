@@ -8,7 +8,7 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
   then
     if [ "${TMP}" ==  "centos" ]
       then
-       sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(echo ${VER}).noarch.rpm
+       sudo yum install -y epel-release
        sudo yum install -y haveged parted curl unzip wget
       else
        sudo dnf install -y haveged parted curl unzip wget
