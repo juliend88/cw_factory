@@ -22,4 +22,4 @@ cd sources/v2/pytesting_os
 
 nosetests -sv basics/test_boot_snapshot_in_other_flavor.py  
 
-heat stack-delete factory -y
+#heat stack-delete factory -y
