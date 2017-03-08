@@ -6,7 +6,7 @@ jobs:
   plan:
     - aggregate:
       - get: sources
-        trigger: true
+        trigger: false
       - get: openstack-client
         trigger: true
       - get: python
