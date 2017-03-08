@@ -24,6 +24,7 @@ cloud_init_modules:
  - rsyslog
  - users-groups
  - ssh
+ - resolv-conf
 
 cloud_config_modules:
  - mounts
@@ -63,5 +64,8 @@ system_info:
     cloud_dir: /var/lib/cloud
     templates_dir: /etc/cloud/templates
   ssh_svcname: sshd
+
+runcmd:
+  echo "NOZEROCONF=yes" >> /etc/sysconfig/network
 
 # vim:syntax=yaml
