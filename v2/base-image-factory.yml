@@ -96,11 +96,11 @@ resources:
 - name: openstack-client
   type: docker-image
   source:
-     repository: dalidocker/openstack-cli
+     repository: cloudwattfr/openstack-client
 - name: python
   type: docker-image
   source:
-     repository: dalidocker/python
+     repository: cloudwattfr/python-factory
 
 
 
