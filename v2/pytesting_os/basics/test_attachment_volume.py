@@ -1,10 +1,6 @@
-from basics import test_resources
-import openstackutils
-
-cwlib = openstackutils.OpenStackUtils()
+from basics import test_resources,cwlib
 
 def test_volume_attachment():
-    global test_resources
 
     cwlib.attach_volume_to_server(test_resources['my_server'],test_resources['my_volume'])
 

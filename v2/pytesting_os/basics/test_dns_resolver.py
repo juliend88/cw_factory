@@ -1,7 +1,4 @@
 from basics import test_resources
-import openstackutils
-
-cwlib = openstackutils.OpenStackUtils()
 
 
 def test_dns_resolver():

@@ -1,9 +1,4 @@
-from basics import test_resources
-import time
-import openstackutils
-
-
-cwlib = openstackutils.OpenStackUtils()
+from basics import test_resources,cwlib
 
 def test_console_log():
     global test_resources

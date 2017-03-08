@@ -1,9 +1,6 @@
 from os import environ as env
-from basics import test_resources
-import openstackutils
+from basics import test_resources,cwlib
 
-
-cwlib = openstackutils.OpenStackUtils()
 
 def test_disk_size():
     global test_resources
@@ -13,6 +10,6 @@ def test_disk_size():
 
     actual_disk_size = str(ssh_stdout.read()).strip()
 
-    print("EXPECTED '" + str(expected_disk_size) + "' vs ACTUAL '" + str(actual_disk_size)+"'")
+    print "EXPECTED '" + str(expected_disk_size) + "' vs ACTUAL '" + str(actual_disk_size)+"'"
 
     assert expected_disk_size == actual_disk_size

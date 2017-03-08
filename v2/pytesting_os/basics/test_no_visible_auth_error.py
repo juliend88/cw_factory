@@ -1,8 +1,4 @@
 from basics import test_resources
-import openstackutils
-
-
-cwlib = openstackutils.OpenStackUtils()
 
 def test_no_visible_auth_error():
     global test_resources

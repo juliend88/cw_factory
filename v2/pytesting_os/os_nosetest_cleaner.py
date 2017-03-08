@@ -1,6 +1,9 @@
 import time, shade
 from os import environ as env
 import sys
+from openstackutils.openstackutils import OpenStackUtils
+test_resources = {}
+cwlib=OpenStackUtils()
 
 shade.simple_logging()
 cloud = None

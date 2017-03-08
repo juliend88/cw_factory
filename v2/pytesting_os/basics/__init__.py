@@ -1,24 +1,23 @@
 import time
-import openstackutils
+from openstackutils.openstackutils import OpenStackUtils
 
-
-
-cwlib = openstackutils.OpenStackUtils()
 test_resources = {}
-
+cwlib=OpenStackUtils()
 
 def setup():
-    global test_resources
+
     start_chrono = int(round(time.time() * 1800))
+
     volume=cwlib.create_volume()
 
     keypair, private_key = cwlib.create_keypair()
 
-    floating_ip = cwlib.create_floating_ip()
+    floating_ip = cwlib.get_or_create_floating_ip()
 
     server = cwlib.boot_vm(keypair=keypair)
 
     cwlib.associate_floating_ip_to_server(floating_ip,server)
+
     test_resources['my_volume'] = volume
     test_resources['my_keypair'] = keypair
     test_resources['my_server'] = server
@@ -32,9 +31,9 @@ def setup():
 
 
 def teardown():
-    global test_resources
+
     cwlib.destroy_server(test_resources['my_server'])
-    time.sleep(60)
-    cwlib.delete_floating_ip(test_resources['my_floating'])
     cwlib.delete_keypair(test_resources['my_keypair'],test_resources['my_private_key'])
     cwlib.delete_volume(test_resources['my_volume'])
+    cwlib.delete_floating_ip(test_resources['my_floating'])
+    print "delete basics server"
