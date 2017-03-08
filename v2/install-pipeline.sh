@@ -11,7 +11,7 @@ fly set-pipeline --target factory --config base-image-factory.yml --pipeline deb
 fly set-pipeline --target factory --config base-image-factory.yml --pipeline fedora-25 --load-vars-from credentials.yml -v OS_URL=https://download.fedoraproject.org/pub/fedora/linux/releases/25/CloudImages/x86_64/images/Fedora-Cloud-Base-25-1.3.x86_64.qcow2 -v OS_NAME=fedora -v OS_VERSION=25
 
 ## CentOS
-fly set-pipeline --target factory --config base-image-factory.yml --pipeline centos-6 --load-vars-from credentials.yml -v OS_URL=http://cloud.centos.org/centos/6/images/CentOS-6-x86_64-GenericCloud.qcow2 -v OS_NAME=centos -v OS_VERSION=6.8
-fly set-pipeline --target factory --config base-image-factory.yml --pipeline centos-7 --load-vars-from credentials.yml -v OS_URL=http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2 -v OS_NAME=centos -v OS_VERSION=7.2
+fly set-pipeline --target factory --config base-image-factory.yml --pipeline centos-6 --load-vars-from credentials.yml -v OS_URL=http://cloud.centos.org/centos/6/images/CentOS-6-x86_64-GenericCloud.qcow2 -v OS_NAME=centos -v OS_VERSION=6
+fly set-pipeline --target factory --config base-image-factory.yml --pipeline centos-7 --load-vars-from credentials.yml -v OS_URL=http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2 -v OS_NAME=centos -v OS_VERSION=7
 
 ## CoreOS
