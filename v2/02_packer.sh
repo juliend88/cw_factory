@@ -2,9 +2,6 @@
 
 export REPO_DIR=sources
 
-#check factory_network
-#heat stack-create -f ${REPO_DIR}/v2/heat/template-network.yaml factory
-
 while true
   do
    heat stack-list | grep factory | cut -d "|" -f4 | grep "CREATE_COMPLETE"

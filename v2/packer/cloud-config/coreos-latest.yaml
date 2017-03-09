@@ -1,0 +1,12 @@
+#cloud-config
+
+users:
+  - name: "cloud"
+    groups:
+      - "sudo"
+      - "docker"
+    gecos: Cloud user
+    shell: /bin/bash
+    passwd: "$6$5s2u6/jR$un0AvWnqilcgaNB3Mkxd5yYv6mTlWfOoCYHZmfi3LDKVltj.E8XNKEcwWm..."
+    ssh-authorized-keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDLO0zA8nZtfh4TWzw8lPtRne9ZgkkjBsFLm4Z678i1qECEDyK7OpmySaqno3uRRRNiJcYZb8Cwo411Cz7h/0lJ6BisQeKhgkS3ec7xUwAi11AgdkCmpottZ8aNj0eaDPxHd/6YS59dkJAU2eCMdM3+6QwDItAzAJ6eoyxF1SoddqzqrBNBik3OsLWZOQ4MOkm2js24oX8HCBAvqp+jORQW1gjYAhnb1cn1yocXKTT4C/qfzGVy8XS72AUBhdcQBXF1MJdvR+q4vKQoapPI2f58W3OzdWYSNDEZuEQxj53lYQhxetvCA2ZZIWe+FJPfkJPOa0hMmEG3lWMgpmTO6vt2G62RgYB9YzfyVMdCxSGaFdOHrElKtb/XEi1D1ZmN9dB5fB0vTHI2JnkYS1uSI94/JfxbpRCyRMFc3XZAapfVw2L3D7VbPYG0JNeQxhPIjyfW87RolrQ7tOK8z3NKl1tWPux41ppdcUnr4ZTAmP7ObU13bLm+HZXEE6P8bZrOrjywIF8O9mooXfL1RqZsZ6e8OwXNMp8wTWylX1AJbzSmUR+5tqLqisWwFQzG06GhRex1c2Z1BEwk6quYe0RwWKyafto3jDa4OlbuGUEDZ+Xagk9AdkjZDQ3upCP0RJzU2EfxLOJgAC6ZYBQeTk9XeCxXDXxuEDwzepfhfvIJDs9tqQ== flemzord@Flemzord-Pro.local"

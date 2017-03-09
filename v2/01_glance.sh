@@ -1,7 +1,5 @@
 #!/bin/bash -x
 
-#USAGE : sh 01_glance.sh
-
 wget ${IMG_URL}
 
 FILE=$(echo "${IMG_URL##*/}")
