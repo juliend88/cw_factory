@@ -6,7 +6,7 @@ def test_disk_size():
     global test_resources
     expected_disk_size = str(cwlib.get_flavor_disk_size(env['NOSE_FLAVOR'])).strip()
     ssh_stdin, ssh_stdout, ssh_stderr = test_resources['ssh_connection'].exec_command(
-        'lsblk | grep vda1 | awk \'{$1=" "; print $4}\'| tr -d "G"')
+        'lsblk | grep vda | grep disk | awk \'{print $4}\' | tr -d "G"')
 
     actual_disk_size = str(ssh_stdout.read()).strip()
 
