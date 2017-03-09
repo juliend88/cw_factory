@@ -28,13 +28,8 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
 
     sudo sed -i 's|UUID=[A-Fa-f0-9-]*|/dev/vda1 |' /boot/grub/menu.lst
 
-fi
 
-if [ "${TMP}" ==  "coreos" ]
-
-fi
-
-if [ "${TMP}" ==  "debian" ] || [ "${TMP}" == "ubuntu" ]
+else
 
     sudo apt-get update
     sudo apt-get install -y haveged curl bzip2 unzip
