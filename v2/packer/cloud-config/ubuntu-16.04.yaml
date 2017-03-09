@@ -95,3 +95,7 @@ system_info:
          primary: http://ports.ubuntu.com/ubuntu-ports
          security: http://ports.ubuntu.com/ubuntu-ports
    ssh_svcname: ssh
+
+runcmd:
+  - systemctl stop apt-daily.timer
+  - systemctl disable apt-daily.timer
