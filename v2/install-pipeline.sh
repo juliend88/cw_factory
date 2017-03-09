@@ -13,6 +13,3 @@ fly set-pipeline --target factory --config base-image-factory.yml --pipeline fed
 ## CentOS
 fly set-pipeline --target factory --config base-image-factory.yml --pipeline centos-6 --load-vars-from credentials.yml -v OS_URL=http://cloud.centos.org/centos/6/images/CentOS-6-x86_64-GenericCloud.qcow2 -v OS_NAME=centos -v OS_VERSION=6
 fly set-pipeline --target factory --config base-image-factory.yml --pipeline centos-7 --load-vars-from credentials.yml -v OS_URL=http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2 -v OS_NAME=centos -v OS_VERSION=7
-
-## CoreOS
-fly set-pipeline --target factory --config base-image-factory.yml --pipeline coreos --load-vars-from credentials.yml -v OS_URL=http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2 -v OS_NAME=coreos -v OS_VERSION=latest
