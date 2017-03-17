@@ -90,7 +90,4 @@ system_info:
     cloud_dir: /var/lib/cloud
     templates_dir: /etc/cloud/templates
   ssh_svcname: sshd
-
-runcmd:
- - rm -rf /etc/udev/rules.d/70-persistent-net*
 # vim:syntax=yaml
