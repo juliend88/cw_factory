@@ -12,7 +12,7 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
        sudo yum install -y haveged parted curl unzip wget
       else
        sudo dnf install -y haveged parted curl unzip wget
-       sudo echo "rootpassword" | passwd root --stdin
+       sudo echo root | passwd --stdin root
     fi
 
     if [ "$(echo ${VER})" == "6" ]

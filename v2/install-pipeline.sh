@@ -8,7 +8,7 @@ fly set-pipeline --target factory --config base-image-factory.yml --pipeline ubu
 fly set-pipeline --target factory --config base-image-factory.yml --pipeline debian-8 --load-vars-from credentials.yml -v OS_URL=http://cdimage.debian.org/cdimage/openstack/current-8/debian-8-openstack-amd64.qcow2 -v OS_NAME=debian -v OS_VERSION=8
 
 ## Fedora
-fly set-pipeline --target factory --config base-image-factory.yml --pipeline fedora-25 --load-vars-from credentials.yml -v OS_URL=https://download.fedoraproject.org/pub/fedora/linux/releases/25/CloudImages/x86_64/images/Fedora-Cloud-Base-25-1.3.x86_64.qcow2 -v OS_NAME=fedora -v OS_VERSION=25
+fly set-pipeline --target factory --config base-image-factory.yml --pipeline fedora-25 --load-vars-from credentials.yml -v OS_URL=https://storage.fr1.cloudwatt.com/v1/AUTH_6362790faac34793a4506a83bf353ef3/iso%3A/Fedora-Cloud-Base-25-1.3.x86_64.raw -v OS_NAME=fedora -v OS_VERSION=25
 
 ## CentOS
 fly set-pipeline --target factory --config base-image-factory.yml --pipeline centos-6 --load-vars-from credentials.yml -v OS_URL=http://cloud.centos.org/centos/6/images/CentOS-6-x86_64-GenericCloud.qcow2 -v OS_NAME=centos -v OS_VERSION=6
