@@ -12,7 +12,27 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
        sudo yum install -y haveged parted curl unzip wget
       else
        sudo dnf install -y haveged parted curl unzip wget
-       sudo rm -rf /etc/udev/rules.d/*
+       sudo cat "
+        [Unit]
+        Description=CloudWatt start
+
+        Before=network-pre.target
+        Wants=network-pre.target
+
+        DefaultDependencies=no
+
+        [Service]
+        Type=oneshot
+
+        ExecStart=rm -rf /etc/udev/rules.d/*
+
+        RemainAfterExit=yes
+
+        [Install]
+        WantedBy=network.target
+       " > /lib/systemd/system/cloudwatt.service
+       sudo systemctl daemon-reload
+       sudo systemctl enable cloudwatt
 
     fi
 
