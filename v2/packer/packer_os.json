@@ -30,11 +30,6 @@
   "provisioners": [
 
 
-//    {
-//      "type": "file",
-//      "source": "{{ user `cloud-config` }}",
-//      "destination": "/tmp/cloud-config.yaml"
-//    },
     {
       "type": "shell",
       "environment_vars": [
