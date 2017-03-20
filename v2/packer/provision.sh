@@ -12,22 +12,6 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
        sudo yum install -y haveged parted curl unzip wget
       else
        sudo dnf install -y haveged parted curl unzip wget
-
-       sudo echo "[Unit]"                                   >> /etc/systemd/system/cloudwatt.service
-       sudo echo "Description=CloudWatt start"              >> /etc/systemd/system/cloudwatt.service
-       sudo echo "Before=network-pre.target"                >> /etc/systemd/system/cloudwatt.service
-       sudo echo "Wants=network-pre.target"                 >> /etc/systemd/system/cloudwatt.service
-       sudo echo "DefaultDependencies=no"                   >> /etc/systemd/system/cloudwatt.service
-       sudo echo "[Service]"                                >> /etc/systemd/system/cloudwatt.service
-       sudo echo "Type=oneshot"                             >> /etc/systemd/system/cloudwatt.service
-       sudo echo "ExecStart=rm -rf /etc/udev/rules.d/*"     >> /etc/systemd/system/cloudwatt.service
-       sudo echo "RemainAfterExit=yes"                      >> /etc/systemd/system/cloudwatt.service
-       sudo echo "[Install]"                                >> /etc/systemd/system/cloudwatt.service
-       sudo echo "WantedBy=network.target"                  >> /etc/systemd/system/cloudwatt.service
-
-       sudo systemctl daemon-reload
-       sudo systemctl enable cloudwatt
-
     fi
 
     if [ "$(echo ${VER})" == "6" ]
