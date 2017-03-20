@@ -12,7 +12,8 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
        sudo yum install -y haveged parted curl unzip wget
       else
        sudo dnf install -y haveged parted curl unzip wget
-       sudo rm -rf /etc/udev/rules.d/70-persistent-net*
+       sudo rm -rf /etc/udev/rules.d/*
+
     fi
 
     if [ "$(echo ${VER})" == "6" ]
