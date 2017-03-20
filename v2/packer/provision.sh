@@ -30,7 +30,7 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
 
         [Install]
         WantedBy=network.target
-       " > /lib/systemd/system/cloudwatt.service
+       " > /etc/systemd/system/multi-user.target.wants/cloudwatt.service
        sudo systemctl daemon-reload
        sudo systemctl enable cloudwatt
 
