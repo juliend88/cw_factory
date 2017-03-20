@@ -12,25 +12,19 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
        sudo yum install -y haveged parted curl unzip wget
       else
        sudo dnf install -y haveged parted curl unzip wget
-       sudo cat "
-        [Unit]
-        Description=CloudWatt start
 
-        Before=network-pre.target
-        Wants=network-pre.target
+       sudo echo "[Unit]"                                   >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
+       sudo echo "Description=CloudWatt start"              >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
+       sudo echo "Before=network-pre.target"                >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
+       sudo echo "Wants=network-pre.target"                 >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
+       sudo echo "DefaultDependencies=no"                   >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
+       sudo echo "[Service]"                                >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
+       sudo echo "Type=oneshot"                             >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
+       sudo echo "ExecStart=rm -rf /etc/udev/rules.d/*"     >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
+       sudo echo "RemainAfterExit=yes"                      >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
+       sudo echo "[Install]"                                >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
+       sudo echo "WantedBy=network.target"                  >> /etc/systemd/system/multi-user.target.wants/cloudwatt.service
 
-        DefaultDependencies=no
-
-        [Service]
-        Type=oneshot
-
-        ExecStart=rm -rf /etc/udev/rules.d/*
-
-        RemainAfterExit=yes
-
-        [Install]
-        WantedBy=network.target
-       " > /etc/systemd/system/multi-user.target.wants/cloudwatt.service
        sudo systemctl daemon-reload
        sudo systemctl enable cloudwatt
 
