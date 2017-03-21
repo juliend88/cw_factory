@@ -12,7 +12,7 @@ if [ "${TMP}" ==  "centos" ] || [ "${TMP}" == "fedora" ]
        sudo yum install -y haveged parted curl unzip wget
       else
        sudo dnf install -y haveged parted curl unzip wget
-       sudo passwd --stdin root < root
+       sudo rm -rf /etc/sysconfig/network-scripts/ifcfg-eth0
     fi
 
     if [ "$(echo ${VER})" == "6" ]
