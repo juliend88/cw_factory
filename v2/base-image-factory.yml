@@ -70,6 +70,9 @@ jobs:
         OS_USERNAME:    {{OS_USERNAME}}
         OS_PASSWORD:    {{OS_PASSWORD}}
         OS_REGION_NAME: {{OS_REGION_NAME}}
+        OS_NAME:        {{OS_NAME}}
+        OS_VERSION:     {{OS_VERSION}}
+        OS_LOGO:        {{OS_LOGO}}
     - task: Image Test
       image: python
       config:
